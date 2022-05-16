@@ -1,0 +1,57 @@
+﻿@page "/Name/{Value}"
+@using Newtonsoft.Json
+@using Client.Models
+<MudLayout>
+    <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+        <MudGrid>
+            <MudItem xs="12" sm="3">
+                <MudImage Width="300" Height="218" Src="@profilePath" Fluid="true" Alt="@personName" Elevation="25" Class="rounded-lg"/>
+            </MudItem>
+            <MudItem xs="12" sm="9">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5">
+                                @personName
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</MudLayout>
+
+@code {
+    
+    HttpClient client = new ();
+    [Parameter]
+    public string Value { get; set; }
+    public string profilePath { get; set; }
+    public string personName { get; set; }
+    public string personDOB { get; set; }
+    public string personBiograpgy { get; set; }
+    
+    protected override async Task OnParametersSetAsync()
+    {
+    
+        var id = Value;
+        await NameApi(id);
+    }
+
+    private async Task NameApi(string id)
+    {
+        HttpResponseMessage response = await client.GetAsync("https://api.themoviedb.org/3/person/" + id + "?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        
+        var obj = JsonConvert.DeserializeObject<PeopleEntity>(responseBody);
+        profilePath = "https://image.tmdb.org/t/p/w200" + obj.profile_path;
+        personName = obj.name;
+        personDOB = obj.birthday;
+        personBiograpgy = obj.biography;
+    }
+}

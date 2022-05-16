@@ -1,0 +1,66 @@
+﻿@page "/"
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using Client.Models
+@inject HttpClient Http
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+
+
+<PageTitle>Index</PageTitle>
+<MudLayout>
+    <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+        <p><b>Trending Movies</b></p>   
+        <div class="container" style="height: 310px">
+            @foreach (var item in movies)
+                {
+                    var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+
+                    <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                            <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                        </MudPaper>
+                    </MudButton>
+                }
+        </div>
+    </MudContainer>
+</MudLayout>
+
+@code {
+    List<Movie> movies = new();
+    
+    
+    void MovieDetails(int id)
+    {
+        navigationManager.NavigateTo($"MovieDetails/{id}");
+    }
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        HttpClient client = new HttpClient();
+        HttpResponseMessage response = await client.GetAsync("https://api.themoviedb.org/3/trending/movie/week?api_key=a5ab4805002668ee4999f8bac7a4691d");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
+            .Children<JObject>();
+
+        foreach (JObject result in resultObjects) {
+            var obj = JsonConvert.DeserializeObject<Movie>(result.ToString());
+            movies.Add(obj);
+        }
+        Console.WriteLine(movies.ToString());
+    }
+
+    private static IEnumerable<JToken> AllChildren(JToken json)
+    {
+        foreach (var c in json.Children()) {
+            yield return c;
+            foreach (var cc in AllChildren(c)) {
+                yield return cc;
+            }
+        }
+    }
+
+}
