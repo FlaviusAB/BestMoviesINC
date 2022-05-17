@@ -7,6 +7,9 @@ namespace Client.Services;
 public interface IMoviesData
 {
     Task<List<Movie>> GetTrending();
+    Task<List<Movie>> GetPopular();
+    Task<List<Movie>> GetNowPlaying();
+
     Task<Movie> GetMovieDetails(string id);
     Task<List<PeopleEntity>> GetMovieCast(string id);
     Task<List<Movie>> GetSimilar(string id);
@@ -27,6 +30,50 @@ public class MoviesData : IMoviesData
         var response =
             await client.GetAsync(
                 "https://api.themoviedb.org/3/trending/movie/week?api_key=a5ab4805002668ee4999f8bac7a4691d");
+        response.EnsureSuccessStatusCode();
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
+            .Children<JObject>();
+
+        foreach (var result in resultObjects)
+        {
+            var obj = JsonConvert.DeserializeObject<Movie>(result.ToString());
+            movies.Add(obj);
+        }
+
+        return movies;
+    }
+
+    public async Task<List<Movie>> GetPopular()
+    {
+        var movies = new List<Movie>();
+        var response =
+            await client.GetAsync(
+                "https://api.themoviedb.org/3/movie/popular?api_key=a5ab4805002668ee4999f8bac7a4691d");
+        response.EnsureSuccessStatusCode();
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
+            .Children<JObject>();
+
+        foreach (var result in resultObjects)
+        {
+            var obj = JsonConvert.DeserializeObject<Movie>(result.ToString());
+            movies.Add(obj);
+        }
+
+        return movies;
+    }
+
+    public async Task<List<Movie>> GetNowPlaying()
+    {
+        var movies = new List<Movie>();
+        var response =
+            await client.GetAsync(
+                "https://api.themoviedb.org/3/movie/now_playing?api_key=a5ab4805002668ee4999f8bac7a4691d");
         response.EnsureSuccessStatusCode();
         var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -144,7 +191,7 @@ public class MoviesData : IMoviesData
         
         var response =
             await client.GetAsync(
-                "https://api.themoviedb.org/3/movie/similar/" + id +"/week?api_key=a5ab4805002668ee4999f8bac7a4691d");
+                "https://api.themoviedb.org/3/movie/" + id + "/similar?api_key=a5ab4805002668ee4999f8bac7a4691d");
         response.EnsureSuccessStatusCode();
         var responseBody = await response.Content.ReadAsStringAsync();
 

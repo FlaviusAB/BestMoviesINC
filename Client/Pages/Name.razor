@@ -72,7 +72,7 @@
     public string personBiograpgy { get; set; }
     public string personPlaceOfBirth { get; set; }
     
-    private List<Movie> movies;
+    private List<Movie> movies = new();
     
     
     protected override async Task OnParametersSetAsync()
