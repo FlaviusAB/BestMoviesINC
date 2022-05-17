@@ -3,7 +3,7 @@
 @using Newtonsoft.Json.Linq
 @using Client.Models
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
-
+@inject NavigationManager uriHelper;
 
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
@@ -55,22 +55,36 @@
                                 cast = people[i].name + ", ";
                                 var num = i;
                                 <button>
-                            <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
-                                <span class="pr-2"> 
-                                @cast
-                                </span> 
-                            </a>
-                            </button>
+                                    <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
+                                        <span class="pr-2"> 
+                                            @cast
+                                        </span> 
+                                    </a>
+                                </button>
                             }
                         </MudText>
                     </MudCardContent>
                 </MudCard>
             </MudItem>
+                <div class="container" style="height: 310px">
+                            @foreach (var item in movies)
+                                {
+                                    var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                
+                                    <MudButton OnClick="@(() => MovieDetail(@item.Id))">
+                                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                                            <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                                        </MudPaper>
+                                    </MudButton>
+                                }
+                        </div>
         </MudGrid>
     </MudContainer>
 </MudLayout>
 
 @code {
+    List<Movie> movies = new();
+
     
     HttpClient client = new ();
     [Parameter]
@@ -96,8 +110,24 @@
         var id = Value;
         await MovieDetailsApi(id);
         await MovieCastApi(id);
+        
+        HttpClient client = new HttpClient();
+        HttpResponseMessage response = await client.GetAsync("https://api.themoviedb.org/3/movie/" + id + "/similar?api_key=a5ab4805002668ee4999f8bac7a4691d" );
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
+            .Children<JObject>();
+
+        foreach (JObject result in resultObjects) {
+            var obj = JsonConvert.DeserializeObject<Movie>(result.ToString());
+            movies.Add(obj);
+        }
 
     }
+    
+    
 
     private async Task  MovieDetailsApi(string id)
     {
@@ -180,14 +210,56 @@
                 cast += people[i].name;
             }
         }
-        
-        
     }
     
-    public  void NamePage(int id)
+    
+    
+    private int Count { get; set; } = 10;
+    
+    private void NamePage(int id)
     {
         navigationManager.NavigateTo($"Name/{id}");
     }
+    
+    void MovieDetail(int id)
+    {
+        var timer = new Timer(new TimerCallback(_ =>
+        {
+            if (Count > 0)
+            {
+                Count--;
+                
+                InvokeAsync(() =>
+                {
+                    StateHasChanged();
+                });
+            }
+        }), null, 1000, 1000);
+        navigationManager.NavigateTo($"MovieDetails/{id}");
+
+    }
+
+
+    // void StartCountdown()
+    // {
+    //     var timer = new Timer(new TimerCallback(_ =>
+    //     {
+    //         if (Count > 0)
+    //         {
+    //             Count--;
+    //
+    // // Note that the following line is necessary because otherwise
+    // // Blazor would not recognize the state change and not refresh the UI
+    //             InvokeAsync(() =>
+    //             {
+    //
+    //                 StateHasChanged();
+    //             });
+    //         }
+    //     }), null, 1000, 1000);
+    // }
+    
+    
     private static IEnumerable<JToken> AllChildren(JToken json)
     {
         foreach (var c in json.Children())
@@ -199,5 +271,10 @@
             }
         }
     }
+    
+    
+    
+    
+    
     
 }
