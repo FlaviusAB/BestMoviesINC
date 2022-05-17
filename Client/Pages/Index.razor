@@ -27,8 +27,7 @@
 @code {
 
     [Inject] private IMoviesData MoviesData { get; set; }
-    private List<Movie> movies = new();
-    
+    private List<Movie> movies;
     
     void MovieDetails(int id)
     {
@@ -37,6 +36,7 @@
     
     protected override async Task OnInitializedAsync()
     {
+        movies = new List<Movie>();
         movies = await MoviesData.GetTrending();
     }
 
