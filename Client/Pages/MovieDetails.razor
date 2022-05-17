@@ -75,7 +75,16 @@
             <div class="container" style="height: 310px">
                 @foreach (var item in movies)
                 {
-                    var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                    var poster = "";
+                    if (@item.PosterPath == null)
+                    {
+                        poster = "/no-image-icon-6.png";
+                    @* @item.Title *@
+                    }
+                    else
+                    {
+                        poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                    }
 
                     <MudButton OnClick="@(() => SimilarMovies(@item.Id))">
                         <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
