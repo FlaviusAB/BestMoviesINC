@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "gfr8t7Nb+1+YHEGIbQttGotbrXs5qsv7y3xVk2kBVV8=",
+  "Hash": "t5KDaC/IUIZq4mnjqAIER4s1plhmOQ30EEKP2gwpRV0=",
   "Source": "Client",
   "BasePath": "/",
   "Mode": "Root",
@@ -391,6 +391,74 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.aspnetcore.components.webassembly\\6.0.0\\lib\\net6.0\\Microsoft.AspNetCore.Components.WebAssembly.dll"
     },
     {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.Abstractions.dll",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Http.Abstractions.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\lib\\netstandard2.0\\Microsoft.AspNetCore.Http.Abstractions.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.dll",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Http.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.aspnetcore.http\\2.2.2\\lib\\netstandard2.0\\Microsoft.AspNetCore.Http.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.Extensions.dll",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Http.Extensions.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.aspnetcore.http.extensions\\2.2.0\\lib\\netstandard2.0\\Microsoft.AspNetCore.Http.Extensions.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.Features.dll",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Http.Features.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\lib\\netstandard2.0\\Microsoft.AspNetCore.Http.Features.dll"
+    },
+    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Metadata.dll",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -406,6 +474,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.aspnetcore.metadata\\6.0.4\\lib\\net6.0\\Microsoft.AspNetCore.Metadata.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.WebUtilities.dll",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.WebUtilities.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\2.2.0\\lib\\netstandard2.0\\Microsoft.AspNetCore.WebUtilities.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Authentication.WebAssembly.Msal.dll",
@@ -541,7 +626,7 @@
       "AssetTraitValue": "runtime",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\lib\\net6.0\\Microsoft.Extensions.DependencyInjection.Abstractions.dll"
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0-preview.4.22229.4\\lib\\net6.0\\Microsoft.Extensions.DependencyInjection.Abstractions.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.DependencyInjection.dll",
@@ -558,7 +643,7 @@
       "AssetTraitValue": "runtime",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.0\\lib\\net6.0\\Microsoft.Extensions.DependencyInjection.dll"
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0-preview.4.22229.4\\lib\\net6.0\\Microsoft.Extensions.DependencyInjection.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.FileProviders.Abstractions.dll",
@@ -612,6 +697,23 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\6.0.0\\lib\\net6.0\\Microsoft.Extensions.FileSystemGlobbing.dll"
     },
     {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Http.dll",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Extensions.Http.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.http\\7.0.0-preview.4.22229.4\\lib\\net6.0\\Microsoft.Extensions.Http.dll"
+    },
+    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.Abstractions.dll",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -626,7 +728,7 @@
       "AssetTraitValue": "runtime",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.1\\lib\\net6.0\\Microsoft.Extensions.Logging.Abstractions.dll"
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0-preview.4.22229.4\\lib\\net6.0\\Microsoft.Extensions.Logging.Abstractions.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.dll",
@@ -643,7 +745,24 @@
       "AssetTraitValue": "runtime",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.logging\\6.0.0\\lib\\netstandard2.1\\Microsoft.Extensions.Logging.dll"
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.logging\\7.0.0-preview.4.22229.4\\lib\\net6.0\\Microsoft.Extensions.Logging.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.ObjectPool.dll",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Extensions.ObjectPool.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.objectpool\\2.2.0\\lib\\netstandard2.0\\Microsoft.Extensions.ObjectPool.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Options.dll",
@@ -660,7 +779,7 @@
       "AssetTraitValue": "runtime",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\lib\\netstandard2.1\\Microsoft.Extensions.Options.dll"
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.options\\7.0.0-preview.4.22229.4\\lib\\net6.0\\Microsoft.Extensions.Options.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Primitives.dll",
@@ -677,7 +796,7 @@
       "AssetTraitValue": "runtime",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\lib\\net6.0\\Microsoft.Extensions.Primitives.dll"
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0-preview.4.22229.4\\lib\\net6.0\\Microsoft.Extensions.Primitives.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.JSInterop.dll",
@@ -712,6 +831,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.jsinterop.webassembly\\6.0.0\\lib\\net6.0\\Microsoft.JSInterop.WebAssembly.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Net.Http.Headers.dll",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Net.Http.Headers.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\.nuget\\packages\\microsoft.net.http.headers\\2.2.0\\lib\\netstandard2.0\\Microsoft.Net.Http.Headers.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.VisualBasic.Core.dll",
@@ -3944,6 +4080,23 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Diagnostics.TextWriterTraceListener.dll"
     },
     {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\5xj0LnxZ.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Http.Extensions.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.Extensions.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.Extensions.dll"
+    },
+    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\61669WGK.gz",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -3993,6 +4146,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Web.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\6Qp1+zU2.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.WebUtilities.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.WebUtilities.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.WebUtilities.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\6Sq9Mxf7.gz",
@@ -4488,23 +4658,6 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Globalization.Calendars.dll"
     },
     {
-      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\cFFhTC7y.gz",
-      "SourceId": "Client",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "_framework/Microsoft.Extensions.Logging.dll.gz",
-      "AssetKind": "Build",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.dll",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "CopyToOutputDirectory": "PreserveNewest",
-      "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.dll"
-    },
-    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\Chi+9+y7.gz",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -4658,6 +4811,40 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.FileSystemGlobbing.dll"
     },
     {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\DJuMob6r.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Extensions.DependencyInjection.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.DependencyInjection.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.DependencyInjection.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\Do+dGogN.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Extensions.Primitives.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Primitives.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Primitives.dll"
+    },
+    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\dvzhqft4.gz",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -4690,23 +4877,6 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Threading.Thread.dll"
-    },
-    {
-      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\Dyc3FAz1.gz",
-      "SourceId": "Client",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "_framework/Microsoft.Extensions.DependencyInjection.Abstractions.dll.gz",
-      "AssetKind": "Build",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "CopyToOutputDirectory": "PreserveNewest",
-      "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.DependencyInjection.Abstractions.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\dyS810J2.gz",
@@ -4879,24 +5049,7 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.WebAssembly.Authentication.dll"
     },
     {
-      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\fcRkwoi3.gz",
-      "SourceId": "Client",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "_framework/Microsoft.Extensions.Logging.Abstractions.dll.gz",
-      "AssetKind": "Build",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.Abstractions.dll",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "CopyToOutputDirectory": "PreserveNewest",
-      "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.Abstractions.dll"
-    },
-    {
-      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\FNcwJAxU.gz",
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\feYE0XbN.gz",
       "SourceId": "Client",
       "SourceType": "Computed",
       "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
@@ -5321,6 +5474,23 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.VisualBasic.dll"
     },
     {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\k9lzj38n.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Extensions.ObjectPool.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.ObjectPool.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.ObjectPool.dll"
+    },
+    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\kb5BTnC5.gz",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -5423,6 +5593,23 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Xml.XPath.XDocument.dll"
     },
     {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\KvbJjLb+.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Http.Features.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.Features.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.Features.dll"
+    },
+    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\Ld1Q2XAJ.gz",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -5523,6 +5710,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Private.Xml.Linq.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\lYpXegWI.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Http.Abstractions.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.Abstractions.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.Abstractions.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\M2ZUctt2.gz",
@@ -5644,6 +5848,23 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Security.Principal.Windows.dll"
     },
     {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\NUxkUJ36.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Http.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Http.dll"
+    },
+    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\nwhE4rCK.gz",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -5761,23 +5982,6 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\dotnet.6.0.0.v8dqvv5say.js"
-    },
-    {
-      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\OSAqjZve.gz",
-      "SourceId": "Client",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "_framework/Microsoft.Extensions.DependencyInjection.dll.gz",
-      "AssetKind": "Build",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.DependencyInjection.dll",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "CopyToOutputDirectory": "PreserveNewest",
-      "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.DependencyInjection.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\OTaNrkli.gz",
@@ -5914,6 +6118,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Configuration.Binder.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\Q1J5RMaR.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Extensions.DependencyInjection.Abstractions.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.DependencyInjection.Abstractions.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\q4ux+ett.gz",
@@ -6307,6 +6528,23 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\dotnet.wasm"
     },
     {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\TZLEidiT.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Net.Http.Headers.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Net.Http.Headers.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Net.Http.Headers.dll"
+    },
+    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\TZO0iLKU.gz",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -6477,6 +6715,23 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Console.dll"
     },
     {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\usE9mtV6.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Extensions.Http.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Http.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Http.dll"
+    },
+    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\vJbRtwH6.gz",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -6611,6 +6866,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.JSInterop.WebAssembly.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\wph3bhNQ.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Extensions.Logging.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\wt+ezBVF.gz",
@@ -6868,23 +7140,6 @@
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Configuration.Json.dll"
     },
     {
-      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\YjTZfmSS.gz",
-      "SourceId": "Client",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "_framework/Microsoft.Extensions.Primitives.dll.gz",
-      "AssetKind": "Build",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Primitives.dll",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "CopyToOutputDirectory": "PreserveNewest",
-      "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Primitives.dll"
-    },
-    {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\yKb3v20z.gz",
       "SourceId": "Client",
       "SourceType": "Computed",
@@ -7036,6 +7291,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Threading.dll"
+    },
+    {
+      "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\build-gz\\ZXWsraEF.gz",
+      "SourceId": "Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.Extensions.Logging.Abstractions.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.Abstractions.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.Abstractions.dll"
     },
     {
       "Identity": "C:\\Users\\Flavius-Alin\\Desktop\\Git repos\\BestMoviesINC\\Client\\obj\\Debug\\net6.0\\scopedcss\\bundle\\Client.styles.css",

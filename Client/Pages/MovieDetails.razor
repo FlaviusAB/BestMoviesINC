@@ -1,8 +1,7 @@
 ﻿@page "/MovieDetails/{Value}"
-@using Newtonsoft.Json
-@using Newtonsoft.Json.Linq
 @using Client.Models
-@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@using Client.Services
+@inject NavigationManager NavigationManager
 
 
 <MudLayout>
@@ -50,9 +49,16 @@
                         </MudText>
                         <MudText Class="pt-2">
                             <span class="pr-5">Casts:</span>
-                            @for (int i = 0; i < people.Count; i++)
+                            @for (int i = 0; i <10; i++)
                             {
-                                cast = people[i].name + ", ";
+                                if (i < 9)
+                                {
+                                    cast = people[i].name + ", ";
+                                }
+                                else
+                                {
+                                    cast += people[i].name;
+                                }
                                 var num = i;
                                 <button>
                             <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
@@ -72,27 +78,29 @@
 
 @code {
     
-    HttpClient client = new ();
+    [Inject] private IMoviesData MoviesData { get; set; }
+    
     [Parameter]
     public string Value { get; set; }
 
-    public string posterPath { get; set; }
-    public string movieTitle { get; set; }
-    public string movieDescription { get; set; }
-    public string runTime { get; set; }
-    public string voteAverage { get; set; }
-    public string releaseDate { set; get; }
-    public List<ProductionCountry> productionCountry;
-    public string countryName { get; set; }
-    public List<Genre> genres;
-    public string genre { get; set; }
-    public List<ProductionCompany> productionCompanyList;
-    public string productionCompanies { get; set; }
-    public List<PeopleEntity> people = new();
-    public string cast { get; set; }
+    private string posterPath { get; set; }
+    private string movieTitle { get; set; }
+    private string movieDescription { get; set; }
+    private string runTime { get; set; }
+    private string voteAverage { get; set; }
+    private string releaseDate { set; get; }
+    private List<ProductionCountry> productionCountry;
+    private string countryName { get; set; }
+    private List<Genre> genres;
+    private string genre { get; set; }
+    private List<ProductionCompany> productionCompanyList;
+    private string productionCompanies { get; set; }
+    private List<PeopleEntity> people = new();
+    [Parameter]public string cast { get; set; }
     
     protected override async Task OnParametersSetAsync()
     {
+        cast = "";
         var id = Value;
         await MovieDetailsApi(id);
         await MovieCastApi(id);
@@ -101,13 +109,9 @@
 
     private async Task  MovieDetailsApi(string id)
     {
+
+        var obj = await MoviesData.GetMovieDetails(id); 
         
-        HttpResponseMessage response = await client.GetAsync("https://api.themoviedb.org/3/movie/"+id+"?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
-        response.EnsureSuccessStatusCode();
-        string responseBody = await response.Content.ReadAsStringAsync();
-        
-        
-        var obj = JsonConvert.DeserializeObject<Movie>(responseBody);
         posterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
         movieTitle = obj.Title;
         movieDescription = obj.Overview;
@@ -117,7 +121,7 @@
         productionCountry = obj.ProductionCountries;
         genres = obj.Genres;
         productionCompanyList = obj.ProductionCompanies;
-        for (int i = 0; i < productionCountry.Count; i++)
+        for (var i = 0; i < productionCountry.Count; i++)
         {
             if (i < productionCountry.Count - 1)
             {
@@ -129,7 +133,7 @@
             }
         }
         
-        for (int i = 0; i < genres.Count; i++)
+        for (var i = 0; i < genres.Count; i++)
         {
             if (i < genres.Count - 1)
             {
@@ -140,7 +144,7 @@
                 genre += genres[i].Name;
             }
         }
-        for (int i = 0; i < productionCompanyList.Count; i++)
+        for (var i = 0; i < productionCompanyList.Count; i++)
         {
             if (i < productionCompanyList.Count - 1)
             {
@@ -155,49 +159,15 @@
 
     private async Task MovieCastApi(string id)
     {
-        HttpResponseMessage response = await client.GetAsync("https://api.themoviedb.org/3/movie/" + id + "/credits?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
-        response.EnsureSuccessStatusCode();
-        string responseBody = await response.Content.ReadAsStringAsync();
         
-        var resultObjects = AllChildren(JObject.Parse(responseBody))
-            .First(c => c.Type == JTokenType.Array && c.Path.Contains("cast"))
-            .Children<JObject>();
-        
-        foreach (JObject result in resultObjects)
-        {
-            var obj = JsonConvert.DeserializeObject<PeopleEntity>(result.ToString());
-            people.Add(obj);
-        }
-
-        for (int i = 0; i < 10; i++)
-        {
-            if (i < 9)
-            {
-                cast += people[i].name + ", ";
-            }
-            else
-            {
-                cast += people[i].name;
-            }
-        }
-        
+        people = await MoviesData.GetMovieCast(id);
         
     }
     
-    public  void NamePage(int id)
+    private  void NamePage(int id)
     {
-        navigationManager.NavigateTo($"Name/{id}");
+        NavigationManager.NavigateTo($"Name/{id}");
     }
-    private static IEnumerable<JToken> AllChildren(JToken json)
-    {
-        foreach (var c in json.Children())
-        {
-            yield return c;
-            foreach (var cc in AllChildren(c))
-            {
-                yield return cc;
-            }
-        }
-    }
+    
     
 }
