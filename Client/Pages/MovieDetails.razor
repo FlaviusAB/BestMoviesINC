@@ -22,15 +22,20 @@
                     </MudCardHeader>
                     <MudCardContent>
                         <div>
-                            <span >
-                                <MudButton Variant="Variant.Filled" Style="@($"color:{Colors.LightGreen.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Small">
-                                    @voteAverage
-                                </MudButton>
-                            </span>
                             <span>
-                                <MudButton Variant="Variant.Filled" Style="@($"color:{Colors.LightGreen.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Small">
-                                    @runTime
-                                </MudButton>
+                                <span class="pr-2" Style="@($"color:{Colors.LightGreen.Accent3};")">
+                                    @voteAverage
+                                </span>
+                                <span Style="@($"color:{Colors.LightGreen.Accent3};")">
+                                    @voteCount
+                                </span>
+                                <span>ratings</span>
+                            </span>
+                        </div>
+                        <div>
+                            <span>Runtime:</span>
+                            <span Style="@($"color:{Colors.LightGreen.Accent3};")">
+                                @runTime
                             </span>
                         </div>
                         <MudText Class="pt-2">
@@ -41,6 +46,24 @@
                         </MudText>
                         <MudText Class="pt-2">
                             <span class="pr-5">Genre:</span><span>@genre</span>
+                        </MudText>
+                        <MudText Class="pt-2">
+                            <span class="pr-5">Directors:</span>
+                            @for (int i = 0; i < crew.Count; i++)
+                            {
+                                if (crew[i].department == "Directing")
+                                {
+                                    directorName = crew[i].name;
+                                }
+                                var num = 1;
+                                <button>
+                                    <a class="abc" onclick="@(() => NamePage(crew[num].id))"> 
+                                        <span class="pr-2"> 
+                                            @directorName
+                                        </span> 
+                                    </a>
+                                </button>
+                            }
                         </MudText>
                         <MudText Class="pt-2">
                             <span class="pr-5">Released:</span><span>@releaseDate</span>
@@ -62,17 +85,20 @@
                                 }
                                 var num = i;
                                 <button>
-                            <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
-                                <span class="pr-2"> 
-                                @cast
-                                </span> 
-                            </a>
-                            </button>
+                                    <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
+                                        <span class="pr-2"> 
+                                            @cast
+                                        </span> 
+                                    </a>
+                                </button>
                             }
                         </MudText>
                     </MudCardContent>
                 </MudCard>
             </MudItem>
+            <p>
+                <b>Known for:</b>
+            </p>
             <div class="container" style="height: 310px">
                 @foreach (var item in movies)
                 {
@@ -110,6 +136,7 @@
     private string movieDescription { get; set; }
     private string runTime { get; set; }
     private string voteAverage { get; set; }
+    private int voteCount { get; set; }
     private string releaseDate { set; get; }
     private List<ProductionCountry> productionCountry;
     private string countryName { get; set; }
@@ -118,17 +145,23 @@
     private List<ProductionCompany> productionCompanyList;
     private string productionCompanies { get; set; }
     private List<PeopleEntity> people = new();
+    private List<PeopleEntity> crew = new();
+    
+
     [Parameter]public string cast { get; set; }
+    [Parameter]public string directorName { get; set; }
     
     protected override async Task OnParametersSetAsync()
     {
         genre = "";
         productionCompanies = "";
         cast = "";
+        directorName = "";
         var id = Value;
         await MovieDetailsApi(id);
         await MovieCastApi(id);
         await Similar(id);
+        await MovieCrewApi(id);
     }
 
     private async Task  MovieDetailsApi(string id)
@@ -141,6 +174,7 @@
         movieDescription = obj.Overview;
         runTime = obj.Runtime + " min";
         voteAverage = obj.VoteAverage + "/10";
+        voteCount = obj.VoteCount;
         releaseDate = obj.ReleaseDate;
         productionCountry = obj.ProductionCountries;
         genres = obj.Genres;
@@ -186,6 +220,11 @@
     private async Task MovieCastApi(string id)
     {
         people = await MoviesData.GetMovieCast(id);
+    }
+    
+    private async Task MovieCrewApi(string id)
+    {
+        crew = await MoviesData.GetMovieCrew(id);
     }
     
     private  void NamePage(int id)
