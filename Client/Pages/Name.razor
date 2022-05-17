@@ -1,6 +1,7 @@
 ﻿@page "/Name/{Value}"
 @using Newtonsoft.Json
 @using Client.Models
+@using Client.Services
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <MudGrid>
@@ -17,7 +18,19 @@
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
+                        <MudText Class="pt-2">
+                            @personBiograpgy
+                        </MudText>
+                        <MudText Class="pt-2">
+                            <span class="pr-5">Born:</span><span >@personDOB</span><span> in </span><span>@personPlaceOfBirth</span>
+                        </MudText>
                         
+                        @* <MudText Class="pt-2"> *@
+                        @*     <span class="pr-5">Released:</span><span>@releaseDate</span> *@
+                        @* </MudText> *@
+                        @* <MudText Class="pt-2"> *@
+                        @*     <span class="pr-5">Production:</span><span>@productionCompanies</span> *@
+                        @* </MudText> *@
                     </MudCardContent>
                 </MudCard>
             </MudItem>
@@ -26,6 +39,7 @@
 </MudLayout>
 
 @code {
+    [Inject] private IMoviesData MoviesData { get; set; }
     
     HttpClient client = new ();
     [Parameter]
@@ -34,6 +48,8 @@
     public string personName { get; set; }
     public string personDOB { get; set; }
     public string personBiograpgy { get; set; }
+    public string personPlaceOfBirth { get; set; }
+    
     
     protected override async Task OnParametersSetAsync()
     {
@@ -44,14 +60,12 @@
 
     private async Task NameApi(string id)
     {
-        HttpResponseMessage response = await client.GetAsync("https://api.themoviedb.org/3/person/" + id + "?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
-        response.EnsureSuccessStatusCode();
-        string responseBody = await response.Content.ReadAsStringAsync();
+        var obj = await MoviesData.GetMovieCastSingle(id);
         
-        var obj = JsonConvert.DeserializeObject<PeopleEntity>(responseBody);
         profilePath = "https://image.tmdb.org/t/p/w200" + obj.profile_path;
         personName = obj.name;
         personDOB = obj.birthday;
         personBiograpgy = obj.biography;
+        personPlaceOfBirth = obj.place_of_birth;
     }
 }
