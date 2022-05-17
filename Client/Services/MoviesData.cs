@@ -15,6 +15,8 @@ public interface IMoviesData
     Task<List<Movie>> GetSimilar(string id);
     Task<PeopleEntity> GetMovieCastSingle(string id);
     Task<List<Movie>> GetMovieCredits(string id);
+
+    Task<List<Movie>> GetSearchMovies(string query);
 }
 
 public class MoviesData : IMoviesData
@@ -136,6 +138,29 @@ public class MoviesData : IMoviesData
 
         var resultObjects = AllChildren(JObject.Parse(responseBody))
             .First(c => c.Type == JTokenType.Array && c.Path.Contains("cast"))
+            .Children<JObject>();
+
+        foreach (var result in resultObjects)
+        {
+            var obj = JsonConvert.DeserializeObject<Movie>(result.ToString());
+            movies.Add(obj);
+        }
+
+        return movies;
+    }
+
+    public async Task<List<Movie>> GetSearchMovies(string query)
+    {
+        
+        var movies = new List<Movie>();
+        var response =
+            await client.GetAsync(
+                "https://api.themoviedb.org/3/search/multi?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US&query="+query+"&page=1&include_adult=false");
+        response.EnsureSuccessStatusCode();
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
             .Children<JObject>();
 
         foreach (var result in resultObjects)
