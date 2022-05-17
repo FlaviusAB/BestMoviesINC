@@ -95,7 +95,7 @@ public class MoviesData : IMoviesData
         
         var response =
             await client.GetAsync(
-                "https://api.themoviedb.org/3/movie/similar/" + id +"/week?api_key=a5ab4805002668ee4999f8bac7a4691d");
+                "https://api.themoviedb.org/3/movie/" + id + "/similar?api_key=a5ab4805002668ee4999f8bac7a4691d");
         response.EnsureSuccessStatusCode();
         var responseBody = await response.Content.ReadAsStringAsync();
 

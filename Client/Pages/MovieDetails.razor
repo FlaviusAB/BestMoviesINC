@@ -72,7 +72,18 @@
                     </MudCardContent>
                 </MudCard>
             </MudItem>
+            <div class="container" style="height: 310px">
+                @foreach (var item in movies)
+                {
+                    var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
 
+                    <MudButton OnClick="@(() => SimilarMovies(@item.Id))">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                            <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                        </MudPaper>
+                    </MudButton>
+                }
+            </div>
         </MudGrid>
     </MudContainer>
 </MudLayout>
@@ -105,6 +116,7 @@
         var id = Value;
         await MovieDetailsApi(id);
         await MovieCastApi(id);
+        await Similar(id);
 
     }
 
@@ -122,6 +134,7 @@
         productionCountry = obj.ProductionCountries;
         genres = obj.Genres;
         productionCompanyList = obj.ProductionCompanies;
+
         for (var i = 0; i < productionCountry.Count; i++)
         {
             if (i < productionCountry.Count - 1)
@@ -133,7 +146,7 @@
                 countryName = productionCountry[i].Name;
             }
         }
-        
+
         for (var i = 0; i < genres.Count; i++)
         {
             if (i < genres.Count - 1)
@@ -145,15 +158,16 @@
                 genre += genres[i].Name;
             }
         }
+        
         for (var i = 0; i < productionCompanyList.Count; i++)
         {
             if (i < productionCompanyList.Count - 1)
             {
-                productionCompanies += productionCompanyList[i].Name.ToString() + ", ";
+                productionCompanies += productionCompanyList[i].Name + ", ";
             }
             else
             {
-                productionCompanies += productionCompanyList[i].Name.ToString();
+                productionCompanies += productionCompanyList[i].Name;
             }
         }
     }
@@ -170,7 +184,16 @@
         NavigationManager.NavigateTo($"Name/{id}");
     }
     
+    private List<Movie> movies;
     
-    
-    
+    void SimilarMovies(int id)
+    {
+        NavigationManager.NavigateTo($"MovieDetails/{id}");
+    }
+
+    private async Task Similar(string id)
+    {
+        movies = new List<Movie>();
+        movies = await MoviesData.GetSimilar(id);
+    }
 }
