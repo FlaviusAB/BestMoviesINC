@@ -17,7 +17,19 @@
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
+                        <MudText Class="pt-2">
+                            @personBiograpgy
+                        </MudText>
+                        <MudText Class="pt-2">
+                            <span class="pr-5">Born:</span><span >@personDOB</span><span> in </span><span>@personPlaceOfBirth</span>
+                        </MudText>
                         
+                        @* <MudText Class="pt-2"> *@
+                        @*     <span class="pr-5">Released:</span><span>@releaseDate</span> *@
+                        @* </MudText> *@
+                        @* <MudText Class="pt-2"> *@
+                        @*     <span class="pr-5">Production:</span><span>@productionCompanies</span> *@
+                        @* </MudText> *@
                     </MudCardContent>
                 </MudCard>
             </MudItem>
@@ -34,6 +46,7 @@
     public string personName { get; set; }
     public string personDOB { get; set; }
     public string personBiograpgy { get; set; }
+    public string personPlaceOfBirth { get; set; }
     
     protected override async Task OnParametersSetAsync()
     {
@@ -53,5 +66,6 @@
         personName = obj.name;
         personDOB = obj.birthday;
         personBiograpgy = obj.biography;
+        personPlaceOfBirth = obj.place_of_birth;
     }
 }
