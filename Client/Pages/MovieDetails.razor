@@ -117,7 +117,6 @@
         await MovieDetailsApi(id);
         await MovieCastApi(id);
         await Similar(id);
-
     }
 
     private async Task  MovieDetailsApi(string id)
@@ -174,9 +173,7 @@
 
     private async Task MovieCastApi(string id)
     {
-        
         people = await MoviesData.GetMovieCast(id);
-        
     }
     
     private  void NamePage(int id)
@@ -184,13 +181,15 @@
         NavigationManager.NavigateTo($"Name/{id}");
     }
     
-    private List<Movie> movies;
     
     void SimilarMovies(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");
     }
-
+    
+    
+    private List<Movie> movies;
+    
     private async Task Similar(string id)
     {
         movies = new List<Movie>();
