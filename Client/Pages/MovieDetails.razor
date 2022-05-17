@@ -1,6 +1,7 @@
 ﻿@page "/MovieDetails/{Value}"
 @using Client.Models
 @using Client.Services
+@using System.Threading
 @inject NavigationManager NavigationManager
 
 
@@ -121,6 +122,8 @@
     
     protected override async Task OnParametersSetAsync()
     {
+        genre = "";
+        productionCompanies = "";
         cast = "";
         var id = Value;
         await MovieDetailsApi(id);
