@@ -27,7 +27,7 @@
 @code {
 
     [Inject] private IMoviesData MoviesData { get; set; }
-    private List<Movie> movies;
+    private List<Movie> movies= new();
     
     void MovieDetails(int id)
     {
