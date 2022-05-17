@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+using MudBlazor;
 using Newtonsoft.Json;
 
 namespace Client.Models
@@ -9,7 +11,7 @@ namespace Client.Models
             public bool Adult;
 
             [JsonProperty("backdrop_Path")]
-            public String BackdropPath;
+            public string BackdropPath;
 
             [JsonProperty("belongs_to_collection")]
             public BelongsToCollection MovieCollection;
@@ -39,7 +41,7 @@ namespace Client.Models
             public string Overview;
             
             [JsonProperty("poster_path")]
-            public String PosterPath;
+            public string PosterPath;
             
             [JsonProperty("popularity")]
             public double Popularity;
