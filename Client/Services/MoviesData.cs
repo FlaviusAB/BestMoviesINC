@@ -155,7 +155,7 @@ public class MoviesData : IMoviesData
         var movies = new List<Movie>();
         var response =
             await client.GetAsync(
-                "https://api.themoviedb.org/3/search/multi?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US&query="+query+"&page=1&include_adult=false");
+                "https://api.themoviedb.org/3/search/movie?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US&query="+query+"&page=1&include_adult=false");
         response.EnsureSuccessStatusCode();
         var responseBody = await response.Content.ReadAsStringAsync();
 
