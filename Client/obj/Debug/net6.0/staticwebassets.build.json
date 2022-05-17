@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "/d8T5SrgC9PPIfeRMc3kUHyysMT9oVI9BK5zMRV07Ok=",
+  "Hash": "iHSynJEF5nZDsfZS2BbVc0+uNKiAEMbxG37sMjkr7Eo=",
   "Source": "Client",
   "BasePath": "/",
   "Mode": "Root",
@@ -7631,6 +7631,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\javaScript\\Slider.js"
+    },
+    {
+      "Identity": "D:\\UNIfiles\\SEP6\\testing projects\\SEP6_Cloud_Movies\\BestMoviesINC\\Client\\wwwroot\\no-image-icon-6.png",
+      "SourceId": "Client",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\UNIfiles\\SEP6\\testing projects\\SEP6_Cloud_Movies\\BestMoviesINC\\Client\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "no-image-icon-6.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\no-image-icon-6.png"
     }
   ]
 }
