@@ -9,6 +9,7 @@ public interface IMoviesData
     Task<List<Movie>> GetTrending();
     Task<Movie> GetMovieDetails(string id);
     Task<List<PeopleEntity>> GetMovieCast(string id);
+    Task<PeopleEntity> GetMovieCastSingle(string id);
 }
 
 public class MoviesData : IMoviesData
@@ -65,7 +66,6 @@ public class MoviesData : IMoviesData
         }
 
         return cast;
-
     }
 
 
@@ -78,7 +78,14 @@ public class MoviesData : IMoviesData
             {
                 yield return cc;
             }
-
         }
+    }
+    public async Task<PeopleEntity> GetMovieCastSingle(string id)
+    {
+        HttpResponseMessage response = await client.GetAsync("https://api.themoviedb.org/3/person/" + id + "?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        var obj = JsonConvert.DeserializeObject<PeopleEntity>(responseBody);
+        return obj;
     }
 }
