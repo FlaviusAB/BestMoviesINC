@@ -49,15 +49,15 @@
                         </MudText>
                         <MudText Class="pt-2">
                             <span class="pr-5">Casts:</span>
-                            @for (int i = 0; i <10; i++)
+                            @for (int i = 0; i < people.Count; i++)
                             {
-                                if (i < 9)
+                                if (i < people.Count - 1)
                                 {
                                     cast = people[i].name + ", ";
                                 }
                                 else
                                 {
-                                    cast += people[i].name;
+                                    cast = people[i].name;
                                 }
                                 var num = i;
                                 <button>
@@ -72,6 +72,7 @@
                     </MudCardContent>
                 </MudCard>
             </MudItem>
+
         </MudGrid>
     </MudContainer>
 </MudLayout>
@@ -168,6 +169,8 @@
     {
         NavigationManager.NavigateTo($"Name/{id}");
     }
+    
+    
     
     
 }
