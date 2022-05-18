@@ -5,11 +5,26 @@
 
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-        <p><b>Search list:</b></p>   
+        <p>
+            <b>Search list:</b>
+        </p>
         <div style="height: 310px">
             @foreach (var item in movies)
+            {
+                var poster = "";
+                if (@item.PosterPath == null)
                 {
-                    var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                    poster = "/no-image-icon-6.png";
+                    <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                            <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                            <p class="no-image-text">@item.Title</p>
+                        </MudPaper>
+                    </MudButton>
+                }
+                else
+                {
+                    poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
 
                     <MudButton OnClick="@(() => MovieDetails(@item.Id))">
                         <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
@@ -17,17 +32,21 @@
                         </MudPaper>
                     </MudButton>
                 }
+            }
         </div>
     </MudContainer>
 </MudLayout>
 
 @code {
+
     [Parameter]
     public string Value { get; set; }
-    [Inject] private IMoviesData MoviesData { get; set; }
-    
+
+    [Inject]
+    private IMoviesData MoviesData { get; set; }
+
     private List<Movie> movies = new();
-    
+
     protected override async Task OnParametersSetAsync()
     {
         var query = Value;
@@ -39,9 +58,10 @@
         movies = new List<Movie>();
         movies = await MoviesData.GetSearchMovies(query);
     }
-    
+
     void MovieDetails(int id)
     {
         navigationManager.NavigateTo($"MovieDetails/{id}");
     }
+
 }
