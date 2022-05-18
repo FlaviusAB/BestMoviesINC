@@ -145,7 +145,7 @@ a, .btn-link {
 
 .box {
     float: left;
-    width: 60px;
+    width: 80px;
     height: 25px;
     background-color: #1a1e21;
     text-align: center;
@@ -154,3 +154,5 @@ a, .btn-link {
     border-radius: 3px;
     border-width: 1px;
 }
+
+
