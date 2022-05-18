@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\UNIfiles\\SEP6\\testing projects\\SEP6_Cloud_Movies\\BestMoviesINC\\Client\\Client.csproj": {}
+    "D:\\UNIfiles\\SEP6\\testing projects\\BestMoviesINC\\Client\\Client.csproj": {}
   },
   "projects": {
-    "D:\\UNIfiles\\SEP6\\testing projects\\SEP6_Cloud_Movies\\BestMoviesINC\\Client\\Client.csproj": {
+    "D:\\UNIfiles\\SEP6\\testing projects\\BestMoviesINC\\Client\\Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\UNIfiles\\SEP6\\testing projects\\SEP6_Cloud_Movies\\BestMoviesINC\\Client\\Client.csproj",
+        "projectUniqueName": "D:\\UNIfiles\\SEP6\\testing projects\\BestMoviesINC\\Client\\Client.csproj",
         "projectName": "Client",
-        "projectPath": "D:\\UNIfiles\\SEP6\\testing projects\\SEP6_Cloud_Movies\\BestMoviesINC\\Client\\Client.csproj",
+        "projectPath": "D:\\UNIfiles\\SEP6\\testing projects\\BestMoviesINC\\Client\\Client.csproj",
         "packagesPath": "C:\\Users\\Festis\\.nuget\\packages\\",
-        "outputPath": "D:\\UNIfiles\\SEP6\\testing projects\\SEP6_Cloud_Movies\\BestMoviesINC\\Client\\obj\\",
+        "outputPath": "D:\\UNIfiles\\SEP6\\testing projects\\BestMoviesINC\\Client\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Festis\\AppData\\Roaming\\NuGet\\NuGet.Config"

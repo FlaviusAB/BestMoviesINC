@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QjdevBv3+VOPKPTw5pR3XF/1suv8K/D4KfuRkXKaVcfNcpD3RfDXnxLqUxFvpuXdzEsDqgr5vyIW8MUJlPJPKw==",
+  "dgSpecHash": "5daJqK/ihRQ6Pu54cDapKaQHqTEVhfxRnY+OaS+yhZzTyDsI5zG7Hua/1XtbYzzGEXPJYioUcgGchnfemjSofA==",
   "success": true,
-  "projectFilePath": "D:\\UNIfiles\\SEP6\\testing projects\\SEP6_Cloud_Movies\\BestMoviesINC\\Client\\Client.csproj",
+  "projectFilePath": "D:\\UNIfiles\\SEP6\\testing projects\\BestMoviesINC\\Client\\Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Festis\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.4\\microsoft.aspnetcore.authorization.6.0.4.nupkg.sha512",
     "C:\\Users\\Festis\\.nuget\\packages\\microsoft.aspnetcore.components\\6.0.4\\microsoft.aspnetcore.components.6.0.4.nupkg.sha512",
