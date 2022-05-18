@@ -9,15 +9,15 @@
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <MudGrid>
             <MudItem xs="12" sm="3">
-                @if (posterPath == null)
+                @if (@posterPath == null)
                 {
-                    <MudImage Width="300" Height="218" Src="no-image-icon-6.png" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
+                    <MudImage Width="299" Height="399" Src="/no-image-icon-6.png" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
                 }
                 else
                 {
-                    <MudImage Width="300" Height="218" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
+                    <MudImage Width="299" Height="399" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
                 }
-            </MudItem>
+                </MudItem>
             <MudItem xs="12" sm="9">
                 <MudCard>
                     <MudCardHeader>
@@ -206,9 +206,16 @@
     private async Task  MovieDetailsApi(string id)
     {
 
-        var obj = await MoviesData.GetMovieDetails(id); 
+        var obj = await MoviesData.GetMovieDetails(id);
+        if (obj.PosterPath == null)
+        {
+            posterPath = "/no-image-icon-6.png";
+        }
+        else
+        {
+            posterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath; 
+        }
         
-        posterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
         movieTitle = obj.Title;
         movieDescription = obj.Overview;
         runTime = obj.Runtime + " min";

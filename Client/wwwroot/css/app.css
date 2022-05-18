@@ -107,7 +107,12 @@ a, .btn-link {
 }
 
 .no-image-text {
-    text-align: center;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3b3939;
 }
 .paddingRight2{
     padding-right: 8px;
@@ -141,6 +146,16 @@ a, .btn-link {
     padding-top: 40px;
     font-size: large;
     font-weight: bold;
+    
+}
+#noImagePoster{
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 130px;
+    height: 200px;
+}
 }
 
 .box {
