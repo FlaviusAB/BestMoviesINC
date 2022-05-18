@@ -17,7 +17,7 @@
                 {
                     <MudImage Width="299" Height="399" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
                 }
-                </MudItem>
+            </MudItem>
             <MudItem xs="12" sm="9">
                 <MudCard>
                     <MudCardHeader>
@@ -134,7 +134,9 @@
                     </MudCardContent>
                 </MudCard>
             </MudItem>
-            
+            <p class="knownFor">
+                        <b>Similar movies:</b>
+                    </p>
             <div class="container2" style="height: 310px">
                 @foreach (var item in movies)
                 {
@@ -143,7 +145,7 @@
                     {
                         poster = "/no-image-icon-6.png";
                         <MudButton OnClick="@(() => SimilarMovies(@item.Id))">
-                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                            <MudPaper Elevation="2" Class="pa-4" Style="height: 399px; width: 299px">
                                 <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
                                 <p class="no-image-text">@item.Title</p>
                             </MudPaper>

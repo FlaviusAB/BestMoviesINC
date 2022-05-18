@@ -146,17 +146,7 @@ a, .btn-link {
     padding-top: 40px;
     font-size: large;
     font-weight: bold;
-    
 }
-#noImagePoster{
-    position: absolute;
-    top: 47%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 130px;
-    height: 200px;
-}
-
 
 .box {
     float: left;
@@ -185,3 +175,11 @@ a, .btn-link {
     
 }
 
+#noImagePoster{
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 130px;
+    height: 200px;
+}
