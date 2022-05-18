@@ -21,6 +21,8 @@ public interface IMoviesData
     Task<List<Movie>> GetMovieCredits(string id);
 
     Task<List<Movie>> GetSearchMovies(string query);
+
+    Task<List<PeopleEntity>> GetMovieCrew(string id);
 }
 
 public class MoviesData : IMoviesData
@@ -120,6 +122,25 @@ public class MoviesData : IMoviesData
         }
 
         return cast;
+    }
+    
+    public async Task<List<PeopleEntity>> GetMovieCrew(string id)
+    {
+        var crew = new List<PeopleEntity>();
+        HttpResponseMessage response = await client.GetAsync("https://api.themoviedb.org/3/movie/" + id + "/credits?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("crew"))
+            .Children<JObject>();
+        
+        foreach (JObject result in resultObjects)
+        {
+            var obj = JsonConvert.DeserializeObject<PeopleEntity>(result.ToString());
+            crew.Add(obj);
+        }
+
+        return crew;
     }
     
     public async Task<PeopleEntity> GetMovieCastSingle(string id)
