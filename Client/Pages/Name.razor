@@ -30,16 +30,19 @@
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
-                        <MudText Class="pt-2">
+                        <MudText Class="paddingTop2">
                             @personBiograpgy
                         </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Born:</span><span>@personDOB</span><span> in </span><span>@personPlaceOfBirth</span>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5">Born:</span><span>@personDOB</span><span> in </span><span>@personPlaceOfBirth</span>
                         </MudText>
                     </MudCardContent>
                 </MudCard>
             </MudItem>
         </MudGrid>
+        <p class="knownFor">
+            <b>Known for:</b>
+        </p>
         <div class="container" style="height: 310px">
             @foreach (var item in movies)
             {
