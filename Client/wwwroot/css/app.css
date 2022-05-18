@@ -145,12 +145,23 @@ a, .btn-link {
 
 .box {
     float: left;
-    width: 60px;
-    height: 25px;
-    background-color: #1a1e21;
+    width: fit-content;
+    height: 22px;
+    padding-top: 1px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 4px;
+    background-color: #263238;
     text-align: center;
-    color: #67ff46;
-    border-color: #0dcaf0;
+    color: #76ff03;
     border-radius: 3px;
-    border-width: 1px;
+    box-shadow: #1a1e21;
+    font-family: A;
 }
+
+.something {
+    padding-left: 5px;
+    color: white;
+}
+
+
