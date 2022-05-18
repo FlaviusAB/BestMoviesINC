@@ -9,8 +9,15 @@
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <MudGrid>
             <MudItem xs="12" sm="3">
-                <MudImage Width="300" Height="218" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
-            </MudItem>
+                @if (@posterPath == null)
+                {
+                    <MudImage Width="299" Height="399" Src="/no-image-icon-6.png" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
+                }
+                else
+                {
+                    <MudImage Width="299" Height="399" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
+                }
+                </MudItem>
             <MudItem xs="12" sm="9">
                 <MudCard>
                     <MudCardHeader>
@@ -109,7 +116,7 @@
                     {
                         poster = "/no-image-icon-6.png";
                         <MudButton OnClick="@(() => SimilarMovies(@item.Id))">
-                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                            <MudPaper Elevation="2" Class="pa-4" Style="height: 399px; width: 299px">
                                 <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
                                 <p class="no-image-text">@item.Title</p>
                             </MudPaper>
@@ -172,9 +179,16 @@
     private async Task  MovieDetailsApi(string id)
     {
 
-        var obj = await MoviesData.GetMovieDetails(id); 
+        var obj = await MoviesData.GetMovieDetails(id);
+        if (obj.PosterPath == null)
+        {
+            posterPath = "/no-image-icon-6.png";
+        }
+        else
+        {
+            posterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath; 
+        }
         
-        posterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
         movieTitle = obj.Title;
         movieDescription = obj.Overview;
         runTime = obj.Runtime + " min";
