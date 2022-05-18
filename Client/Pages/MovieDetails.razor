@@ -18,6 +18,15 @@
                     <MudImage Width="299" Height="399" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
                 }
                 </MudItem>
+                @if (posterPath == null)
+                {
+                    <MudImage Width="300" Height="218" Src="no-image-icon-6.png" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
+                }
+                else
+                {
+                    <MudImage Width="300" Height="218" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
+                }
+            </MudItem>
             <MudItem xs="12" sm="9">
                 <MudCard>
                     <MudCardHeader>
@@ -30,13 +39,15 @@
                     <MudCardContent>
                         <div>
                             <span>
-                                <span class="paddingRight2" id="lime">
-                                    @voteAverage
-                                </span>
-                                <span id="lime">
-                                    @voteCount
-                                </span>
-                                <span>ratings</span>
+                                <div class="box">
+                                    <span>
+                                        @voteAverage
+                                    </span>
+                                </div>
+
+                                <div class="box">
+                                    @voteCount <span class="something">ratings</span>
+                                </div>
                             </span>
                         </div>
                         <div>
@@ -84,31 +95,56 @@
                         </MudText>
                         <MudText Class="paddingTop2">
                             <span class="paddingRight5" id="bold">Casts:</span>
-                            @for (int i = 0; i < people.Count; i++)
+                            @if (people.Count >= 10)
                             {
-                                if (i < people.Count - 1)
+                                @for (int i = 0; i < 10; i++)
                                 {
-                                    cast = people[i].name + ", ";
+                                    if (i < 9)
+                                    {
+                                        cast = people[i].name + ", ";
+                                    }
+                                    else
+                                    {
+                                        cast = people[i].name;
+                                    }
+                                    var num = i;
+                                    <button>
+                                        <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
+                                            <span class="paddingRight2"> 
+                                                @cast
+                                            </span> 
+                                        </a>
+                                    </button>
                                 }
-                                else
+                            }
+                            else
+                            {
+                                @for (int i = 0; i < people.Count; i++)
                                 {
-                                    cast = people[i].name;
+                                    if (i < people.Count)
+                                    {
+                                        cast = people[i].name + ", ";
+                                    }
+                                    else
+                                    {
+                                        cast = people[i].name;
+                                    }
+                                    var num = i;
+                                    <button>
+                                        <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
+                                            <span class="paddingRight2"> 
+                                                @cast
+                                            </span> 
+                                        </a>
+                                    </button>
                                 }
-                                var num = i;
-                                <button>
-                                    <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
-                                        <span class="paddingRight2"> 
-                                            @cast
-                                        </span> 
-                                    </a>
-                                </button>
                             }
                         </MudText>
                     </MudCardContent>
                 </MudCard>
             </MudItem>
             
-            <div class="container" style="height: 310px">
+            <div class="container2" style="height: 310px">
                 @foreach (var item in movies)
                 {
                     var poster = "";
