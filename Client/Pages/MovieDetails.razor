@@ -17,15 +17,6 @@
                 {
                     <MudImage Width="299" Height="399" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
                 }
-                </MudItem>
-                @if (posterPath == null)
-                {
-                    <MudImage Width="300" Height="218" Src="no-image-icon-6.png" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
-                }
-                else
-                {
-                    <MudImage Width="300" Height="218" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
-                }
             </MudItem>
             <MudItem xs="12" sm="9">
                 <MudCard>
@@ -143,7 +134,9 @@
                     </MudCardContent>
                 </MudCard>
             </MudItem>
-            
+            <p class="knownFor">
+                        <b>Similar movies:</b>
+                    </p>
             <div class="container2" style="height: 310px">
                 @foreach (var item in movies)
                 {
