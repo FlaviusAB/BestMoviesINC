@@ -9,14 +9,14 @@
             <MudItem xs="12" sm="3">
                
                    
-                    @if (@profilePath == null)
-                    {
-                        <MudImage Width="300" Height="218" Src="/wp-person-placeholder.png" Fluid="true" Alt="@personName" Elevation="25" Class="rounded-lg"/>
-                    }
-                    else
-                    {
-                        <MudImage Width="300" Height="218" Src="@profilePath" Fluid="true" Alt="@personName" Elevation="25" Class="rounded-lg"/>
-                    }
+                @if (@profilePath == null)
+                {
+                    <MudImage Width="300" Height="218" Src="/wp-person-placeholder.png" Fluid="true" Alt="@personName" Elevation="25" Class="rounded-lg"/>
+                }
+                else
+                {
+                    <MudImage Width="300" Height="218" Src="@profilePath" Fluid="true" Alt="@personName" Elevation="25" Class="rounded-lg"/>
+                }
                 
                 
             </MudItem>
@@ -67,6 +67,9 @@
         </div>
     </MudContainer>
 </MudLayout>
+
+
+
 
 @code {
     [Inject] private IMoviesData MoviesData { get; set; }
