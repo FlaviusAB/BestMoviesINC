@@ -32,4 +32,7 @@ public class PeopleEntity
     public double popularity { get; set; }
     [JsonProperty("profile_path")]
     public string profile_path { get; set; }
+
+    [JsonProperty("department")]
+    public string department { get; set; }
 }

@@ -1,66 +1,87 @@
 ﻿@page "/"
-@using Newtonsoft.Json
-@using Newtonsoft.Json.Linq
 @using Client.Models
+@using Client.Services
 @inject HttpClient Http
-@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
-
+@inject NavigationManager navigationManager
 
 
 <PageTitle>Index</PageTitle>
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-        <p><b>Trending Movies</b></p>   
+        <p>
+            <b>Trending Movies</b>
+        </p>
         <div class="container" style="height: 310px">
-            @foreach (var item in movies)
-                {
-                    var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+            @foreach (var item in trendingMovies)
+            {
+                var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
 
-                    <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                            <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                        </MudPaper>
-                    </MudButton>
-                }
+                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                    </MudPaper>
+                </MudButton>
+            }
+        </div>
+        <p>
+            <b>Popular Movies</b>
+        </p>
+        <div class="container" style="height: 310px">
+            @foreach (var item in popularMovies)
+            {
+                var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+
+                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                    </MudPaper>
+                </MudButton>
+            }
+        </div>
+        <p>
+            <b>Now Playing</b>
+        </p>
+        <div class="container" style="height: 310px">
+            @foreach (var item in nowPlaying)
+            {
+                var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+
+                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                    </MudPaper>
+                </MudButton>
+            }
         </div>
     </MudContainer>
 </MudLayout>
 
+
 @code {
-    List<Movie> movies = new();
-    
-    
+
+    [Inject]
+    private IMoviesData MoviesData { get; set; }
+
+    private List<Movie> trendingMovies = new();
+    private List<Movie> popularMovies = new();
+    private List<Movie> nowPlaying = new();
+
+
     void MovieDetails(int id)
     {
         navigationManager.NavigateTo($"MovieDetails/{id}");
     }
-    
-    protected override async Task OnParametersSetAsync()
+
+    protected override async Task OnInitializedAsync()
     {
-        HttpClient client = new HttpClient();
-        HttpResponseMessage response = await client.GetAsync("https://api.themoviedb.org/3/trending/movie/week?api_key=a5ab4805002668ee4999f8bac7a4691d");
-        response.EnsureSuccessStatusCode();
-        string responseBody = await response.Content.ReadAsStringAsync();
+        trendingMovies = new List<Movie>();
+        trendingMovies = await MoviesData.GetTrending();
 
-        var resultObjects = AllChildren(JObject.Parse(responseBody))
-            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
-            .Children<JObject>();
-
-        foreach (JObject result in resultObjects) {
-            var obj = JsonConvert.DeserializeObject<Movie>(result.ToString());
-            movies.Add(obj);
-        }
-        Console.WriteLine(movies.ToString());
-    }
-
-    private static IEnumerable<JToken> AllChildren(JToken json)
-    {
-        foreach (var c in json.Children()) {
-            yield return c;
-            foreach (var cc in AllChildren(c)) {
-                yield return cc;
-            }
-        }
+        popularMovies = new List<Movie>();
+        popularMovies = await MoviesData.GetPopular();
+        
+        nowPlaying = new List<Movie>();
+        nowPlaying = await MoviesData.GetNowPlaying();
     }
 
 }

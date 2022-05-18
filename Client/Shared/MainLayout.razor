@@ -1,5 +1,5 @@
-﻿
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
+@inject NavigationManager navigationManager
 
 <MudThemeProvider/>
 <MudDialogProvider/>
@@ -8,8 +8,9 @@
 <MudLayout>
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudTextField @bind-Value="TextValue" @oninput="ValueChanged" Label="Search" Variant="Variant.Filled" @onkeydown="@Enter"></MudTextField>
+        <MudButton OnClick="@(() => Search(@TextValue))">click me</MudButton>
     </MudAppBar>
-    
     <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu/>
         <MudContainer MaxWidth="MaxWidth.False">
@@ -25,14 +26,18 @@
     </MudMainContent>
 </MudLayout>
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode"/>
+
 @code {
     bool _drawerOpen = true;
-
+    
+    private string TextValue { get; set; }
+    private EventCallback<ChangeEventArgs> ValueChanged { get; set; }
+    
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
-    
+
     private bool _isDarkMode;
     private MudThemeProvider _mudThemeProvider;
     
@@ -44,4 +49,19 @@
             StateHasChanged();
         }
     }
+
+    
+    public void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            navigationManager.NavigateTo($"Search/{TextValue}");
+        }
+    }
+    
+    private void Search(string textValue)
+    {
+        navigationManager.NavigateTo($"Search/{textValue}");
+    }
+
 }
