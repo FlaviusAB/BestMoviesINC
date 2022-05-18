@@ -102,6 +102,10 @@ a, .btn-link {
     overflow-x: auto;
 }
 
-abc:hover {
+.abc:hover {
     background-color: #0a53be;
+}
+
+.no-image-text {
+    text-align: center;
 }
