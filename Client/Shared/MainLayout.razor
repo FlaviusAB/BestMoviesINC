@@ -29,8 +29,9 @@
 
 @code {
     bool _drawerOpen = true;
-    
-    private string TextValue { get; set; }
+
+    private string TextValue { get; set; } = "";
+    string urlText = "";
     private EventCallback<ChangeEventArgs> ValueChanged { get; set; }
     
     void DrawerToggle()
