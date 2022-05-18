@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager navigationManager
+@inject NavigationManager NavigationManager
 
 <MudThemeProvider/>
 <MudDialogProvider/>
@@ -8,8 +8,11 @@
 <MudLayout>
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudTextField @bind-Value="TextValue" @oninput="ValueChanged" Label="Search" Variant="Variant.Filled" @onkeydown="@Enter"></MudTextField>
+        
+        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Filled" @onkeydown="@Enter"></MudTextField>
         <MudButton OnClick="@(() => Search(@TextValue))">click me</MudButton>
+        
+        
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu/>
@@ -31,15 +34,13 @@
     bool _drawerOpen = true;
 
     private string TextValue { get; set; } = "";
-    string urlText = "";
-    private EventCallback<ChangeEventArgs> ValueChanged { get; set; }
-    
+
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
 
-    private bool _isDarkMode;
+    private bool _isDarkMode = true;
     private MudThemeProvider _mudThemeProvider;
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -52,17 +53,19 @@
     }
 
     
-    public void Enter(KeyboardEventArgs e)
+    private void Enter(KeyboardEventArgs e)
     {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        if ((e.Code == "Enter" || e.Code == "NumpadEnter") && !TextValue.Equals(""))
         {
-            navigationManager.NavigateTo($"Search/{TextValue}");
+            NavigationManager.@NavigateTo($"Search/{TextValue}");
+            TextValue = "";
         }
     }
     
     private void Search(string textValue)
     {
-        navigationManager.NavigateTo($"Search/{textValue}");
+        NavigationManager.NavigateTo($"Search/{textValue}");
+        TextValue = "";
     }
 
 }
