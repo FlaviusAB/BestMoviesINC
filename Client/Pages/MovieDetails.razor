@@ -86,11 +86,33 @@
                         </MudText>
                         <MudText Class="paddingTop2">
                             <span class="paddingRight5" id="bold">Casts:</span>
-                            @if (people.Count > 5)
+                            @if (people.Count >= 10)
                             {
                                 @for (int i = 0; i < 10; i++)
                                 {
                                     if (i < 9)
+                                    {
+                                        cast = people[i].name + ", ";
+                                    }
+                                    else
+                                    {
+                                        cast = people[i].name;
+                                    }
+                                    var num = i;
+                                    <button>
+                                        <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
+                                            <span class="paddingRight2"> 
+                                                @cast
+                                            </span> 
+                                        </a>
+                                    </button>
+                                }
+                            }
+                            else
+                            {
+                                @for (int i = 0; i < people.Count; i++)
+                                {
+                                    if (i < people.Count)
                                     {
                                         cast = people[i].name + ", ";
                                     }
@@ -113,7 +135,7 @@
                 </MudCard>
             </MudItem>
             
-            <div class="container" style="height: 310px">
+            <div class="container2" style="height: 310px">
                 @foreach (var item in movies)
                 {
                     var poster = "";
