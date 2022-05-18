@@ -109,8 +109,37 @@ a, .btn-link {
 .no-image-text {
     text-align: center;
 }
-
-#vote{
-    color: #0cf510;
-    margin: 3px;
+.paddingRight2{
+    padding-right: 8px;
 }
+
+.paddingRight5{
+    padding-right: 20px;
+}
+
+.paddingTop2{
+    padding-top: 8px;
+}
+
+.paddingTop5{
+    padding-top: 20px;
+}
+
+.paddingBottom5{
+    padding-bottom: 20px;
+}
+
+#bold{
+    font-weight: bold;
+}
+
+#lime{
+    color: #67ff46;
+}
+
+.knownFor{
+    padding-top: 40px;
+    font-size: large;
+    font-weight: bold;
+}
+

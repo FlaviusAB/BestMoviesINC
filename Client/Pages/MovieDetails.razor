@@ -23,10 +23,10 @@
                     <MudCardContent>
                         <div>
                             <span>
-                                <span class="pr-2" id="vote">
+                                <span class="paddingRight2" id="lime">
                                     @voteAverage
                                 </span>
-                                <span >
+                                <span id="lime">
                                     @voteCount
                                 </span>
                                 <span>ratings</span>
@@ -34,21 +34,21 @@
                         </div>
                         <div>
                             <span>Runtime:</span>
-                            <span >
+                            <span id="lime">
                                 @runTime
                             </span>
                         </div>
-                        <MudText Class="pt-2">
+                        <MudText Class="paddingTop2 paddingBottom5">
                             @movieDescription
                         </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Country:</span><span>@countryName</span>
+                        <MudText>
+                            <span class="paddingRight5" id="bold">Country:</span><span>@countryName</span>
                         </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Genre:</span><span>@genre</span>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5" id="bold">Genre:</span><span>@genre</span>
                         </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Directors:</span>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5" id="bold">Director(s):</span>
                             @for (int i = 0; i < crew.Count; i++)
                             {
                                 if (i < crew.Count - 1)
@@ -62,21 +62,21 @@
                                 var num = i;
                                 <button>
                                     <a class="abc" onclick="@(() => NamePage(crew[num].id))"> 
-                                        <span class="pr-2"> 
+                                        <span class="paddingRight2"> 
                                             @crewName
                                         </span> 
                                     </a>
                                 </button>
                             }
                         </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Released:</span><span>@releaseDate</span>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5" id="bold">Released:</span><span>@releaseDate</span>
                         </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Production:</span><span>@productionCompanies</span>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5" id="bold">Production:</span><span>@productionCompanies</span>
                         </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Casts:</span>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5" id="bold">Casts:</span>
                             @for (int i = 0; i < people.Count; i++)
                             {
                                 if (i < people.Count - 1)
@@ -90,7 +90,7 @@
                                 var num = i;
                                 <button>
                                     <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
-                                        <span class="pr-2"> 
+                                        <span class="paddingRight2"> 
                                             @cast
                                         </span> 
                                     </a>
@@ -232,7 +232,7 @@
         crewList = await MoviesData.GetMovieCrew(id);
         foreach (var cr in crewList)
         {
-            if (cr.department == "Directing" )
+            if (cr.department == "Directing")
             {
                 crew.Add(cr);
             }
