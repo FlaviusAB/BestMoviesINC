@@ -103,9 +103,14 @@ a, .btn-link {
 }
 
 .abc:hover {
-    background-color: #0a53be;
+    color: #0a53be;
 }
 
 .no-image-text {
     text-align: center;
+}
+
+#vote{
+    color: #0cf510;
+    margin: 3px;
 }
