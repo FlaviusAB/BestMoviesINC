@@ -8,17 +8,20 @@
 <PageTitle>Index</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Large">
-    <MudPaper class="index-image">
-          <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField>
-          <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton>
-    </MudPaper>
+    <MudContainer MaxWidth="MaxWidth.Small">
+
+        <MudPaper class="index-image">
+            <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField>
+            <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton>
+        </MudPaper>
+    </MudContainer>
 </MudContainer>
 
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-        <p>
-            <b>Trending Movies</b>
-        </p>
+   <p>
+              <b>Trending Movies</b>
+          </p>
         <div class="container2" style="height: 310px">
             @foreach (var item in _trendingMovies)
             {
@@ -31,6 +34,8 @@
                 </MudButton>
             }
         </div>
+        <div class="paddingTop5"></div>
+
         <p>
             <b>Popular Movies</b>
         </p>
@@ -46,6 +51,8 @@
                 </MudButton>
             }
         </div>
+        <div class="paddingTop5"></div>
+
         <p>
             <b>Now Playing</b>
         </p>
@@ -61,6 +68,7 @@
                 </MudButton>
             }
         </div>
+        <div class="empty-space"></div>
     </MudContainer>
 </MudLayout>
 
@@ -96,15 +104,15 @@
             _nowPlaying = await MoviesData.GetNowPlaying();
         }
     }
-    
-    
+
+
     private void Enter(KeyboardEventArgs e)
     {
         if (e.Code is not ("Enter" or "NumpadEnter")) return;
         NavigationManager.@NavigateTo($"Search/{TextValue}");
         TextValue = "";
     }
-    
+
     private void Search(string textValue)
     {
         NavigationManager.NavigateTo($"Search/{textValue}");
