@@ -139,7 +139,7 @@ a, .btn-link {
 }
 
 #lime{
-    color: #67ff46;
+    color: #76ff03;
 }
 
 .knownFor{
@@ -162,6 +162,15 @@ a, .btn-link {
     border-radius: 3px;
     box-shadow: #1a1e21;
     font-family: A;
+}
+
+.smallBox{
+    float: left;
+    width: fit-content;
+    height: 22px;
+    padding-top: 1px;
+    padding-right: 10px;
+    color: white;
 }
 
 .something {
