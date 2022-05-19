@@ -1,6 +1,4 @@
 ﻿
-using System.Collections.Generic;
-using MudBlazor;
 using Newtonsoft.Json;
 
 namespace Client.Models
@@ -11,67 +9,67 @@ namespace Client.Models
             public bool Adult;
 
             [JsonProperty("backdrop_Path")]
-            public string BackdropPath;
+            public string? BackdropPath;
 
             [JsonProperty("belongs_to_collection")]
-            public BelongsToCollection MovieCollection;
+            public BelongsToCollection? MovieCollection;
 
             [JsonProperty("budget")]
-            public int Budget;
+            public int? Budget;
 
             [JsonProperty("genres")]
-            public List<Genre> Genres;
+            public List<Genre>? Genres;
 
             [JsonProperty("homepage")]
-            public string Homepage;
+            public string? Homepage;
 
             [JsonProperty("id")]
             public int Id;
 
             [JsonProperty("imdb_id")]
-            public string ImdbId;
+            public string? ImdbId;
 
             [JsonProperty("original_language")]
-            public string OriginalLanguage;
+            public string? OriginalLanguage;
 
             [JsonProperty("original_title")]
-            public string OriginalTitle;
+            public string? OriginalTitle;
 
             [JsonProperty("overview")]
-            public string Overview;
+            public string? Overview;
             
             [JsonProperty("poster_path")]
-            public string PosterPath;
+            public string? PosterPath;
             
             [JsonProperty("popularity")]
             public double Popularity;
 
             [JsonProperty("production_companies")]
-            public List<ProductionCompany> ProductionCompanies;
+            public List<ProductionCompany>? ProductionCompanies;
 
             [JsonProperty("production_countries")]
-            public List<ProductionCountry> ProductionCountries;
+            public List<ProductionCountry>? ProductionCountries;
 
             [JsonProperty("release_date")]
-            public string ReleaseDate;
+            public string? ReleaseDate;
 
             [JsonProperty("revenue")]
-            public int Revenue;
+            public int? Revenue;
 
             [JsonProperty("runtime")]
-            public int Runtime;
+            public int? Runtime;
 
             [JsonProperty("spoken_languages")]
-            public List<SpokenLanguage> SpokenLanguages;
+            public List<SpokenLanguage>? SpokenLanguages;
 
             [JsonProperty("status")]
-            public string Status;
+            public string? Status;
 
             [JsonProperty("tagline")]
-            public string Tagline;
+            public string? Tagline;
 
             [JsonProperty("title")]
-            public string Title;
+            public string? Title;
 
             [JsonProperty("video")]
             public bool Video;
@@ -80,7 +78,7 @@ namespace Client.Models
             public double VoteAverage;
 
             [JsonProperty("vote_count")]
-            public int VoteCount;
+            public int? VoteCount;
         }
 }
 

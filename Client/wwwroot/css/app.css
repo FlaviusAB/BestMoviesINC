@@ -134,12 +134,12 @@ a, .btn-link {
     padding-bottom: 20px;
 }
 
-#bold{
-    font-weight: bold;
+.bold{
+    color: white;
 }
 
 #lime{
-    color: #67ff46;
+    color: #76ff03;
 }
 
 .knownFor{
@@ -164,6 +164,15 @@ a, .btn-link {
     font-family: A;
 }
 
+.smallBox{
+    float: left;
+    width: fit-content;
+    height: 22px;
+    padding-right: 10px;
+    padding-left: 10px;
+    color: white;
+}
+
 .something {
     padding-left: 5px;
     color: white;
@@ -182,4 +191,10 @@ a, .btn-link {
     transform: translate(-50%, -50%);
     width: 130px;
     height: 200px;
+}
+
+.search-top {
+    width: 400px;
+    height: 100px;
+    background-color: white;
 }

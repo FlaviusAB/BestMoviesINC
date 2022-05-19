@@ -1,7 +1,7 @@
 ﻿@page "/Search/{Value}"
 @using Client.Models
 @using Client.Services
-@inject NavigationManager navigationManager
+@inject NavigationManager NavigationManager
 
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
@@ -9,7 +9,7 @@
             <b>Search list for: @Value</b>
         </p>
         <div style="height: 310px">
-            @foreach (var item in movies)
+            @foreach (var item in _movies)
             {
                 var poster = "";
                 if (@item.PosterPath == null)
@@ -40,28 +40,28 @@
 @code {
 
     [Parameter]
-    public string Value { get; set; }
+    public string? Value { get; set; }
 
     [Inject]
-    private IMoviesData MoviesData { get; set; }
+    private IMoviesData? MoviesData { get; set; }
 
-    private List<Movie> movies = new();
+    private List<Movie> _movies = new();
 
     protected override async Task OnParametersSetAsync()
     {
         var query = Value;
-        await SearchApi(query);
+        if (query != null) await SearchApi(query);
     }
 
     private async Task SearchApi(string query)
     {
-        movies = new List<Movie>();
-        movies = await MoviesData.GetSearchMovies(query);
+        _movies = new List<Movie>();
+        _movies = await MoviesData?.GetSearchMovies(query)!;
     }
 
     void MovieDetails(int id)
     {
-        navigationManager.NavigateTo($"MovieDetails/{id}");
+        NavigationManager.NavigateTo($"MovieDetails/{id}");
     }
 
 }

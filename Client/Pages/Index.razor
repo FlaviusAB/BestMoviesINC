@@ -19,7 +19,7 @@
             <b>Trending Movies</b>
         </p>
         <div class="container2" style="height: 310px">
-            @foreach (var item in trendingMovies)
+            @foreach (var item in _trendingMovies)
             {
                 var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
 
@@ -34,7 +34,7 @@
             <b>Popular Movies</b>
         </p>
         <div class="container2" style="height: 310px">
-            @foreach (var item in popularMovies)
+            @foreach (var item in _popularMovies)
             {
                 var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
 
@@ -49,7 +49,7 @@
             <b>Now Playing</b>
         </p>
         <div class="container2" style="height: 310px">
-            @foreach (var item in nowPlaying)
+            @foreach (var item in _nowPlaying)
             {
                 var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
 
@@ -67,11 +67,11 @@
 @code {
 
     [Inject]
-    private IMoviesData MoviesData { get; set; }
+    private IMoviesData? MoviesData { get; set; }
 
-    private List<Movie> trendingMovies = new();
-    private List<Movie> popularMovies = new();
-    private List<Movie> nowPlaying = new();
+    private List<Movie> _trendingMovies = new();
+    private List<Movie> _popularMovies = new();
+    private List<Movie> _nowPlaying = new();
 
 
     void MovieDetails(int id)
@@ -81,14 +81,17 @@
 
     protected override async Task OnInitializedAsync()
     {
-        trendingMovies = new List<Movie>();
-        trendingMovies = await MoviesData.GetTrending();
+        _trendingMovies = new List<Movie>();
+        if (MoviesData != null)
+        {
+            _trendingMovies = await MoviesData.GetTrending();
 
-        popularMovies = new List<Movie>();
-        popularMovies = await MoviesData.GetPopular();
-        
-        nowPlaying = new List<Movie>();
-        nowPlaying = await MoviesData.GetNowPlaying();
+            _popularMovies = new List<Movie>();
+            _popularMovies = await MoviesData.GetPopular();
+
+            _nowPlaying = new List<Movie>();
+            _nowPlaying = await MoviesData.GetNowPlaying();
+        }
     }
 
 }
