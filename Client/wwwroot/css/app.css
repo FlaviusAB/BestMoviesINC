@@ -183,3 +183,9 @@ a, .btn-link {
     width: 130px;
     height: 200px;
 }
+
+.search-top {
+    width: 400px;
+    height: 100px;
+    background-color: white;
+}

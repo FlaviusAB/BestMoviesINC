@@ -9,7 +9,7 @@
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         
-        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Filled" @onkeydown="@Enter"></MudTextField>
+        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField>
         <MudButton OnClick="@(() => Search(@TextValue))">click me</MudButton>
         
         
@@ -28,31 +28,21 @@
         
     </MudMainContent>
 </MudLayout>
-<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode"/>
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
 
 @code {
     bool _drawerOpen = true;
 
     private string TextValue { get; set; } = "";
+    private MudTheme _theme = new();
+    private bool _isDarkMode=true;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
 
-    private bool _isDarkMode = true;
-    private MudThemeProvider _mudThemeProvider;
-    
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
-            StateHasChanged();
-        }
-    }
 
-    
     private void Enter(KeyboardEventArgs e)
     {
         if ((e.Code == "Enter" || e.Code == "NumpadEnter") && !TextValue.Equals(""))
@@ -67,5 +57,4 @@
         NavigationManager.NavigateTo($"Search/{textValue}");
         TextValue = "";
     }
-
 }
