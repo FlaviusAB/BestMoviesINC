@@ -7,20 +7,20 @@
 
 <MudLayout>
     <MudAppBar>
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         
-        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Filled" @onkeydown="@Enter"></MudTextField>
-        <MudButton OnClick="@(() => Search(@TextValue))">click me</MudButton>
-        
-        
-    </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen">
-        <NavMenu/>
-        <MudContainer MaxWidth="MaxWidth.False">
-            <LoginDisplay/>
+        <MudButton OnClick="@(goHome)">HOME</MudButton>
+
+        <MudContainer MaxWidth="MaxWidth.Small">
+            
+                
+            <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField>
+            <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton>
+            
+
         </MudContainer>
-    </MudDrawer>
-    
+
+    </MudAppBar>
+
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.False">
             @Body
@@ -31,25 +31,24 @@
 <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
 
 @code {
-    bool _drawerOpen = true;
 
     private string TextValue { get; set; } = "";
 
-    void DrawerToggle()
+    private readonly MudTheme _theme = new();
+    private bool _isDarkMode=true;
+
+
+    private void goHome()
     {
-        _drawerOpen = !_drawerOpen;
+        NavigationManager.NavigateTo("/");
     }
 
-    private MudTheme _theme = new();
-    private bool _isDarkMode=true;
 
     private void Enter(KeyboardEventArgs e)
     {
-        if ((e.Code == "Enter" || e.Code == "NumpadEnter") && !TextValue.Equals(""))
-        {
-            NavigationManager.@NavigateTo($"Search/{TextValue}");
-            TextValue = "";
-        }
+        if (e.Code is not ("Enter" or "NumpadEnter") || TextValue.Equals("")) return;
+        NavigationManager.@NavigateTo($"Search/{TextValue}");
+        TextValue = "";
     }
     
     private void Search(string textValue)

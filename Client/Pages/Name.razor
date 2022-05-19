@@ -48,9 +48,9 @@
                     poster = "/no-image-icon-6.png";
                     <MudButton OnClick="@(() => MovieDetails(@item.Id))">
                         <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                                <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                                <p class="no-image-text">@item.Title</p>
-                            </MudPaper>
+                            <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                            <p class="no-image-text">@item.Title</p>
+                        </MudPaper>
                     </MudButton>
                 }
                 else
@@ -64,6 +64,8 @@
                 }
             }
         </div>
+                <div class="paddingTop5"></div>
+
     </MudContainer>
 </MudLayout>
 

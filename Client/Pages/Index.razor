@@ -2,22 +2,26 @@
 @using Client.Models
 @using Client.Services
 @inject HttpClient Http
-@inject NavigationManager navigationManager
+@inject NavigationManager NavigationManager
 
 
 <PageTitle>Index</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Large">
-    <MudPaper class="index-image">
-        
-    </MudPaper>
+    <MudContainer MaxWidth="MaxWidth.Small">
+
+        <MudPaper class="index-image">
+            <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField>
+            <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton>
+        </MudPaper>
+    </MudContainer>
 </MudContainer>
 
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-        <p>
-            <b>Trending Movies</b>
-        </p>
+   <p>
+              <b>Trending Movies</b>
+          </p>
         <div class="container2" style="height: 310px">
             @foreach (var item in _trendingMovies)
             {
@@ -30,6 +34,8 @@
                 </MudButton>
             }
         </div>
+        <div class="paddingTop5"></div>
+
         <p>
             <b>Popular Movies</b>
         </p>
@@ -45,6 +51,8 @@
                 </MudButton>
             }
         </div>
+        <div class="paddingTop5"></div>
+
         <p>
             <b>Now Playing</b>
         </p>
@@ -60,6 +68,7 @@
                 </MudButton>
             }
         </div>
+        <div class="empty-space"></div>
     </MudContainer>
 </MudLayout>
 
@@ -73,10 +82,12 @@
     private List<Movie> _popularMovies = new();
     private List<Movie> _nowPlaying = new();
 
+    private string? TextValue { get; set; }
+
 
     void MovieDetails(int id)
     {
-        navigationManager.NavigateTo($"MovieDetails/{id}");
+        NavigationManager.NavigateTo($"MovieDetails/{id}");
     }
 
     protected override async Task OnInitializedAsync()
@@ -92,6 +103,20 @@
             _nowPlaying = new List<Movie>();
             _nowPlaying = await MoviesData.GetNowPlaying();
         }
+    }
+
+
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code is not ("Enter" or "NumpadEnter")) return;
+        NavigationManager.@NavigateTo($"Search/{TextValue}");
+        TextValue = "";
+    }
+
+    private void Search(string textValue)
+    {
+        NavigationManager.NavigateTo($"Search/{textValue}");
+        TextValue = "";
     }
 
 }
