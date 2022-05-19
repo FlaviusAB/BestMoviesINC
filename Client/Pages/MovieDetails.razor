@@ -39,12 +39,22 @@
                                     @VoteCount <span class="something">ratings</span>
                                 </div>
                             </span>
+                            <br/>
+                            <br/>
                         </div>
                         <div>
                             <span>Runtime:</span>
                             <span id="lime">
                                 @RunTime
+                            <span>
+                                <div class="smallBox">
+                                    <span>Runtime:</span>
+                                </div>
+                                <div id="lime">
+                                    @runTime
+                                </div>
                             </span>
+
                         </div>
                         <MudText Class="paddingTop2 paddingBottom5">
                             @MovieDescription
@@ -296,6 +306,7 @@
         NavigationManager.NavigateTo($"Name/{id}");
     }
     
+    private int Count { get; set; } = 10;
 
     void SimilarMovies(int id)
     {
