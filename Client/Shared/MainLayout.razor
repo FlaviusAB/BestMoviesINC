@@ -34,15 +34,15 @@
     bool _drawerOpen = true;
 
     private string TextValue { get; set; } = "";
-    private MudTheme _theme = new();
-    private bool _isDarkMode=true;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
     
-    
+    private MudTheme _theme = new();
+    private bool _isDarkMode=true;
+
     private void Enter(KeyboardEventArgs e)
     {
         if ((e.Code == "Enter" || e.Code == "NumpadEnter") && !TextValue.Equals(""))
