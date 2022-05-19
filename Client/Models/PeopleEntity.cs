@@ -5,34 +5,34 @@ namespace Client.Models;
 public class PeopleEntity
 {
     [JsonProperty("adult")]
-    public bool adult { get; set; }
+    public bool Adult { get; set; }
     [JsonProperty("biography")]
-    public string biography { get; set; }
+    public string? Biography { get; set; }
     [JsonProperty("birthday")]
-    public string birthday { get; set; }
+    public string? Birthday { get; set; }
     [JsonProperty("deathday")]
-    public object deathday { get; set; }
+    public object? deathday { get; set; }
     [JsonProperty("gender")]
-    public int gender { get; set; }
+    public int? Gender { get; set; }
     [JsonProperty("homepage")]
-    public object homepage { get; set; }
+    public object? Homepage { get; set; }
     [JsonProperty("id")]
-    public int id { get; set; }
+    public int Id { get; set; }
     [JsonProperty("imdb_id")]
-    public string imdb_id { get; set; }
+    public string? ImdbId { get; set; }
     [JsonProperty("known_for_department")]
-    public string known_for_department { get; set; }
+    public string? KnownForDepartment { get; set; }
     [JsonProperty("name")]
-    public string name { get; set; }
+    public string? Name { get; set; }
     [JsonProperty("character")]
-    public string character { get; set; }
+    public string? Character { get; set; }
     [JsonProperty("place_of_birth")]
-    public string place_of_birth { get; set; }
+    public string? PlaceOfBirth { get; set; }
     [JsonProperty("popularity")]
-    public double popularity { get; set; }
+    public double Popularity { get; set; }
     [JsonProperty("profile_path")]
-    public string profile_path { get; set; }
+    public string? ProfilePath { get; set; }
 
     [JsonProperty("department")]
-    public string department { get; set; }
+    public string? Department { get; set; }
 }

@@ -1,19 +1,19 @@
 ﻿@page "/Name/{Value}"
 @using Client.Models
 @using Client.Services
-@inject NavigationManager navigationManager
+@inject NavigationManager NavigationManager
 
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <MudGrid>
             <MudItem xs="12" sm="3">
-                @if (@profilePath == null)
+                @if (ProfilePath == null)
                 {
-                    <MudImage Width="299" Height="399" Src="/wp-person-placeholder.png" Fluid="true" Alt="@personName" Elevation="25" Class="rounded-lg"/>
+                    <MudImage Width="299" Height="399" Src="/wp-person-placeholder.png" Fluid="true" Alt="@PersonName" Elevation="25" Class="rounded-lg"/>
                 }
                 else
                 {
-                    <MudImage Width="299" Height="399" Src="@profilePath" Fluid="true" Alt="@personName" Elevation="25" Class="rounded-lg"/>
+                    <MudImage Width="299" Height="399" Src="@ProfilePath" Fluid="true" Alt="@PersonName" Elevation="25" Class="rounded-lg"/>
                 }
             </MudItem>
             <MudItem xs="12" sm="9">
@@ -21,16 +21,16 @@
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h5">
-                                @personName
+                                @PersonName
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
                         <MudText Class="paddingTop2">
-                            @personBiograpgy
+                            @PersonBiograpgy
                         </MudText>
                         <MudText Class="paddingTop2">
-                            <span class="paddingRight5">Born:</span><span>@personDOB</span><span>@personPlaceOfBirth</span>
+                            <span class="paddingRight5">Born:</span><span>@PersonDob</span><span>@PersonPlaceOfBirth</span>
                         </MudText>
                     </MudCardContent>
                 </MudCard>
@@ -40,7 +40,7 @@
             <b>Known for:</b>
         </p>
         <div class="container2" style="height: 310px">
-            @foreach (var item in movies)
+            @foreach (var item in _movies)
             {
                 var poster = "";
                 if (@item.PosterPath == null)
@@ -71,52 +71,55 @@
 
 
 @code {
-    [Inject] private IMoviesData MoviesData { get; set; }
+    [Inject] private IMoviesData? MoviesData { get; set; }
     
-    HttpClient client = new ();
+    
     [Parameter]
-    public string Value { get; set; }
+    public string? Value { get; set; }
     
-    public string profilePath { get; set; }
-    public string personName { get; set; }
-    public string personDOB { get; set; }
-    public string personBiograpgy { get; set; }
-    public string personPlaceOfBirth { get; set; }
+    private string? ProfilePath { get; set; }
+    private string? PersonName { get; set; }
+    private string? PersonDob { get; set; }
+    private string? PersonBiograpgy { get; set; }
+    private string? PersonPlaceOfBirth { get; set; }
     
-    private List<Movie> movies = new();
+    private List<Movie> _movies = new();
     
     
     protected override async Task OnParametersSetAsync()
     {
     
         var id = Value;
-        await NameApi(id);
-        await CreditApi(id);
+        if (id != null)
+        {
+            await NameApi(id);
+            await CreditApi(id);
+        }
     }
 
     private async Task NameApi(string id)
     {
-        var obj = await MoviesData.GetMovieCastSingle(id);
-        if(obj.profile_path == null) 
+        var obj = await MoviesData?.GetMovieCastSingle(id)!;
+        if(obj.ProfilePath == null) 
         {
-            profilePath = "/wp-person-placeholder.png";
+            ProfilePath = "/wp-person-placeholder.png";
         }
         else
         {
-            profilePath = "https://image.tmdb.org/t/p/w200" + obj.profile_path;
+            ProfilePath = "https://image.tmdb.org/t/p/w200" + obj.ProfilePath;
         }
         
         
-        personName = obj.name;
-        personDOB = obj.birthday;
-        personBiograpgy = obj.biography;
-        if(obj.place_of_birth==null)
+        PersonName = obj.Name;
+        PersonDob = obj.Birthday;
+        PersonBiograpgy = obj.Biography;
+        if(obj.PlaceOfBirth==null)
         {
-            personPlaceOfBirth = "";
+            PersonPlaceOfBirth = "";
         }
         else
         {
-            personPlaceOfBirth = " in "+obj.place_of_birth;
+            PersonPlaceOfBirth = " in "+obj.PlaceOfBirth;
         }
         
 
@@ -124,12 +127,12 @@
 
     private async Task CreditApi(string id)
     {
-        movies = new List<Movie>();
-        movies = await MoviesData.GetMovieCredits(id);
+        _movies = new List<Movie>();
+        if (MoviesData != null) _movies = await MoviesData.GetMovieCredits(id);
     }
     
     void MovieDetails(int id)
     {
-        navigationManager.NavigateTo($"MovieDetails/{id}");
+        NavigationManager.NavigateTo($"MovieDetails/{id}");
     }
 }
