@@ -56,13 +56,13 @@
                             @MovieDescription
                         </MudText>
                         <MudText>
-                            <span class="paddingRight5" id="bold">Country:</span><span>@CountryName</span>
+                            <span class="paddingRight5 bold" >Country:</span><span>@CountryName</span>
                         </MudText>
                         <MudText Class="paddingTop2">
-                            <span class="paddingRight5" id="bold">Genre:</span><span>@Genre</span>
+                            <span class="paddingRight5 bold">Genre:</span><span>@Genre</span>
                         </MudText>
                         <MudText Class="paddingTop2">
-                            <span class="paddingRight5" id="bold">Director(s):</span>
+                            <span class="paddingRight5 bold">Director(s):</span>
                             @for (int i = 0; i < _crew.Count; i++)
                             {
                                 if (i < _crew.Count - 1)
@@ -84,13 +84,13 @@
                             }
                         </MudText>
                         <MudText Class="paddingTop2">
-                            <span class="paddingRight5" id="bold">Released:</span><span>@ReleaseDate</span>
+                            <span class="paddingRight5 bold">Released:</span><span>@ReleaseDate</span>
                         </MudText>
                         <MudText Class="paddingTop2">
-                            <span class="paddingRight5" id="bold">Production:</span><span>@ProductionCompanies</span>
+                            <span class="paddingRight5 bold">Production:</span><span>@ProductionCompanies</span>
                         </MudText>
                         <MudText Class="paddingTop2">
-                            <span class="paddingRight5" id="bold">Casts:</span>
+                            <span class="paddingRight5 bold">Casts:</span>
                             @if (_people.Count >= 10)
                             {
                                 @for (int i = 0; i < 10; i++)
