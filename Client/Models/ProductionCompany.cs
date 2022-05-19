@@ -8,12 +8,12 @@ namespace Client.Models
         public int Id;
 
         [JsonProperty("logo_path")]
-        public object LogoPath;
+        public object? LogoPath;
 
         [JsonProperty("name")]
-        public string Name;
+        public string? Name;
 
         [JsonProperty("origin_country")]
-        public string OriginCountry;
+        public string? OriginCountry;
     }
 }

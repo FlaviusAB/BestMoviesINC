@@ -5,14 +5,14 @@ namespace Client.Models;
 public class BelongsToCollection
 {
     [JsonProperty("id")]
-    public int Id;
+    public int? Id;
 
     [JsonProperty("name")]
-    public object Name;
+    public string? Name;
 
     [JsonProperty("poster_path")]
-    public string PosterPath;
+    public string? PosterPath;
 
     [JsonProperty("backdrop_path")]
-    public string BackdropPath;
+    public string? BackdropPath;
 }

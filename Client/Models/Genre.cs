@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿
 using Newtonsoft.Json;
 
 namespace Client.Models
@@ -8,10 +7,10 @@ namespace Client.Models
 	{
 		
             [JsonProperty("id")]
-			public int Id;
+			public int? Id;
 
 			[JsonProperty("name")]
-			public string Name;
+			public string? Name;
 		
 	}
 }

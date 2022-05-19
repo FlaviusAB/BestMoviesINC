@@ -9,13 +9,13 @@
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <MudGrid>
             <MudItem xs="12" sm="3">
-                @if (@posterPath == null)
+                @if (@PosterPath == null)
                 {
-                    <MudImage Width="299" Height="399" Src="/no-image-icon-6.png" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
+                    <MudImage Width="299" Height="399" Src="/no-image-icon-6.png" Fluid="true" Alt="@MovieTitle" Elevation="25" Class="rounded-lg"/>
                 }
                 else
                 {
-                    <MudImage Width="299" Height="399" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
+                    <MudImage Width="299" Height="399" Src="@PosterPath" Fluid="true" Alt="@MovieTitle" Elevation="25" Class="rounded-lg"/>
                 }
             </MudItem>
             <MudItem xs="12" sm="9">
@@ -23,7 +23,7 @@
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h5">
-                                @movieTitle
+                                @MovieTitle
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
@@ -32,67 +32,61 @@
                             <span>
                                 <div class="box">
                                     <span>
-                                        @voteAverage
+                                        @VoteAverage
                                     </span>
                                 </div>
+
                                 <div class="box">
-                                    @voteCount <span class="something" >ratings</span>
+                                    @VoteCount <span class="something">ratings</span>
                                 </div>
                             </span>
-                            <br/>
-                            <br/>
                         </div>
                         <div>
-                            <span>
-                                <div class="smallBox">
-                                    <span>Runtime:</span>
-                                </div>
-                                <div id="lime">
-                                    @runTime
-                                </div>
+                            <span>Runtime:</span>
+                            <span id="lime">
+                                @RunTime
                             </span>
-
                         </div>
                         <MudText Class="paddingTop2 paddingBottom5">
-                            @movieDescription
+                            @MovieDescription
                         </MudText>
                         <MudText>
-                            <span class="paddingRight5" id="bold">Country:</span><span>@countryName</span>
+                            <span class="paddingRight5" id="bold">Country:</span><span>@CountryName</span>
                         </MudText>
                         <MudText Class="paddingTop2">
-                            <span class="paddingRight5" id="bold">Genre:</span><span>@genre</span>
+                            <span class="paddingRight5" id="bold">Genre:</span><span>@Genre</span>
                         </MudText>
                         <MudText Class="paddingTop2">
                             <span class="paddingRight5" id="bold">Director(s):</span>
-                            @for (int i = 0; i < crew.Count; i++)
+                            @for (int i = 0; i < _crew.Count; i++)
                             {
-                                if (i < crew.Count - 1)
+                                if (i < _crew.Count - 1)
                                 {
-                                    crewName = crew[i].name + ", ";
+                                    _crewName = _crew[i].Name + ", ";
                                 }
                                 else
                                 {
-                                    crewName = crew[i].name;
+                                    _crewName = _crew[i].Name;
                                 }
                                 var num = i;
                                 <button>
-                                    <a class="abc" onclick="@(() => NamePage(crew[num].id))"> 
+                                    <a class="abc" onclick="@(() => NamePage(_crew[num].Id))"> 
                                         <span class="paddingRight2"> 
-                                            @crewName
+                                            @_crewName
                                         </span> 
                                     </a>
                                 </button>
                             }
                         </MudText>
                         <MudText Class="paddingTop2">
-                            <span class="paddingRight5" id="bold">Released:</span><span>@releaseDate</span>
+                            <span class="paddingRight5" id="bold">Released:</span><span>@ReleaseDate</span>
                         </MudText>
                         <MudText Class="paddingTop2">
-                            <span class="paddingRight5" id="bold">Production:</span><span>@productionCompanies</span>
+                            <span class="paddingRight5" id="bold">Production:</span><span>@ProductionCompanies</span>
                         </MudText>
                         <MudText Class="paddingTop2">
                             <span class="paddingRight5" id="bold">Casts:</span>
-                            @if (people.Count >= 10)
+                            @if (_people.Count >= 10)
                             {
                                 @for (int i = 0; i < 10; i++)
                                 {
