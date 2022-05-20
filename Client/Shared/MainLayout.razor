@@ -6,7 +6,7 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <MudAppBar>
+    <MudAppBar DisableGutters="true">
         
         <MudButton OnClick="@(goHome)">HOME</MudButton>
 
@@ -30,6 +30,21 @@
 </MudLayout>
 <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
 
+<div class="footer-basic">
+         <footer>
+             <div class="social">
+                 <a href="https://github.com/FlaviusAB" target="_blank"><MudAvatar title="Flavius" Image="/github_icon.png"/></a>
+                 <a href="https://github.com/prOcenTas" target="_blank"><MudAvatar title="Faustas" Image="/github_icon.png"/></a>
+                 <a href="https://github.com/Avender" target="_blank"><MudAvatar title="Mihai" Image="/github_icon.png"/></a>
+             </div>
+             <ul class="list-inline">
+                 <li class="list-inline-item"><a href="#">Home</a></li>
+                 <li class="list-inline-item"><a href="#">About</a></li>
+                 <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+             </ul>
+             <p class="copyright">Best Movies © 2022</p>
+         </footer>
+ </div>
 @code {
 
     private string TextValue { get; set; } = "";
