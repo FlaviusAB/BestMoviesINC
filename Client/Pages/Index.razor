@@ -1,27 +1,30 @@
 ﻿@page "/"
 @using Client.Models
 @using Client.Services
-@inject HttpClient Http
+
 @inject NavigationManager NavigationManager
 
 
 <PageTitle>Index</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Large">
-    <MudContainer MaxWidth="MaxWidth.Small">
 
-        <MudPaper class="index-image">
-            <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField>
-            <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton>
-        </MudPaper>
-    </MudContainer>
+    <MudPaper class="index-image">
+        <MudContainer MaxWidth="MaxWidth.Medium">
+
+        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
+
+        </MudTextField>
+        @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
+        </MudContainer>
+    </MudPaper>
 </MudContainer>
 
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-   <p>
-              <b>Trending Movies</b>
-          </p>
+        <p>
+            <b>Trending Movies</b>
+        </p>
         <div class="container2" style="height: 310px">
             @foreach (var item in _trendingMovies)
             {

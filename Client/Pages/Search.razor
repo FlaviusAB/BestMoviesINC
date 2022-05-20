@@ -11,7 +11,7 @@
         <div style="height: 310px">
             @foreach (var item in _movies)
             {
-                var poster = "";
+                string poster;
                 if (@item.PosterPath == null)
                 {
                     poster = "/no-image-icon-6.png";
