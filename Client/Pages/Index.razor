@@ -25,7 +25,7 @@
         <p>
             <b>Trending Movies</b>
         </p>
-        <div class="container2" style="height: 310px">
+        <div class="container2" >
             @foreach (var item in _trendingMovies)
             {
                 var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
@@ -42,7 +42,7 @@
         <p>
             <b>Popular Movies</b>
         </p>
-        <div class="container2" style="height: 310px">
+        <div class="container2" >
             @foreach (var item in _popularMovies)
             {
                 var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
@@ -59,7 +59,7 @@
         <p>
             <b>Now Playing</b>
         </p>
-        <div class="container2" style="height: 310px">
+        <div class="container2">
             @foreach (var item in _nowPlaying)
             {
                 var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;

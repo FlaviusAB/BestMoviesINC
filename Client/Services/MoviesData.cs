@@ -16,9 +16,7 @@ public interface IMoviesData
     Task<List<Movie>> GetSimilar(string id);
     Task<PeopleEntity> GetMovieCastSingle(string id);
     Task<List<Movie>> GetMovieCredits(string id);
-
     Task<List<Movie>> GetSearchMovies(string query);
-
     Task<List<PeopleEntity>> GetMovieCrew(string id);
 }
 
