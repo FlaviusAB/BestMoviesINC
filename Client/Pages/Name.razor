@@ -37,7 +37,7 @@
             </MudItem>
         </MudGrid>
         <p class="knownFor">
-            <b>Known for:</b>
+            <b>Known for: Movies</b>
         </p>
         <div class="container2">
             @foreach (var item in _movies)
@@ -64,7 +64,35 @@
                 }
             }
         </div>
-                <div class="paddingTop5"></div>
+        <p>
+            TV shows
+        </p>
+        <div class="container2">
+                    @foreach (var item in _tvs)
+                    {
+                        var poster = "";
+                        if (@item.PosterPath == null)
+                        {
+                            poster = "/no-image-icon-6.png";
+                            <MudButton OnClick="@(() => TvDetails(@item.Id))">
+                                <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                                    <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+                                    <p class="no-image-text">@item.Name</p>
+                                </MudPaper>
+                            </MudButton>
+                        }
+                        else
+                        {
+                            poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                            <MudButton OnClick="@(() => TvDetails(@item.Id))">
+                                <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                                    <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+                                </MudPaper>
+                            </MudButton>
+                        }
+                    }
+                </div>
+        <div class="paddingTop5"></div>
 
     </MudContainer>
 </MudLayout>
@@ -86,8 +114,9 @@
     private string? PersonPlaceOfBirth { get; set; }
     
     private List<Movie> _movies = new();
-    
-    
+    private List<TV> _tvs = new();
+
+
     protected override async Task OnParametersSetAsync()
     {
     
@@ -123,18 +152,24 @@
         {
             PersonPlaceOfBirth = " in "+obj.PlaceOfBirth;
         }
-        
-
     }
 
     private async Task CreditApi(string id)
     {
         _movies = new List<Movie>();
         if (MoviesData != null) _movies = await MoviesData.GetMovieCredits(id);
+        _tvs = new List<TV>();
+        if (MoviesData != null) _tvs = await MoviesData.GetTvCredits(id);
+
     }
     
     void MovieDetails(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");
+    }
+    
+    void TvDetails(int id)
+    {
+        NavigationManager.NavigateTo($"TVDetails/{id}");
     }
 }

@@ -71,6 +71,21 @@
                 </MudButton>
             }
         </div>
+        <p>
+            <b>Trending TV shows</b>
+        </p>
+        <div class="container2">
+            @foreach (var item in _trendingTVs)
+            {
+                var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+
+                <MudButton OnClick="@(() => TvDetails(@item.Id))">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+                    </MudPaper>
+                </MudButton>
+            }
+        </div>
         <div class="empty-space"></div>
     </MudContainer>
 </MudLayout>
@@ -83,6 +98,8 @@
     private List<Movie> _trendingMovies = new();
     private List<Movie> _popularMovies = new();
     private List<Movie> _nowPlaying = new();
+    
+    private List<TV> _trendingTVs = new();
 
     private string? TextValue { get; set; }
 
@@ -90,6 +107,11 @@
     void MovieDetails(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");
+    }
+    
+    void TvDetails(int id)
+    {
+        NavigationManager.NavigateTo($"TVDetails/{id}");
     }
 
     protected override async Task OnInitializedAsync()
@@ -104,6 +126,9 @@
 
             _nowPlaying = new List<Movie>();
             _nowPlaying = await MoviesData.GetNowPlaying();
+
+            _trendingTVs = new List<TV>();
+            _trendingTVs = await MoviesData.GetTrendingTv();
         }
     }
 

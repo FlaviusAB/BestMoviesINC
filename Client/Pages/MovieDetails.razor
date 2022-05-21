@@ -35,7 +35,7 @@
                                     </span>
                                 </div>
                                 <div class="box">
-                                    @VoteCount <span class="something" >ratings</span>
+                                    @VoteCount <span class="something">ratings</span>
                                 </div>
                             </span>
                             <br/>
@@ -56,7 +56,7 @@
                             @MovieDescription
                         </MudText>
                         <MudText>
-                            <span class="paddingRight5 bold" >Country:</span><span>@CountryName</span>
+                            <span class="paddingRight5 bold">Country:</span><span>@CountryName</span>
                         </MudText>
                         <MudText Class="paddingTop2">
                             <span class="paddingRight5 bold">Genre:</span><span>@Genre</span>
@@ -75,10 +75,10 @@
                                 }
                                 var num = i;
                                 <button>
-                                    <a class="abc" onclick="@(() => NamePage(_crew[num].Id))"> 
-                                        <span class="paddingRight2"> 
+                                    <a class="abc" onclick="@(() => NamePage(_crew[num].Id))">
+                                        <span class="paddingRight2">
                                             @_crewName
-                                        </span> 
+                                        </span>
                                     </a>
                                 </button>
                             }
@@ -105,10 +105,10 @@
                                     }
                                     var num = i;
                                     <button>
-                                        <a class="abc" onclick="@(() => NamePage(_people[num].Id))"> 
-                                            <span class="paddingRight2"> 
+                                        <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                            <span class="paddingRight2">
                                                 @Cast
-                                            </span> 
+                                            </span>
                                         </a>
                                     </button>
                                 }
@@ -117,7 +117,7 @@
                             {
                                 @for (int i = 0; i < _people.Count; i++)
                                 {
-                                    if (i < _people.Count)
+                                    if (i < _people.Count - 1)
                                     {
                                         Cast = _people[i].Name + ", ";
                                     }
@@ -127,10 +127,10 @@
                                     }
                                     var num = i;
                                     <button>
-                                        <a class="abc" onclick="@(() => NamePage(_people[num].Id))"> 
-                                            <span class="paddingRight2"> 
+                                        <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                            <span class="paddingRight2">
                                                 @Cast
-                                            </span> 
+                                            </span>
                                         </a>
                                     </button>
                                 }
@@ -140,12 +140,12 @@
                 </MudCard>
             </MudItem>
             <p class="knownFor">
-                        <b>Similar movies:</b>
-                    </p>
+                <b>Similar movies:</b>
+            </p>
             <div class="container2">
                 @foreach (var item in _movies)
                 {
-                    var poster = "";
+                    string poster;
                     if (@item.PosterPath == null)
                     {
                         poster = "/no-image-icon-6.png";
@@ -167,7 +167,7 @@
                     }
                 }
             </div>
-            
+
             <div class="empty-space"></div>
 
         </MudGrid>
@@ -175,9 +175,10 @@
 </MudLayout>
 
 @code {
-    
-    [Inject] private IMoviesData? MoviesData { get; set; }
-    
+
+    [Inject]
+    private IMoviesData? MoviesData { get; set; }
+
     [Parameter]
     public string? Value { get; set; }
 
@@ -196,13 +197,15 @@
     private string? ProductionCompanies { get; set; }
     private List<PeopleEntity> _people = new();
     private List<PeopleEntity> _crewList = new();
-    
 
-    [Parameter]public string? Cast { get; set; }
+
+    [Parameter]
+    public string? Cast { get; set; }
+
     private readonly List<PeopleEntity> _crew = new();
     private string _crewName = "";
     private List<Movie> _movies = new();
-    
+
     protected override async Task OnParametersSetAsync()
     {
         Genre = "";
@@ -218,7 +221,7 @@
         }
     }
 
-    private async Task  MovieDetailsApi(string id)
+    private async Task MovieDetailsApi(string id)
     {
         if (MoviesData != null)
         {
@@ -229,9 +232,9 @@
             }
             else
             {
-                PosterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath; 
+                PosterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
             }
-        
+
             MovieTitle = obj.Title;
             MovieDescription = obj.Overview;
             RunTime = obj.Runtime + " min";
@@ -267,7 +270,7 @@
                 Genre += _genres[i].Name;
             }
         }
-        
+
         for (var i = 0; i < _productionCompanyList!.Count; i++)
         {
             if (i < _productionCompanyList.Count - 1)
@@ -285,7 +288,7 @@
     {
         _people = await MoviesData!.GetMovieCast(id);
     }
-    
+
     private async Task MovieCrewApi(string id)
     {
         _crewList = await MoviesData!.GetMovieCrew(id);
@@ -296,27 +299,24 @@
                 _crew.Add(cr);
             }
         }
-        
-        
     }
-    
-    private  void NamePage(int id)
+
+    private void NamePage(int id)
     {
         NavigationManager.NavigateTo($"Name/{id}");
     }
-    
+
 
     void SimilarMovies(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");
     }
-    
-    
-    
-    
+
+
     private async Task Similar(string id)
     {
         _movies = new List<Movie>();
         _movies = await MoviesData!.GetSimilar(id);
     }
+
 }
