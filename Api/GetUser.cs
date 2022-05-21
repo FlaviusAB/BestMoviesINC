@@ -1,0 +1,85 @@
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using Api.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+namespace Api
+{
+
+    public static class UserFunction
+    {
+        [FunctionName("CreateUser")]  
+        public static async Task<IActionResult> CreateUser(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user")] HttpRequest req, ILogger log)  
+        {  
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
+            var input = JsonConvert.DeserializeObject<User>(requestBody);  
+            try  
+            {  
+                var config = new ConfigurationBuilder().SetBasePath(context.FunctionAppDirectory)
+                    .AddJsonFile("local.settings.json", optional: true).AddEnvironmentVariables().Build();
+                string appsettingvalue = config["ConnectionString"];
+                using (SqlConnection conn = new SqlConnection(appsettingvalue))  
+                {
+                    conn.Open();  
+                    if(!String.IsNullOrEmpty(input.username))  
+                    {  
+                        Console.WriteLine(input.username +"djksvnskjdb");
+                        var query = $"INSERT INTO [login] (username,password,accessType) VALUES('{input.username}', '{input.password}' , '{input.accessType}')";  
+                        SqlCommand command = new SqlCommand(query, conn);  
+                        command.ExecuteNonQuery();  
+                    }  
+                }  
+            }  
+            catch (Exception e)  
+            {  
+                log.LogError(e.ToString());  
+                return new BadRequestResult();  
+            }  
+            return new OkResult();  
+        }
+
+        [FunctionName("GetUserByUsername")]
+        public static async Task<IActionResult> Run(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "{username}")]
+            HttpRequest req, ILogger log, string username)
+        {
+
+            var config = new ConfigurationBuilder().SetBasePath(context.FunctionAppDirectory)
+                .AddJsonFile("local.settings.json", optional: true).AddEnvironmentVariables().Build();
+            string appsettingvalue = config["ConnectionString"];
+           
+            User user = new User();
+            using (SqlConnection conn = new SqlConnection(appsettingvalue))
+            {
+                conn.Open();
+                var query = @"select * from login where username = @username";
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@username", username);
+                var reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    user = new User()
+                    {
+                        username =  reader["username"].ToString(),
+                        password = reader["password"].ToString(),
+                        accessType =  reader["accessType"].ToString(),
+                    };
+                }
+
+
+            }
+            Console.WriteLine(user.username);
+            return new OkObjectResult(user);
+            
+        }
+    }
+    
+}
