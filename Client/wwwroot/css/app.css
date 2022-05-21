@@ -285,7 +285,7 @@ a, .btn-link {
 }
 
 #content {
-    padding: 25% 25% 5%;
+    padding: 15%;
 }
 
 .search-form {
@@ -296,7 +296,7 @@ a, .btn-link {
     width:100%;
 }
 
-input-group-btn {
+.input-group-btn {
     max-width:38px;
 }
 

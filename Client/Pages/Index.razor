@@ -7,21 +7,9 @@
 
 <PageTitle>Index</PageTitle>
 
-@* <MudContainer MaxWidth="MaxWidth.Large"> *@
-@* *@
-@*     <MudPaper class="index-image"> *@
-@*         <MudContainer MaxWidth="MaxWidth.Medium"> *@
-@* *@
-@*         <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary"> *@
-@* *@
-@*         </MudTextField> *@
-@*         $1$ <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> #1# *@
-@*         </MudContainer> *@
-@*     </MudPaper> *@
-@* </MudContainer> *@
  <div class="container">
       <div id="content">
-        <form class='form-inline'>
+        <form class="form-inline">
           <div class="input-group">
             <MudTextField class="orm-control search-form" id="search" T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField>
             <span class="input-group-btn" style="width:39px">
@@ -29,7 +17,6 @@
             </span>
           </div>
         </form>
-          <p class="text-center">Some centered text</p>
       </div>
   </div>
 
