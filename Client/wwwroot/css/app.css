@@ -207,7 +207,7 @@ a, .btn-link {
 
 
 .navMenuGlue {
-    z-index: 99;
+    height: 400px;
 }
 
 .textFieldFix {
