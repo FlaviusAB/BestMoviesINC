@@ -80,7 +80,7 @@ namespace Api
         {
             string conStr = System.Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
             if (string.IsNullOrEmpty(conStr)) // Azure Functions App Service naming convention
-                conStr = System.Environment.GetEnvironmentVariable($"SQLAZURECONNSTR_{name}", EnvironmentVariableTarget.Process);
+                conStr = System.Environment.GetEnvironmentVariable($"{name}", EnvironmentVariableTarget.Process);
             return conStr;
         }
     }
