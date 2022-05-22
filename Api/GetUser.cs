@@ -21,11 +21,9 @@ namespace Api
         {  
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
             var input = JsonConvert.DeserializeObject<User>(requestBody);  
-            try  
-            {  
-                var config = new ConfigurationBuilder().SetBasePath(context.FunctionAppDirectory)
-                    .AddJsonFile("local.settings.json", optional: true).AddEnvironmentVariables().Build();
-                string appsettingvalue = config["ConnectionString"];
+            try
+            {
+                var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
                 using (SqlConnection conn = new SqlConnection(appsettingvalue))  
                 {
                     conn.Open();  
@@ -52,9 +50,7 @@ namespace Api
             HttpRequest req, ILogger log, string username)
         {
 
-            var config = new ConfigurationBuilder().SetBasePath(context.FunctionAppDirectory)
-                .AddJsonFile("local.settings.json", optional: true).AddEnvironmentVariables().Build();
-            string appsettingvalue = config["ConnectionString"];
+            var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
            
             User user = new User();
             using (SqlConnection conn = new SqlConnection(appsettingvalue))
@@ -79,6 +75,13 @@ namespace Api
             Console.WriteLine(user.username);
             return new OkObjectResult(user);
             
+        }
+        public static string GetSqlAzureConnectionString(string name)
+        {
+            string conStr = System.Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
+            if (string.IsNullOrEmpty(conStr)) // Azure Functions App Service naming convention
+                conStr = System.Environment.GetEnvironmentVariable($"SQLAZURECONNSTR_{name}", EnvironmentVariableTarget.Process);
+            return conStr;
         }
     }
     
