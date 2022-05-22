@@ -89,14 +89,6 @@
                         </MudText>
                         
                         <MudText Class="paddingTop2">
-                            <span class="paddingRight5 bold">Number of seasons</span><span>@NumberOfSeasons</span>
-                        </MudText>
-                        
-                        <MudText Class="paddingTop2">
-                            <span class="paddingRight5 bold">Number of Episodes</span><span>@NumberOfEpisodes</span>
-                        </MudText>
-                        
-                        <MudText Class="paddingTop2">
                             <span class="paddingRight5 bold">Status</span><span>@Status</span>
                         </MudText>
                         
@@ -153,34 +145,6 @@
                     </MudCardContent>
                 </MudCard>
             </MudItem>
-            @* <p class="knownFor"> *@
-            @*     <b>Similar movies:</b> *@
-            @* </p> *@
-            @* <div class="container2"> *@
-            @*     @foreach (var item in _movies) *@
-            @*     { *@
-            @*         string poster; *@
-            @*         if (@item.PosterPath == null) *@
-            @*         { *@
-            @*             poster = "/no-image-icon-6.png"; *@
-            @*             <MudButton OnClick="@(() => SimilarMovies(@item.Id))"> *@
-            @*                 <MudPaper Elevation="2" Class="pa-4" Style="height: 399px; width: 299px"> *@
-            @*                     <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/> *@
-            @*                     <p class="no-image-text">@item.Title</p> *@
-            @*                 </MudPaper> *@
-            @*             </MudButton> *@
-            @*         } *@
-            @*         else *@
-            @*         { *@
-            @*             poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath; *@
-            @*             <MudButton OnClick="@(() => SimilarMovies(@item.Id))"> *@
-            @*                 <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px"> *@
-            @*                     <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/> *@
-            @*                 </MudPaper> *@
-            @*             </MudButton> *@
-            @*         } *@
-            @*     } *@
-            @* </div> *@
 
             <div class="empty-space"></div>
 
@@ -327,18 +291,4 @@
     {
         NavigationManager.NavigateTo($"Name/{id}");
     }
-
-
-    // void SimilarTvs(int id)
-    // {
-    //     NavigationManager.NavigateTo($"TVDetails/{id}");
-    // }
-
-
-    // private async Task Similar(string id)
-    // {
-    //     _tvs = new List<TV>();
-    //     _tvs = await MoviesData!.GetSimilar(id);
-    // }
-
 }

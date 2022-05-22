@@ -10,17 +10,23 @@ public interface IMoviesData
     Task<List<Movie>> GetTrending();
     Task<List<Movie>> GetPopular();
     Task<List<Movie>> GetNowPlaying();
+    Task<List<Movie>> GetSimilar(string id);
+    Task<List<Movie>> GetSearchMovies(string query);
+    
+    Task<List<TV>> GetTrendingTv();
+    
     Task<Movie> GetMovieDetails(string id);
+    Task<TV> GetTvDetails(string id);
+    
     Task<List<PeopleEntity>> GetMovieCast(string id);
     Task<List<PeopleEntity>> GetTvCast(string id);
-    Task<List<Movie>> GetSimilar(string id);
+    
     Task<PeopleEntity> GetMovieCastSingle(string id);
+    
     Task<List<Movie>> GetMovieCredits(string id);
     Task<List<TV>> GetTvCredits(string id);
-    Task<List<Movie>> GetSearchMovies(string query);
+    
     Task<List<PeopleEntity>> GetMovieCrew(string id);
-    Task<List<TV>> GetTrendingTv();
-    Task<TV> GetTvDetails(string id);
 
 }
 
@@ -95,6 +101,75 @@ public class MoviesData : IMoviesData
         return movies;
     }
 
+    public async Task<List<Movie>> GetSimilar(string id)
+    {
+        var movies = new List<Movie>();
+        
+        var response =
+            await _client.GetAsync(
+                "https://api.themoviedb.org/3/movie/" + id + "/similar?api_key=a5ab4805002668ee4999f8bac7a4691d");
+        response.EnsureSuccessStatusCode();
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
+            .Children<JObject>();
+
+        foreach (var result in resultObjects)
+        {
+            var obj = JsonConvert.DeserializeObject<Movie>(result.ToString());
+            movies.Add(obj);
+        }
+        return movies;
+    }
+    
+    public async Task<List<Movie>> GetSearchMovies(string query)
+    {
+        
+        var movies = new List<Movie>();
+        var response =
+            await _client.GetAsync(
+                "https://api.themoviedb.org/3/search/movie?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US&query="+query+"&page=1&include_adult=false");
+        response.EnsureSuccessStatusCode();
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
+            .Children<JObject>();
+
+        foreach (var result in resultObjects)
+        {
+            var obj = JsonConvert.DeserializeObject<Movie>(result.ToString());
+            movies.Add(obj);
+        }
+
+        return movies;
+    }
+    
+    
+    public async Task<List<TV>> GetTrendingTv()
+    {
+        var tvs = new List<TV>();
+        var response =
+            await _client.GetAsync(
+                "https://api.themoviedb.org/3/trending/tv/week?api_key=a5ab4805002668ee4999f8bac7a4691d");
+        response.EnsureSuccessStatusCode();
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
+            .Children<JObject>();
+
+        foreach (var result in resultObjects)
+        {
+            var obj = JsonConvert.DeserializeObject<TV>(result.ToString());
+            tvs.Add(obj);
+        }
+
+        return tvs;
+    }
+    
+
     public async Task<Movie> GetMovieDetails(string id)
     {
         HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/movie/"+id+"?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
@@ -103,6 +178,16 @@ public class MoviesData : IMoviesData
         var obj = JsonConvert.DeserializeObject<Movie>(responseBody);
         return obj;
     }
+    
+    public async Task<TV> GetTvDetails(string id)
+    {
+        HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/tv/"+id+"?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        var obj = JsonConvert.DeserializeObject<TV>(responseBody);
+        return obj;
+    }
+    
 
     public async Task<List<PeopleEntity>> GetMovieCast(string id)
     {
@@ -141,25 +226,7 @@ public class MoviesData : IMoviesData
 
         return cast;
     }
-
-    public async Task<List<PeopleEntity>> GetMovieCrew(string id)
-    {
-        var crew = new List<PeopleEntity>();
-        HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/movie/" + id + "/credits?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
-        response.EnsureSuccessStatusCode();
-        string responseBody = await response.Content.ReadAsStringAsync();
-        var resultObjects = AllChildren(JObject.Parse(responseBody))
-            .First(c => c.Type == JTokenType.Array && c.Path.Contains("crew"))
-            .Children<JObject>();
-        
-        foreach (JObject result in resultObjects)
-        {
-            var obj = JsonConvert.DeserializeObject<PeopleEntity>(result.ToString());
-            crew.Add(obj);
-        }
-
-        return crew;
-    }
+    
     
     public async Task<PeopleEntity> GetMovieCastSingle(string id)
     {
@@ -169,6 +236,7 @@ public class MoviesData : IMoviesData
         var obj = JsonConvert.DeserializeObject<PeopleEntity>(responseBody);
         return obj;
     }
+    
 
     public async Task<List<Movie>> GetMovieCredits(string id)
     {
@@ -214,29 +282,28 @@ public class MoviesData : IMoviesData
         return tvs;
     }
 
-    public async Task<List<Movie>> GetSearchMovies(string query)
+    
+    public async Task<List<PeopleEntity>> GetMovieCrew(string id)
     {
-        
-        var movies = new List<Movie>();
-        var response =
-            await _client.GetAsync(
-                "https://api.themoviedb.org/3/search/movie?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US&query="+query+"&page=1&include_adult=false");
+        var crew = new List<PeopleEntity>();
+        HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/movie/" + id + "/credits?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
         response.EnsureSuccessStatusCode();
-        var responseBody = await response.Content.ReadAsStringAsync();
-
+        string responseBody = await response.Content.ReadAsStringAsync();
         var resultObjects = AllChildren(JObject.Parse(responseBody))
-            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("crew"))
             .Children<JObject>();
-
-        foreach (var result in resultObjects)
+        
+        foreach (JObject result in resultObjects)
         {
-            var obj = JsonConvert.DeserializeObject<Movie>(result.ToString());
-            movies.Add(obj);
+            var obj = JsonConvert.DeserializeObject<PeopleEntity>(result.ToString());
+            crew.Add(obj);
         }
 
-        return movies;
+        return crew;
     }
-
+    
+    
+    
     private static IEnumerable<JToken> AllChildren(JToken json)
     {
         foreach (var c in json.Children())
@@ -248,57 +315,5 @@ public class MoviesData : IMoviesData
             }
         }
     }
-
-    public async Task<List<Movie>> GetSimilar(string id)
-    {
-        var movies = new List<Movie>();
-        
-        var response =
-            await _client.GetAsync(
-                "https://api.themoviedb.org/3/movie/" + id + "/similar?api_key=a5ab4805002668ee4999f8bac7a4691d");
-        response.EnsureSuccessStatusCode();
-        var responseBody = await response.Content.ReadAsStringAsync();
-
-        var resultObjects = AllChildren(JObject.Parse(responseBody))
-            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
-            .Children<JObject>();
-
-        foreach (var result in resultObjects)
-        {
-            var obj = JsonConvert.DeserializeObject<Movie>(result.ToString());
-            movies.Add(obj);
-        }
-        return movies;
-    }
     
-    public async Task<List<TV>> GetTrendingTv()
-    {
-        var tvs = new List<TV>();
-        var response =
-            await _client.GetAsync(
-                "https://api.themoviedb.org/3/trending/tv/week?api_key=a5ab4805002668ee4999f8bac7a4691d");
-        response.EnsureSuccessStatusCode();
-        var responseBody = await response.Content.ReadAsStringAsync();
-
-        var resultObjects = AllChildren(JObject.Parse(responseBody))
-            .First(c => c.Type == JTokenType.Array && c.Path.Contains("results"))
-            .Children<JObject>();
-
-        foreach (var result in resultObjects)
-        {
-            var obj = JsonConvert.DeserializeObject<TV>(result.ToString());
-            tvs.Add(obj);
-        }
-
-        return tvs;
-    }
-
-    public async Task<TV> GetTvDetails(string id)
-    {
-        HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/tv/"+id+"?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
-        response.EnsureSuccessStatusCode();
-        string responseBody = await response.Content.ReadAsStringAsync();
-        var obj = JsonConvert.DeserializeObject<TV>(responseBody);
-        return obj;
-    }
 }
