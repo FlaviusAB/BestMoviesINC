@@ -1,39 +1,32 @@
 ﻿@page "/"
 @using Client.Models
 @using Client.Services
-@inject HttpClient Http
+
 @inject NavigationManager NavigationManager
 
 
+<PageTitle>Index</PageTitle>
 
-@* <MudContainer MaxWidth="MaxWidth.Large"> *@
-@*     <MudContainer MaxWidth="MaxWidth.Small"> *@
-@* *@
-@*         <MudPaper class="index-image searchImage"> *@
-@*             <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField> *@
-@*             <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
-@*         </MudPaper> *@
-@*     </MudContainer> *@
-@* </MudContainer> *@
-
-<div class="container">
-    <div id="content">
-        <form class='form-inline'>
-            <div class="input-group">
-                <MudTextField class="orm-control search-form rounded-pill" id="search" T="string" @bind-Value="@TextValue" Immediate="true"  Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField>
-                <MudButton Color="Color.Transparent" Size="Size.Small" Variant="Variant.Filled" class="rounded-pill pull-right btn btn-default search-btn" OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">Search</MudButton>
-            </div>
+ <div class="container">
+      <div id="content">
+        <form class="form-inline">
+          <div class="input-group">
+            <MudTextField class="orm-control search-form" id="search" T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField>
+            <span class="input-group-btn" style="width:39px">
+                <MudButton id="search-this" class="pull-right btn btn-default search-btn" OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton>
+            </span>
+          </div>
         </form>
-        <p class="text-center">Search for your favorite movie</p>
-    </div>
-</div>
+          <p class="text-center">Search your favorite movie</p>
+      </div>
+  </div>
 
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <p>
             <b>Trending Movies</b>
         </p>
-        <div class="container2" style="height: 310px">
+        <div class="container2" >
             @foreach (var item in _trendingMovies)
             {
                 var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
@@ -50,7 +43,7 @@
         <p>
             <b>Popular Movies</b>
         </p>
-        <div class="container2" style="height: 310px">
+        <div class="container2" >
             @foreach (var item in _popularMovies)
             {
                 var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
@@ -67,7 +60,7 @@
         <p>
             <b>Now Playing</b>
         </p>
-        <div class="container2" style="height: 310px">
+        <div class="container2">
             @foreach (var item in _nowPlaying)
             {
                 var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
@@ -75,6 +68,21 @@
                 <MudButton OnClick="@(() => MovieDetails(@item.Id))">
                     <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
                         <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                    </MudPaper>
+                </MudButton>
+            }
+        </div>
+        <p>
+            <b>Trending TV shows</b>
+        </p>
+        <div class="container2">
+            @foreach (var item in _trendingTVs)
+            {
+                var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+
+                <MudButton OnClick="@(() => TvDetails(@item.Id))">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
                     </MudPaper>
                 </MudButton>
             }
@@ -91,6 +99,8 @@
     private List<Movie> _trendingMovies = new();
     private List<Movie> _popularMovies = new();
     private List<Movie> _nowPlaying = new();
+    
+    private List<TV> _trendingTVs = new();
 
     private string? TextValue { get; set; }
 
@@ -98,6 +108,11 @@
     void MovieDetails(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");
+    }
+    
+    void TvDetails(int id)
+    {
+        NavigationManager.NavigateTo($"TVDetails/{id}");
     }
 
     protected override async Task OnInitializedAsync()
@@ -112,6 +127,9 @@
 
             _nowPlaying = new List<Movie>();
             _nowPlaying = await MoviesData.GetNowPlaying();
+
+            _trendingTVs = new List<TV>();
+            _trendingTVs = await MoviesData.GetTrendingTv();
         }
     }
 
