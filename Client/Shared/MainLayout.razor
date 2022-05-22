@@ -5,6 +5,7 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
+
 <MudLayout>
     <MudAppBar Fixed="true">       
 
@@ -17,24 +18,35 @@
         </MudTextField>
         @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
         <MudSpacer/>
-
-        <MudPaper>
-
-            <div class="navMenuGlue">
-                <MudMenu FullWidth="true" ActivationEvent="@MouseEvent.LeftClick" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.TopCenter">
-                    <ActivatorContent>
-                        <MudChip Icon="@Icons.Material.Filled.Mouse" Color="Color.Primary">Mouse over</MudChip>
-                    </ActivatorContent>
-                    <ChildContent>
-                        <MudMenuItem>Profile</MudMenuItem>
-                        <MudMenuItem>Theme</MudMenuItem>
-                        <MudMenuItem>Usage</MudMenuItem>
-                        <MudMenuItem>Sign Out</MudMenuItem>
-                    </ChildContent>
-                </MudMenu>
+        
+        
+            <div class="dropdown">
+              <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">user</MudAvatar>
+              <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+              </div>
             </div>
-
-        </MudPaper>
+        
+        
+        @* <MudPaper> *@
+        @* *@
+        @*     <div class="navMenuGlue"> *@
+        @*         <MudMenu FullWidth="true" ActivationEvent="@MouseEvent.LeftClick" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.TopCenter"> *@
+        @*             <ActivatorContent> *@
+        @*                 <MudChip Icon="@Icons.Material.Filled.Mouse" Color="Color.Primary">Mouse over</MudChip> *@
+        @*             </ActivatorContent> *@
+        @*             <ChildContent> *@
+        @*                 <MudMenuItem>Profile</MudMenuItem> *@
+        @*                 <MudMenuItem>Theme</MudMenuItem> *@
+        @*                 <MudMenuItem>Usage</MudMenuItem> *@
+        @*                 <MudMenuItem>Sign Out</MudMenuItem> *@
+        @*             </ChildContent> *@
+        @*         </MudMenu> *@
+        @*     </div> *@
+        @* *@
+        @* </MudPaper> *@
         
         
     </MudAppBar>
