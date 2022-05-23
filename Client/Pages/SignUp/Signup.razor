@@ -9,23 +9,26 @@
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-                    <MudTextField T="string" Label="Username" @bind-Value="username" Required="true" RequiredError="User name is required!"/>
-                    <MudTextField T="string" Label="Email" @bind-Value="email" Required="true" RequiredError="Email is required!"
-                                  Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"/>
-                    <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @bind-Value="password"
-                                  InputType="InputType.Password"
-                                  Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
-                                  RequiredError="Password is required!"/>
-                    <MudTextField T="string"
-                                  Label="Password" HelperText="Repeat the password" InputType="InputType.Password"
-                                  Validation="@(new Func<string, string>(PasswordMatch))"/>
+                <MudTextField T="string" Label="Username" @bind-Value="username" Required="true" RequiredError="User name is required!"/>
+                <MudTextField T="string" Label="Email" @bind-Value="email" Required="true" RequiredError="Email is required!"
+                              Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"/>
+                <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @bind-Value="password"
+                              InputType="InputType.Password"
+                              Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
+                              RequiredError="Password is required!"/>
+                <MudTextField T="string"
+                              Label="Password" HelperText="Repeat the password" InputType="InputType.Password"
+                              Validation="@(new Func<string, string>(PasswordMatch))"/>
                     
-                    <div class="d-flex align-center justify-space-between mt-6">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" 
-                                   OnClick="@(() => SignUp())">Register</MudButton>
-                    </div>
+                <div class="d-flex align-center justify-space-between mt-6">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" 
+                               OnClick="@(() => SignUp())">Register</MudButton>
+                </div>
             </MudForm>   
         </MudPaper>
+        <MudText Color="@Color.Error" @bind-Value="errorUsernameTaken">
+            @errorUsernameTaken
+        </MudText>
         <MudPaper Class="pa-4 mt-4" Width="350px">
             <MudText> Already have an account? Login now </MudText>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="/Login">Login</MudButton>
@@ -37,16 +40,18 @@
 @code {
     bool success;
     string[] errors = { };
+    string errorUsernameTaken="";
     string password;
     string username;
     string email;
     MudForm form;
     IDbAccess DbAccess = new DbAccess();
 
-    private void SignUp()
+    private async void SignUp()
     {
         User userData = new User(username,password,email,"user");
-        DbAccess.RegisterUser(userData);
+        errorUsernameTaken= await DbAccess.RegisterUser(userData);
+        Console.WriteLine(errorUsernameTaken);
     }
     
 

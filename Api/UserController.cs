@@ -144,6 +144,7 @@ namespace Api
             return new OkObjectResult(exists);
             
         }
+        
         [FunctionName(nameof(GetUserData))]
         public static async Task<IActionResult> GetUserData(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "data")] HttpRequest req,
