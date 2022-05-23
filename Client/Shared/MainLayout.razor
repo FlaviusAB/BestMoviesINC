@@ -5,22 +5,52 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
+
 <MudLayout>
-    <MudAppBar>
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+    <MudAppBar Fixed="true">       
+
         
-        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Filled" @onkeydown="@Enter"></MudTextField>
-        <MudButton OnClick="@(() => Search(@TextValue))">click me</MudButton>
+        <MudButton OnClick="@(GoHome)">HOME</MudButton>
+        <MudSpacer/>
+
+        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
+
+        </MudTextField>
+        @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
+        <MudSpacer/>
+        
+        
+            <div class="dropdown">
+              <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">user</MudAvatar>
+              <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="#">Favorites</a>
+                <a href="/Login">Log out</a>
+              </div>
+            </div>
+     
+        
+        @* <MudPaper> *@
+        @* *@
+        @*     <div class="navMenuGlue"> *@
+        @*         <MudMenu FullWidth="true" ActivationEvent="@MouseEvent.LeftClick" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.TopCenter"> *@
+        @*             <ActivatorContent> *@
+        @*                 <MudChip Icon="@Icons.Material.Filled.Mouse" Color="Color.Primary">Mouse over</MudChip> *@
+        @*             </ActivatorContent> *@
+        @*             <ChildContent> *@
+        @*                 <MudMenuItem>Profile</MudMenuItem> *@
+        @*                 <MudMenuItem>Theme</MudMenuItem> *@
+        @*                 <MudMenuItem>Usage</MudMenuItem> *@
+        @*                 <MudMenuItem>Sign Out</MudMenuItem> *@
+        @*             </ChildContent> *@
+        @*         </MudMenu> *@
+        @*     </div> *@
+        @* *@
+        @* </MudPaper> *@
         
         
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen">
-        <NavMenu/>
-        <MudContainer MaxWidth="MaxWidth.False">
-            <LoginDisplay/>
-        </MudContainer>
-    </MudDrawer>
-    
+
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.False">
             @Body
@@ -30,31 +60,47 @@
 </MudLayout>
 <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
 
+<div class="footer-basic">
+    <footer class="stayDown">
+        <div class="social">
+            <a href="https://github.com/FlaviusAB" target="_blank"><MudAvatar title="Flavius" Image="/github_icon.png"/></a>
+            <a href="https://github.com/prOcenTas" target="_blank"><MudAvatar title="Faustas" Image="/github_icon.png"/></a>
+            <a href="https://github.com/Avender" target="_blank"><MudAvatar title="Mihai" Image="/github_icon.png"/></a>
+        </div>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Home</a></li>
+            <li class="list-inline-item"><a href="/About">About</a></li>
+        </ul>
+        <p class="copyright">Best Movies © 2022</p>
+    </footer>
+</div>
+
+
 @code {
-    bool _drawerOpen = true;
 
     private string TextValue { get; set; } = "";
 
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
-    private MudTheme _theme = new();
+    private readonly MudTheme _theme = new();
     private bool _isDarkMode=true;
 
-    private void Enter(KeyboardEventArgs e)
+
+    private void GoHome()
     {
-        if ((e.Code == "Enter" || e.Code == "NumpadEnter") && !TextValue.Equals(""))
-        {
-            NavigationManager.@NavigateTo($"Search/{TextValue}");
-            TextValue = "";
-        }
+        NavigationManager.NavigateTo("/");
     }
+
+
     
     private void Search(string textValue)
     {
         NavigationManager.NavigateTo($"Search/{textValue}");
+        TextValue = "";
+    }
+    
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code is not ("Enter" or "NumpadEnter") || TextValue.Equals("")) return;
+        Search(TextValue);
         TextValue = "";
     }
 
