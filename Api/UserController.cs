@@ -49,6 +49,8 @@ namespace Api
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/{username}")]
             HttpRequest req, ILogger log, string username)
         {
+            string foundUsername = "";
+            string exists = "";
 
             var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
            
@@ -62,18 +64,24 @@ namespace Api
                 var reader = await command.ExecuteReaderAsync();
                 while (reader.Read())
                 {
-                    user = new User()
-                    {
-                        username =  reader["username"].ToString(),
-                        password = reader["password"].ToString(),
-                        accessType =  reader["accessType"].ToString(),
-                    };
+
+                    foundUsername = reader["username"].ToString();
+
+                }
+
+                if (string.IsNullOrWhiteSpace(foundUsername))
+                {
+                    exists = "false";
+                }
+                else
+                {
+                    exists = "true";
                 }
 
 
             }
-            Console.WriteLine(user.username);
-            return new OkObjectResult(user);
+            Console.WriteLine(username);
+            return new OkObjectResult(exists);
             
         }
         public static string GetSqlAzureConnectionString(string name)
