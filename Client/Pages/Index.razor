@@ -120,9 +120,10 @@
     {
         IDbAccess IdbAccess = new DbAccess();
         
-        User test = new User("test", "1111", "user","dshja@ds.com");
-
-        Console.WriteLine(await IdbAccess.RegisterUser(test));
+        // User test = new User("emailtest", "1111", "user@gmail.com","user");
+        //
+        // Console.WriteLine(await IdbAccess.RegisterUser(test));
+        // Console.WriteLine(test.email);
         
         _trendingMovies = new List<Movie>();
         if (MoviesData != null)

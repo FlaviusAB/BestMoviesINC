@@ -7,6 +7,8 @@ public class User
     public string password { get; set; }
     public string email { get; set; }
     public string accessType { get; set; }
+    
+   
 
     public User(string username, string password, string email, string accessType)
     {
@@ -14,5 +16,6 @@ public class User
         this.password = password;
         this.email = email;
         this.accessType = accessType;
+        this.email = email;
     }
 }
