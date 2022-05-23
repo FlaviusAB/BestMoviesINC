@@ -29,8 +29,9 @@ namespace Api
                     conn.Open();  
                     if(!String.IsNullOrEmpty(input.username))  
                     {  
-                        Console.WriteLine(input.username +"djksvnskjdb");
-                        var query = $"INSERT INTO [login] (username,password,accessType) VALUES('{input.username}', '{input.password}' , '{input.accessType}')";  
+                        Console.WriteLine(input.email +" EMAIL");
+                        Console.WriteLine(input.username +" USERNAME");
+                        var query = $"INSERT INTO [login] (username,password,email,accessType) VALUES('{input.username}', '{input.password}' , '{input.email}' , '{input.accessType}')";  
                         SqlCommand command = new SqlCommand(query, conn);  
                         command.ExecuteNonQuery();  
                     }  
