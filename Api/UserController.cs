@@ -15,6 +15,66 @@ namespace Api
 
     public static class UserFunction
     {
+        [FunctionName(nameof(UserAuthenication))]
+        public static async Task < IActionResult > UserAuthenication(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth")] HttpRequest req, ILogger log) {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            
+            // TODO: Perform custom authentication here; we're just using a simple hard coded check for this example
+            string foundUsername = "";
+            bool authenticated = false;
+            
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
+            var input = JsonConvert.DeserializeObject<UserCredentials>(requestBody); 
+           
+            try
+            {
+                var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+                using (SqlConnection conn = new SqlConnection(appsettingvalue))  
+                {
+                    conn.Open();  
+                    if(!String.IsNullOrEmpty(input.username))  
+                    {  
+                        Console.WriteLine(input.username);
+                        
+                        var query = $"select username from login where username='{input.username}' and password='{input.password}'";  
+                        SqlCommand command = new SqlCommand(query, conn);
+                        
+                        var reader = await command.ExecuteReaderAsync();
+                        while (reader.Read())
+                        {
+
+                            foundUsername = reader["username"].ToString();
+
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(foundUsername))
+                        {
+                            authenticated = true;
+                        }
+                    }  
+                }  
+            }  
+            catch (Exception e)  
+            {  
+                log.LogError(e.ToString());  
+                Console.WriteLine(e.ToString()); 
+            }
+            
+            
+            // TODO: Perform custom authentication here; we're just using a simple hard coded check for this example
+
+            
+            if (!authenticated) {
+                return await Task.FromResult(new UnauthorizedResult()).ConfigureAwait(false);
+            } else {
+                GenerateJWTToken generateJWTToken = new();
+                string token = generateJWTToken.IssuingJWT(input.username);
+                return await Task.FromResult(new OkObjectResult(token)).ConfigureAwait(false);
+            }
+        }
+        
+        
         [FunctionName("CreateUser")]  
         public static async Task<IActionResult> CreateUser(ExecutionContext context,
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "signup")] HttpRequest req, ILogger log)  
@@ -28,10 +88,8 @@ namespace Api
                 {
                     conn.Open();  
                     if(!String.IsNullOrEmpty(input.username))  
-                    {  
-                        Console.WriteLine(input.email +" EMAIL");
-                        Console.WriteLine(input.username +" USERNAME");
-                        var query = $"INSERT INTO [login] (username,password,email,accessType) VALUES('{input.username}', '{input.password}' , '{input.email}' , '{input.accessType}')";  
+                    {
+                        var query = $"INSERT INTO [login] (username,password,accessType) VALUES('{input.username}', '{input.password}' , '{input.accessType}')";  
                         SqlCommand command = new SqlCommand(query, conn);  
                         command.ExecuteNonQuery();  
                     }  
@@ -54,8 +112,7 @@ namespace Api
             string exists = "";
 
             var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
-           
-            User user = new User();
+            
             using (SqlConnection conn = new SqlConnection(appsettingvalue))
             {
                 conn.Open();
@@ -84,6 +141,24 @@ namespace Api
             Console.WriteLine(username);
             return new OkObjectResult(exists);
             
+        }
+        [FunctionName(nameof(GetUserData))]
+        public static async Task<IActionResult> GetUserData(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "data")] HttpRequest req,
+            ILogger log)
+        {
+            // Check if we have authentication info.
+            ValidateJWT auth = new ValidateJWT(req);
+
+            if (!auth.IsValid)
+            {
+                return new UnauthorizedResult(); // No authentication info.
+            }
+
+            string postData = await req.ReadAsStringAsync();
+
+            return new OkObjectResult($"{postData}");
+
         }
         public static string GetSqlAzureConnectionString(string name)
         {
