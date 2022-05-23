@@ -91,26 +91,52 @@
                         </MudText>
                         <MudText Class="paddingTop2">
                             <span class="paddingRight5 bold">Casts:</span>
-                            @if (_people.Count >= 10)
+                            @if (_showMore)
                             {
-                                @for (int i = 0; i < 10; i++)
+                                @if (_people.Count >= 10)
                                 {
-                                    if (i < 9)
+                                    @for (int i = 0; i < 10; i++)
                                     {
-                                        Cast = _people[i].Name + ", ";
+                                        if (i < 9)
+                                        {
+                                            Cast = _people[i].Name + ", ";
+                                        }
+                                        else
+                                        {
+                                            Cast = _people[i].Name;
+                                        }
+                                        var num = i;
+                                        <button>
+                                            <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                                <span class="paddingRight2">
+                                                    @Cast
+                                                </span>
+                                            </a>
+                                        </button>
                                     }
-                                    else
+                                    <button style="color: white" onclick="@ShowMore">Show more...</button>
+                                }
+                                else
+                                {
+                                    @for (int i = 0; i < _people.Count; i++)
                                     {
-                                        Cast = _people[i].Name;
+                                        if (i < _people.Count - 1)
+                                        {
+                                            Cast = _people[i].Name + ", ";
+                                        }
+                                        else
+                                        {
+                                            Cast = _people[i].Name;
+                                        }
+                                        var num = i;
+                                        <button>
+                                            <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                                <span class="paddingRight2">
+                                                    @Cast
+                                                </span>
+                                            </a>
+                                        </button>
                                     }
-                                    var num = i;
-                                    <button>
-                                        <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
-                                            <span class="paddingRight2">
-                                                @Cast
-                                            </span>
-                                        </a>
-                                    </button>
                                 }
                             }
                             else
@@ -134,7 +160,9 @@
                                         </a>
                                     </button>
                                 }
+                                _showMore = true;
                             }
+
                         </MudText>
                     </MudCardContent>
                 </MudCard>
@@ -198,11 +226,13 @@
     private List<PeopleEntity> _people = new();
     private List<PeopleEntity> _crewList = new();
 
+    bool _showMore = true;
+
 
     [Parameter]
     public string? Cast { get; set; }
 
-    private readonly List<PeopleEntity> _crew = new();
+    private List<PeopleEntity> _crew = new();
     private string _crewName = "";
     private List<Movie> _movies = new();
 
@@ -210,6 +240,7 @@
     {
         Genre = "";
         ProductionCompanies = "";
+        _crew = new List<PeopleEntity>();
         Cast = "";
         var id = Value;
         if (id != null)
@@ -317,6 +348,11 @@
     {
         _movies = new List<Movie>();
         _movies = await MoviesData!.GetSimilar(id);
+    }
+
+    private void ShowMore()
+    {
+        _showMore = false;
     }
 
 }

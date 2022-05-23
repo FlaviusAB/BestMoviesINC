@@ -104,7 +104,7 @@
     private List<Tv> _trendingTVs = new();
 
     private string? TextValue { get; set; }
-
+    
 
     void MovieDetails(int id)
     {
@@ -147,5 +147,7 @@
         NavigationManager.NavigateTo($"Search/{textValue}");
         TextValue = "";
     }
+    
+    
 
 }

@@ -17,6 +17,8 @@ public interface IMoviesData
     
     Task<Movie> GetMovieDetails(string id);
     Task<Tv> GetTvDetails(string id);
+    Task<Season> GetSeasonDetails(string id, int num);
+
     
     Task<List<PeopleEntity>> GetMovieCast(string id);
     Task<List<PeopleEntity>> GetTvCast(string id);
@@ -201,6 +203,15 @@ public class MoviesData : IMoviesData
         var obj = JsonConvert.DeserializeObject<Tv>(responseBody);
         return obj;
     }
+    public async Task<Season> GetSeasonDetails(string id, int num)
+    {
+        HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/tv/"+ id +"/season/" + num +"?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        var obj = JsonConvert.DeserializeObject<Season>(responseBody);
+        return obj;
+    }
+
     
 
     public async Task<List<PeopleEntity>> GetMovieCast(string id)
