@@ -49,6 +49,8 @@ namespace Api
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/{username}")]
             HttpRequest req, ILogger log, string username)
         {
+            string foundUsername = "";
+            string exists = "";
 
             var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
            
@@ -56,38 +58,30 @@ namespace Api
             using (SqlConnection conn = new SqlConnection(appsettingvalue))
             {
                 conn.Open();
-                try
+                var query = @"select * from login where username = @username";
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@username", username);
+                var reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
                 {
-                    int nr=0;
-                    var query = @"select count(*) from login where username = @username";
-                    SqlCommand command = new SqlCommand(query, conn);
-                    command.Parameters.AddWithValue("@username", username);
-                    var reader = await command.ExecuteReaderAsync();
-                    
-                    while (reader.Read())
-                    {
-                        nr = (int)reader[""];
-                    }
 
-                    if (nr == 1)
-                    {
-                        return new OkObjectResult(true);
-                    }
-                    else
-                    {
-                        return new OkObjectResult(false);
-                    }
-                    
+                    foundUsername = reader["username"].ToString();
+
                 }
-                catch (Exception e)
+
+                if (string.IsNullOrWhiteSpace(foundUsername))
                 {
-                    
-                    log.LogError(e.ToString());  
-                    return new BadRequestResult();  
+                    exists = "false";
                 }
-                
+                else
+                {
+                    exists = "true";
+                }
+
+
             }
-            
+            Console.WriteLine(username);
+            return new OkObjectResult(exists);
             
         }
         public static string GetSqlAzureConnectionString(string name)
