@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 namespace Api
@@ -14,24 +15,15 @@ namespace Api
 
     public static class UserFunction
     {
-        public static string GetSqlAzureConnectionString(string name)
-        {
-            string conStr = System.Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
-            if (string.IsNullOrEmpty(conStr)) // Azure Functions App Service naming convention
-                conStr = System.Environment.GetEnvironmentVariable($"SQLAZURECONNSTR_{name}", EnvironmentVariableTarget.Process);
-            return conStr;
-        }
-        
         [FunctionName("CreateUser")]  
         public static async Task<IActionResult> CreateUser(ExecutionContext context,
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "signup")] HttpRequest req, ILogger log)  
         {  
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
             var input = JsonConvert.DeserializeObject<User>(requestBody);  
-            try  
-            {  
-                string appsettingvalue = "Server=tcp:sep6movies.database.windows.net,1433;Initial Catalog=movies;Persist Security Info=False;User ID=sep6admin;Password=Sep123456;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
+            try
+            {
+                var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
                 using (SqlConnection conn = new SqlConnection(appsettingvalue))  
                 {
                     conn.Open();  
@@ -57,8 +49,9 @@ namespace Api
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/{username}")]
             HttpRequest req, ILogger log, string username)
         {
-            string appsettingvalue = "Server=tcp:sep6movies.database.windows.net,1433;Initial Catalog=movies;Persist Security Info=False;User ID=sep6admin;Password=Sep123456;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            
+
+            var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+           
             User user = new User();
             using (SqlConnection conn = new SqlConnection(appsettingvalue))
             {
@@ -82,6 +75,13 @@ namespace Api
             Console.WriteLine(user.username);
             return new OkObjectResult(user);
             
+        }
+        public static string GetSqlAzureConnectionString(string name)
+        {
+            string conStr = System.Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
+            if (string.IsNullOrEmpty(conStr)) // Azure Functions App Service naming convention
+                conStr = System.Environment.GetEnvironmentVariable($"{name}", EnvironmentVariableTarget.Process);
+            return conStr;
         }
     }
     
