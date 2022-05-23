@@ -41,15 +41,7 @@
                             <br/>
                             <br/>
                         </div>
-                        <div>
-                            <span>
-                                <div class="smallBox">
-                                    <span>Runtime:</span>
-                                </div>
 
-                            </span>
-
-                        </div>
                         <MudText Class="paddingTop5 paddingBottom5">
                             @TvDescription
                         </MudText>
@@ -106,7 +98,7 @@
                             <span class="paddingRight5 bold">Casts:</span>
                             @if (_showMore)
                             {
-                                @if (_people.Count >= 10)
+                                @if (_people.Count > 10)
                                 {
                                     @for (int i = 0; i < 10; i++)
                                     {
@@ -180,19 +172,18 @@
                 </MudCard>
             </MudItem>
 
-            @* <div class="container2"> *@
-            @*      *@
-            @*     @foreach (var item in _seasons) *@
-            @*     { *@
-            @*         var poster = "https://image.tmdb.org/t/p/w200" + @SeasonPosterPath; *@
-            @* *@
-            @*         // <MudButton OnClick="@(() => SeasonDetails(Value, num))">  *@
-            @*             <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px"> *@
-            @*                 <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/> *@
-            @*             </MudPaper> *@
-            @*         // </MudButton> *@
-            @*     } *@
-            @* </div> *@
+            <div class="container2">
+                @foreach (var item in _seasons)
+                {
+                    var poster = "https://image.tmdb.org/t/p/w200" + @SeasonPosterPath;
+
+                    <MudButton OnClick="@(() => SeasonDetails(Value, @item.SeasonNumber))">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                            <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+                        </MudPaper>
+                    </MudButton>
+                }
+            </div>
 
             <div class="empty-space"></div>
 
@@ -209,7 +200,7 @@
     public string? Value { get; set; }
 
     private string? PosterPath { get; set; }
-    // private string? SeasonPosterPath { get; set; }
+    private string? SeasonPosterPath { get; set; }
     private string? TvTitle { get; set; }
     private string? TvDescription { get; set; }
     private string? VoteAverage { get; set; }
@@ -236,27 +227,28 @@
     [Parameter]
     public string? Cast { get; set; }
 
-    private readonly List<PeopleEntity> _crew = new();
+    private List<PeopleEntity> _crew = new();
     private string _crewName = "";
-    // private List<Tv> _tvs = new();
-    // private readonly List<Season> _seasons = new();
+    private List<Tv> _tvs = new();
+    private List<Season> _seasons = new();
 
     protected override async Task OnParametersSetAsync()
     {
         Genre = "";
         ProductionCompanies = "";
         Cast = "";
+        _crew = new List<PeopleEntity>();
 
-    // var num = 0;
+        // var num = 1;
 
         var id = Value;
         if (id != null)
         {
             await TvDetailsApi(id);
             await TvCastApi(id);
-    // await Similar(id);
+        // await Similar(id);
             await TvCrewApi(id);
-    // await SeasonDetailsApi(id, num);
+            await SeasonDetailsApi(id);
         }
     }
 
@@ -325,29 +317,32 @@
             }
         }
     }
+    
 
-    // private async Task SeasonDetailsApi(string id, int num)
-    // {
-    //     if (MoviesData != null)
-    //     {
-    //         var obj = await MoviesData.GetSeasonDetails(id, num);
-    //
-    //         SeasonPosterPath = obj.PosterPath;
-    //         if (obj.PosterPath == null)
-    //         {
-    //             PosterPath = "/no-image-icon-6.png";
-    //         }
-    //         else
-    //         {
-    //             PosterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
-    //         }
-    //         for (int i = 0; i < NumberOfSeasons; i++)
-    //         {
-    //          num++;
-    //         _seasons.Add(obj);
-    //         }
-    //     }
-    // }
+    private async Task SeasonDetailsApi(string id)
+    {
+        if (MoviesData != null)
+        {
+            var obj = await MoviesData.GetTvDetails(id);
+
+            var num = NumberOfSeasons;
+
+            for (int i = 1; i <= num; i++)
+            {
+                var obj2 = await MoviesData.GetSeasonDetails(id, i);
+                _seasons.Add(obj2);
+            }
+            
+            if (obj.PosterPath == null)
+            {
+                SeasonPosterPath = "/no-image-icon-6.png";
+            }
+            else
+            {
+                SeasonPosterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
+            }
+        }
+    }
 
     private async Task TvCastApi(string id)
     {
@@ -366,16 +361,15 @@
         }
     }
 
-    // private void SeasonDetails(string id, int num)
-    // {
-    //     NavigationManager.NavigateTo($"SeasonDetails/{id}{num}");
-    // }
+    private void SeasonDetails(string id, int num)
+    {
+        NavigationManager.NavigateTo($"SeasonDetails/{id}/season/{num}");
+    }
 
     private void NamePage(int id)
     {
         NavigationManager.NavigateTo($"Name/{id}");
     }
-
 
     private void ShowMore()
     {
