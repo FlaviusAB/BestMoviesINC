@@ -114,7 +114,7 @@
     private string? PersonPlaceOfBirth { get; set; }
     
     private List<Movie> _movies = new();
-    private List<TV> _tvs = new();
+    private List<Tv> _tvs = new();
 
 
     protected override async Task OnParametersSetAsync()
@@ -158,7 +158,7 @@
     {
         _movies = new List<Movie>();
         if (MoviesData != null) _movies = await MoviesData.GetMovieCredits(id);
-        _tvs = new List<TV>();
+        _tvs = new List<Tv>();
         if (MoviesData != null) _tvs = await MoviesData.GetTvCredits(id);
 
     }

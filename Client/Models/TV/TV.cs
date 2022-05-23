@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Client.Models;
 
-public class TV
+public class Tv
 {
     
         [JsonProperty("adult")]

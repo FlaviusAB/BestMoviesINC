@@ -167,11 +167,11 @@
     private int? VoteCount { get; set; }
     private string? ReleaseDate { set; get; }
     private string? LastAirDate { get; set; }
-    private bool? InProduction { get; set; }
+    // private bool? InProduction { get; set; }
     private string? Status { get; set; }
-    private int? NumberOfSeasons { get; set; }
-    private int? NumberOfEpisodes { get; set; }
-    private string? Networks { get; set; }
+    // private int? NumberOfSeasons { get; set; }
+    // private int? NumberOfEpisodes { get; set; }
+    // private string? Networks { get; set; }
     private List<ProductionCountry>? _productionCountry;
     private string? CountryName { get; set; }
     private List<Genre>? _genres;
@@ -187,7 +187,7 @@
 
     private readonly List<PeopleEntity> _crew = new();
     private string _crewName = "";
-    private List<TV> _tvs = new();
+    private List<Tv> _tvs = new();
 
     protected override async Task OnParametersSetAsync()
     {
@@ -200,7 +200,7 @@
             await TvDetailsApi(id);
             await TvCastApi(id);
             // await Similar(id);
-            // await MovieCrewApi(id);
+            await TvCrewApi(id);
         }
     }
 
@@ -228,8 +228,8 @@
             _productionCompanyList = obj.ProductionCompanies;
             LastAirDate = obj.LastAirDate;
             Status = obj.Status;
-            NumberOfEpisodes = obj.NumberOfEpisodes;
-            NumberOfSeasons = obj.NumberOfSeasons;
+            // NumberOfEpisodes = obj.NumberOfEpisodes;
+            // NumberOfSeasons = obj.NumberOfSeasons;
         }
 
         if (_productionCountry != null)
@@ -275,17 +275,17 @@
         _people = await MoviesData!.GetTvCast(id);
     }
 
-    // private async Task MovieCrewApi(string id)
-    // {
-    //     _crewList = await MoviesData!.GetMovieCrew(id);
-    //     foreach (var cr in _crewList)
-    //     {
-    //         if (cr.Department == "Directing")
-    //         {
-    //             _crew.Add(cr);
-    //         }
-    //     }
-    // }
+    private async Task TvCrewApi(string id)
+    {
+        _crewList = await MoviesData!.GetTvCrew(id);
+        foreach (var cr in _crewList)
+        {
+            if (cr.Department == "Writing")
+            {
+                _crew.Add(cr);
+            }
+        }
+    }
 
     private void NamePage(int id)
     {

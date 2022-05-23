@@ -99,7 +99,7 @@
     private List<Movie> _popularMovies = new();
     private List<Movie> _nowPlaying = new();
     
-    private List<TV> _trendingTVs = new();
+    private List<Tv> _trendingTVs = new();
 
     private string? TextValue { get; set; }
 
@@ -127,7 +127,7 @@
             _nowPlaying = new List<Movie>();
             _nowPlaying = await MoviesData.GetNowPlaying();
 
-            _trendingTVs = new List<TV>();
+            _trendingTVs = new List<Tv>();
             _trendingTVs = await MoviesData.GetTrendingTv();
         }
     }
