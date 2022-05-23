@@ -24,7 +24,7 @@
             </MudForm>   
         </MudPaper>
         <MudPaper Class="pa-4 mt-4" Width="350px">
-                    <MudText> Already have an account? Login now </MudText>
+            <MudText> Already have an account? Login now </MudText>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="/Login">Login</MudButton>
         </MudPaper>
     </MudItem>
@@ -36,6 +36,7 @@
     string[] errors = { };
     MudTextField<string> pwField1;
     MudForm form;
+    
 
     private IEnumerable<string> PasswordStrength(string pw)
     {

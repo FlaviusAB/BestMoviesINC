@@ -118,6 +118,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+
+        IDbAccess IdbAccess = new DbAccess();
+        
+        Console.WriteLine("APPPPPPPPPPPPPPPPPIIIIIIIIIIIIIIIIIIIIIII " + IdbAccess.CheckNameByInput("Faustas"));
+        
         _trendingMovies = new List<Movie>();
         if (MoviesData != null)
         {

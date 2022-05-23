@@ -56,24 +56,38 @@ namespace Api
             using (SqlConnection conn = new SqlConnection(appsettingvalue))
             {
                 conn.Open();
-                var query = @"select * from login where username = @username";
-                SqlCommand command = new SqlCommand(query, conn);
-                command.Parameters.AddWithValue("@username", username);
-                var reader = await command.ExecuteReaderAsync();
-                while (reader.Read())
+                try
                 {
-                    user = new User()
+                    int nr=0;
+                    var query = @"select count(*) from login where username = @username";
+                    SqlCommand command = new SqlCommand(query, conn);
+                    command.Parameters.AddWithValue("@username", username);
+                    var reader = await command.ExecuteReaderAsync();
+                    
+                    while (reader.Read())
                     {
-                        username =  reader["username"].ToString(),
-                        password = reader["password"].ToString(),
-                        accessType =  reader["accessType"].ToString(),
-                    };
+                        nr = (int)reader[""];
+                    }
+
+                    if (nr == 1)
+                    {
+                        return new OkObjectResult(true);
+                    }
+                    else
+                    {
+                        return new OkObjectResult(false);
+                    }
+                    
                 }
-
-
+                catch (Exception e)
+                {
+                    
+                    log.LogError(e.ToString());  
+                    return new BadRequestResult();  
+                }
+                
             }
-            Console.WriteLine(user.username);
-            return new OkObjectResult(user);
+            
             
         }
         public static string GetSqlAzureConnectionString(string name)
