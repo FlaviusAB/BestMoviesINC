@@ -1,7 +1,8 @@
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
 using Client.Models;
-using Newtonsoft.Json;
+
+
 
 namespace Client.Services;
 
@@ -38,10 +39,13 @@ public class DbAccess : IDbAccess
         else
         {
             
-            var userToSend = JsonConvert.SerializeObject(user);
-            Console.WriteLine("1"+userToSend);
             
-            var response = await _httpClient.PostAsJsonAsync("http://localhost:7071/api/signup", userToSend);
+            Console.WriteLine("1"+user.username);
+            string message = JsonSerializer.Serialize(user);
+            
+            byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(message);
+            var msg = new ByteArrayContent(messageBytes);
+            var response = await _httpClient.PostAsync("http://localhost:7071/api/signup", msg);
             
             Console.WriteLine("2"+response);
             if (response.IsSuccessStatusCode)
