@@ -5,6 +5,7 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
+
 <MudLayout>
     <MudAppBar Fixed="true">       
 
@@ -17,24 +18,35 @@
         </MudTextField>
         @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
         <MudSpacer/>
-
-        <MudPaper>
-
-            <div class="navMenuGlue">
-                <MudMenu FullWidth="true" ActivationEvent="@MouseEvent.LeftClick" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.TopCenter">
-                    <ActivatorContent>
-                        <MudChip Icon="@Icons.Material.Filled.Mouse" Color="Color.Primary">Mouse over</MudChip>
-                    </ActivatorContent>
-                    <ChildContent>
-                        <MudMenuItem>Profile</MudMenuItem>
-                        <MudMenuItem>Theme</MudMenuItem>
-                        <MudMenuItem>Usage</MudMenuItem>
-                        <MudMenuItem>Sign Out</MudMenuItem>
-                    </ChildContent>
-                </MudMenu>
+        
+        
+            <div class="dropdown">
+              <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">user</MudAvatar>
+              <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="#">Favorites</a>
+                <a href="/Login">Log out</a>
+              </div>
             </div>
-
-        </MudPaper>
+     
+        
+        @* <MudPaper> *@
+        @* *@
+        @*     <div class="navMenuGlue"> *@
+        @*         <MudMenu FullWidth="true" ActivationEvent="@MouseEvent.LeftClick" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.TopCenter"> *@
+        @*             <ActivatorContent> *@
+        @*                 <MudChip Icon="@Icons.Material.Filled.Mouse" Color="Color.Primary">Mouse over</MudChip> *@
+        @*             </ActivatorContent> *@
+        @*             <ChildContent> *@
+        @*                 <MudMenuItem>Profile</MudMenuItem> *@
+        @*                 <MudMenuItem>Theme</MudMenuItem> *@
+        @*                 <MudMenuItem>Usage</MudMenuItem> *@
+        @*                 <MudMenuItem>Sign Out</MudMenuItem> *@
+        @*             </ChildContent> *@
+        @*         </MudMenu> *@
+        @*     </div> *@
+        @* *@
+        @* </MudPaper> *@
         
         
     </MudAppBar>
@@ -57,8 +69,7 @@
         </div>
         <ul class="list-inline">
             <li class="list-inline-item"><a href="#">Home</a></li>
-            <li class="list-inline-item"><a href="#">About</a></li>
-            <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+            <li class="list-inline-item"><a href="/About">About</a></li>
         </ul>
         <p class="copyright">Best Movies © 2022</p>
     </footer>
