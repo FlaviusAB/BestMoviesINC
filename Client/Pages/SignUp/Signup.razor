@@ -46,8 +46,10 @@
     
     private void SignUp()
     {
+
         User userData = new User(username,password,email,"user");
         DbAccess.RegisterUser(userData);
+
     }
     
 

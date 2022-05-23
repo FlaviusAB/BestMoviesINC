@@ -9,7 +9,6 @@ namespace Client.Services;
 
 public interface IDbAccess
 {
-  
     Task<string> RegisterUser(User user);
 }
 
