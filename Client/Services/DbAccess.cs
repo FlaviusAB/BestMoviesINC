@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using System.Text.Json;
+using Client.Exceptions;
 using Client.Models;
 
 
@@ -21,7 +22,7 @@ public class DbAccess : IDbAccess
         var responseMsg = "failed";
         using var client = new HttpClient();
          
-        string content = await client.GetStringAsync("https://bestmoviesfunction.azurewebsites.net/api/user/" + user.username);
+        string content = await client.GetStringAsync("http://localhost:7071/api/user/" + user.username);
         
         if (content.Equals("true"))
         {
@@ -34,10 +35,11 @@ public class DbAccess : IDbAccess
             
             byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(message);
             var msg = new ByteArrayContent(messageBytes);
-            var response = await _httpClient.PostAsync("https://bestmoviesfunction.azurewebsites.net/api/signup", msg);
+            var response = await _httpClient.PostAsync("http://localhost:7071/api/signup", msg);
             
             if (response.IsSuccessStatusCode)
             {
+                
                 responseMsg = "user successfully registered";
             }
         }
