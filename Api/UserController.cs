@@ -17,7 +17,7 @@ namespace Api
     {
         [FunctionName("CreateUser")]  
         public static async Task<IActionResult> CreateUser(ExecutionContext context,
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user")] HttpRequest req, ILogger log)  
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "signup")] HttpRequest req, ILogger log)  
         {  
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
             var input = JsonConvert.DeserializeObject<User>(requestBody);  
@@ -46,7 +46,7 @@ namespace Api
 
         [FunctionName("GetUserByUsername")]
         public static async Task<IActionResult> Run(ExecutionContext context,
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "{username}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/{username}")]
             HttpRequest req, ILogger log, string username)
         {
 
@@ -80,7 +80,7 @@ namespace Api
         {
             string conStr = System.Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
             if (string.IsNullOrEmpty(conStr)) // Azure Functions App Service naming convention
-                conStr = System.Environment.GetEnvironmentVariable($"SQLAZURECONNSTR_{name}", EnvironmentVariableTarget.Process);
+                conStr = System.Environment.GetEnvironmentVariable($"{name}", EnvironmentVariableTarget.Process);
             return conStr;
         }
     }
