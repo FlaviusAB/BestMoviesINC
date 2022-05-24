@@ -16,5 +16,6 @@ public class User
         this.password = password;
         this.email = email;
         this.accessType = accessType;
+        this.email = email;
     }
 }

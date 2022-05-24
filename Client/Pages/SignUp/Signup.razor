@@ -2,6 +2,9 @@
 @using System.ComponentModel.DataAnnotations
 @using Client.Exceptions
 @using Client.Services
+@inject NavigationManager NavigationManager
+
+
 @page "/Signup"
 <h3>Signup</h3>
 
@@ -54,6 +57,10 @@
     {
         User userData = new User(username,password,email,"user");
         errorUsernameTaken= await DbAccess.RegisterUser(userData);
+        if (errorUsernameTaken.Equals("user successfully registered"))
+        {
+            NavigationManager.NavigateTo($"/Login");
+        }
         Console.WriteLine(errorUsernameTaken);
     }
     
