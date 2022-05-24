@@ -1,8 +1,11 @@
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 @using Api.Models
+@using Blazored.LocalStorage
 @using Client.Services
 @inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService _localStorage
+@inject AuthenticationStateProvider _authStateProvider
 
 
 @page "/Login"
@@ -36,17 +39,25 @@
     string password;
     string username;
     MudForm form;
+    
     IDbAccess DbAccess = new DbAccess();
-
+    private bool authenticated;
+    
     private async void LoginFunc()
     {
         UserCredentials userData = new UserCredentials(username,password);
         Console.WriteLine(userData.ToString());
         errorUsernameIncorrect=await DbAccess.UserAuthentication(userData);
-        if (errorUsernameIncorrect.Equals("user successfully logged in"))
-        {
-            NavigationManager.NavigateTo($"/");
-        }
+        // if (errorUsernameIncorrect.Equals("user successfully logged in"))
+        // {
+        //     NavigationManager.NavigateTo($"/");
+        // }
+        userData.authToken = errorUsernameIncorrect;
+        
+        await _localStorage.SetItemAsync(username, userData.authToken);
+        //((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userData.authToken);
+        
+        
         Console.WriteLine(errorUsernameIncorrect);
 
     }
