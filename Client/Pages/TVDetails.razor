@@ -175,13 +175,13 @@
             <div class="container2">
                 @foreach (var item in _seasons)
                 {
-                    var poster = "https://image.tmdb.org/t/p/w200" + @SeasonPosterPath;
+                    var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
 
-                    <MudButton OnClick="@(() => SeasonDetails(Value, @item.SeasonNumber))">
+                    // <MudButton OnClick="@(() => SeasonDetails(Value, @item.SeasonNumber))"> 
                         <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
                             <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
                         </MudPaper>
-                    </MudButton>
+                    // </MudButton>
                 }
             </div>
 

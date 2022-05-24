@@ -22,33 +22,20 @@
         
             <div class="dropdown">
               <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">user</MudAvatar>
-              <div class="dropdown-content">
-                <a href="#">Profile</a>
-                <a href="#">Favorites</a>
-                <a href="/Login">Log out</a>
-              </div>
+                <div class="dropdown-content">
+                        <a href="#">Profile</a>
+                        <a href="#">Favorites</a>
+                    <AuthorizeView>
+                        <NotAuthorized>
+                            <a href="/Login">Log in</a>
+                        </NotAuthorized>
+                        <Authorized>
+                            <a href="/">Log out</a>
+                        </Authorized>
+                    </AuthorizeView>
+                </div>
             </div>
-     
-        
-        @* <MudPaper> *@
-        @* *@
-        @*     <div class="navMenuGlue"> *@
-        @*         <MudMenu FullWidth="true" ActivationEvent="@MouseEvent.LeftClick" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.TopCenter"> *@
-        @*             <ActivatorContent> *@
-        @*                 <MudChip Icon="@Icons.Material.Filled.Mouse" Color="Color.Primary">Mouse over</MudChip> *@
-        @*             </ActivatorContent> *@
-        @*             <ChildContent> *@
-        @*                 <MudMenuItem>Profile</MudMenuItem> *@
-        @*                 <MudMenuItem>Theme</MudMenuItem> *@
-        @*                 <MudMenuItem>Usage</MudMenuItem> *@
-        @*                 <MudMenuItem>Sign Out</MudMenuItem> *@
-        @*             </ChildContent> *@
-        @*         </MudMenu> *@
-        @*     </div> *@
-        @* *@
-        @* </MudPaper> *@
-        
-        
+
     </MudAppBar>
 
     <MudMainContent>
