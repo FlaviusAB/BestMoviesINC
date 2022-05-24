@@ -1,10 +1,14 @@
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
+@using BlazorApp.Models.Account
 @using Client.Exceptions
 @using Client.Services
+@using Client.ServicesClient
+@using IAlertService = Client.Services.IAlertService
+@using MudBlazor
 @inject NavigationManager NavigationManager
 @inject IAlertService AlertService
-
+@inject IAccountService AccountService
 
 @page "/Signup"
 <h3>Signup</h3>
@@ -55,17 +59,31 @@
     string email;
     MudForm form;
     IDbAccess DbAccess = new DbAccess();
-
+    private AddUser model = new AddUser();
+    
     private async void SignUp()
     {
         AlertService.Clear();
-        User userData = new User(username, password, email, "user");
-        message = await DbAccess.RegisterUser(userData);
-        if (message.Equals("user successfully registered"))
+        model.Email = email;
+        model.Password = password;
+        model.Username = username;
+        
+        //User userData = new User(username, password, email, "user");
+        //message = await DbAccess.RegisterUser(userData);
+
+        
+        try
         {
-            message = "";
+            await AccountService.Register(model);
             AlertService.Success("Registration successful", keepAfterRouteChange: true);
             NavigationManager.NavigateTo($"/Login");
+            
+        }
+        catch (Exception ex)
+        {
+            AlertService.Error(ex.Message);
+            message = "User already existing";
+            StateHasChanged();
         }
         
     }

@@ -1,21 +1,13 @@
-namespace Client.Models;
-
-public class User
+namespace Client.Models
 {
-    
-    public string username { get; set; }
-    public string password { get; set; }
-    public string email { get; set; }
-    public string accessType { get; set; }
-    
-   
-
-    public User(string username, string password, string email, string accessType)
+    public class User
     {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.accessType = accessType;
-        this.email = email;
+        public string Id { get; set; }
+        
+        public string Username { get; set; }
+        
+        public string Email { get; set; }
+        public string Token { get; set; }
+        
     }
 }

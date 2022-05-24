@@ -1,7 +1,8 @@
-
+using BlazorApp.Models;
+using System;
 using Client.Models;
 
-namespace Client.Exceptions
+namespace Client.Services
 {
     public interface IAlertService
     {

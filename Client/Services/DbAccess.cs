@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Api.Models;
 using Blazored.LocalStorage;
-using Client.Authentication;
+
 using Client.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -25,7 +25,7 @@ public class DbAccess : IDbAccess
         var responseMsg = "failed";
         using var client = new HttpClient();
          
-        string content = await client.GetStringAsync("http://localhost:7071/api/user/" + user.username);
+        string content = await client.GetStringAsync("http://localhost:7071/api/user/" + user.Username);
         
         if (content.Equals("true"))
         {

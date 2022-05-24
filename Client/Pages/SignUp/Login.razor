@@ -1,11 +1,10 @@
-@using System.Text.RegularExpressions
-@using System.ComponentModel.DataAnnotations
+
 @using Api.Models
-@using Blazored.LocalStorage
+
 @using Client.Services
 @inject NavigationManager NavigationManager
-@inject Blazored.LocalStorage.ILocalStorageService _localStorage
-@inject AuthenticationStateProvider _authStateProvider
+
+
 
 
 @page "/Login"
@@ -53,9 +52,8 @@
         //     NavigationManager.NavigateTo($"/");
         // }
         userData.authToken = errorUsernameIncorrect;
-        
-        await _localStorage.SetItemAsync(username, userData.authToken);
-        //((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userData.authToken);
+        //await _localStorage.SetItemAsync(username, userData.authToken);
+       
         
         
         Console.WriteLine(errorUsernameIncorrect);
