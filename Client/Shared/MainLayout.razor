@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using Client.ServicesClient
+@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 <MudThemeProvider/>
 <MudDialogProvider/>
@@ -10,6 +11,9 @@
 
         
         <MudButton OnClick="@(GoHome)">HOME</MudButton>
+        <a href="/Login">Login</a>
+        <a href="/Logout">Logout</a>
+         <a href="/Profile">profile</a>
         <MudSpacer/>
 
         <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
@@ -18,17 +22,24 @@
         @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
         <MudSpacer/>
         
-        
+        @if (@userFound)
+        {
             <div class="dropdown">
-              <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">user</MudAvatar>
-              <div class="dropdown-content">
-                <a href="#">Profile</a>
-                <a href="/Logout">Favorites</a>
-                <a href="/Login">Log out</a>
-              </div>
+                <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">P</MudAvatar>
+                <div class="dropdown-content">
+                    <a href="/Profile">Profile</a>
+                    <a href="/Logout">Favorites</a>
+                    <a href="/Login">Log out</a>
+                </div>
             </div>
-     
-        
+        }
+        else
+        {
+            <MudText>@userInfo</MudText>
+        }
+
+
+
         @* <MudPaper> *@
         @* *@
         @*     <div class="navMenuGlue"> *@
@@ -75,7 +86,11 @@
 
 
 @code {
-
+    [Inject]
+    private IAccountService? AccountService { get; set; }
+    private string userInfo = "";
+    private bool userFound = false;
+    
     private string TextValue { get; set; } = "";
 
     private readonly MudTheme _theme = new();
@@ -87,8 +102,40 @@
         NavigationManager.NavigateTo("/");
     }
 
+    protected override void OnInitialized()
+    {
+        
+        
+        base.OnInitialized();
+        var timer = new System.Timers.Timer(1000);
+        timer.Elapsed += (s, e) => {
+                                       InvokeAsync(() => {
+                                                             try
+                                                             {
+                                                                 if (AccountService != null)
+                                                                 {
+                                                                     userInfo = AccountService.User.Username; 
+                                                                     userFound = true;
+                                                                 }
+                                                                 else
+                                                                 {
+                                                                   
+                                                                     
+                                                                 }
+                                                             }
+                                                             catch (Exception e)
+                                                             {
+                                                                 userFound = false;
+                                                                 userInfo = "Guest";
+                                                                 Console.WriteLine(e);
+                                                                 StateHasChanged();
+                                                             }
+                                                             StateHasChanged();
+                                       });
+        };
+        timer.Start();
+    }
 
-    
     private void Search(string textValue)
     {
         NavigationManager.NavigateTo($"Search/{textValue}");

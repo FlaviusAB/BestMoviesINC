@@ -1,0 +1,14 @@
+@page "/Profile"
+@using Client.ServicesClient
+<h3>Profile</h3>
+<h3>Profile</h3>
+<h3>Profile</h3>
+<h3>Profile</h3>
+<h3>Profile</h3>
+<h1>@AccountService.User.Username</h1>
+@code {
+    string username = "";
+    [Inject]
+    private IAccountService? AccountService { get; set; }
+    
+}
