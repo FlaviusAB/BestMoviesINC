@@ -1,6 +1,9 @@
 ﻿@page "/MovieDetails/{Value}"
+
+
 @using Client.Models
 @using Client.Services
+@using Client.ServicesClient
 @inject NavigationManager NavigationManager
 
 
@@ -139,6 +142,7 @@
                     </MudCardContent>
                 </MudCard>
             </MudItem>
+            <MudText>@userInfo</MudText>
             <p class="knownFor">
                 <b>Similar movies:</b>
             </p>
@@ -177,6 +181,8 @@
 @code {
 
     [Inject]
+    private IAccountService? AccountService { get; set; }
+    [Inject]
     private IMoviesData? MoviesData { get; set; }
 
     [Parameter]
@@ -206,8 +212,11 @@
     private string _crewName = "";
     private List<Movie> _movies = new();
 
+    private string userInfo = "";
+
     protected override async Task OnParametersSetAsync()
     {
+        
         Genre = "";
         ProductionCompanies = "";
         Cast = "";
@@ -219,6 +228,24 @@
             await Similar(id);
             await MovieCrewApi(id);
         }
+        try
+        {
+            if (AccountService != null)
+            {
+                userInfo = AccountService.User.Username; 
+            
+            }
+            else
+            {
+                userInfo = "guest";
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        
+        
     }
 
     private async Task MovieDetailsApi(string id)

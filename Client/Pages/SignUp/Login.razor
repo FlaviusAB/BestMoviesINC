@@ -1,8 +1,12 @@
 
 @using Api.Models
+@using Client.Helpers
 
 @using Client.Services
+@using Client.ServicesClient
 @inject NavigationManager NavigationManager
+@inject IAccountService AccountService
+@inject IAlertService AlertService
 
 
 
@@ -42,21 +46,43 @@
     IDbAccess DbAccess = new DbAccess();
     private bool authenticated;
     
+    private Models.Account.Login model = new Models.Account.Login();
+    private bool loading;
+    
     private async void LoginFunc()
     {
-        UserCredentials userData = new UserCredentials(username,password);
-        Console.WriteLine(userData.ToString());
-        errorUsernameIncorrect=await DbAccess.UserAuthentication(userData);
-        // if (errorUsernameIncorrect.Equals("user successfully logged in"))
-        // {
-        //     NavigationManager.NavigateTo($"/");
-        // }
-        userData.authToken = errorUsernameIncorrect;
-        //await _localStorage.SetItemAsync(username, userData.authToken);
-       
+        // UserCredentials userData = new UserCredentials(username,password);
+        // Console.WriteLine(userData.ToString());
+        // errorUsernameIncorrect=await DbAccess.UserAuthentication(userData);
+        // // if (errorUsernameIncorrect.Equals("user successfully logged in"))
+        // // {
+        // //     NavigationManager.NavigateTo($"/");
+        // // }
+        // userData.authToken = errorUsernameIncorrect;
+        // //await _localStorage.SetItemAsync(username, userData.authToken);
+        //
+        //
+        //
+        // Console.WriteLine(errorUsernameIncorrect);
         
-        
-        Console.WriteLine(errorUsernameIncorrect);
+    // reset alerts on submit
+        model.Username = username;
+        model.Password = password;
+        AlertService.Clear();
+
+        loading = true;
+        try
+        {
+            await AccountService.Login(model);
+            var returnUrl = NavigationManager.QueryString("returnUrl") ?? "";
+            NavigationManager.NavigateTo(returnUrl);
+        }
+        catch (Exception ex)
+        {
+            AlertService.Error(ex.Message);
+            loading = false;
+            StateHasChanged();
+        }
 
     }
     

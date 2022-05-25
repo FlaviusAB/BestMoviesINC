@@ -54,7 +54,7 @@ namespace Client.ServicesClient
         {
             User = null;
             await _localStorageService.RemoveItem(_userKey);
-            _navigationManager.NavigateTo("account/login");
+            _navigationManager.NavigateTo("/");
         }
 
         public async Task Register(AddUser model)
