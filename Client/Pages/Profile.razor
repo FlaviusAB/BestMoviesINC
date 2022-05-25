@@ -1,14 +1,41 @@
 @page "/Profile"
 @using Client.ServicesClient
-<h3>Profile</h3>
-<h3>Profile</h3>
-<h3>Profile</h3>
-<h3>Profile</h3>
-<h3>Profile</h3>
-<h1>@AccountService.User.Username</h1>
+<MudLayout>
+    <MudContainer>
+        <MudGrid>
+            <MudItem xs="12" sm="9">
+                <MudImage Width="199" Height="299" Fluid="true" Alt="@username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage>
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5">
+                                <b>@username</b>
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText Typo="Typo.body2">
+                            <a class="bold">Email: </a> @email
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</MudLayout>
+
 @code {
-    string username = "";
     [Inject]
     private IAccountService? AccountService { get; set; }
     
+    string username = "";
+    string email = "";
+    
+
+    protected override void OnInitialized()
+    {
+        username = AccountService.User.Username;
+        email = AccountService.User.Email;
+    }
+
 }

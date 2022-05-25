@@ -11,9 +11,6 @@
 
         
         <MudButton OnClick="@(GoHome)">HOME</MudButton>
-        <a href="/Login">Login</a>
-        <a href="/Logout">Logout</a>
-         <a href="/Profile">profile</a>
         <MudSpacer/>
 
         <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
@@ -25,17 +22,19 @@
         @if (@userFound)
         {
             <div class="dropdown">
-                <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">P</MudAvatar>
+                <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">@profileLetter</MudAvatar>
                 <div class="dropdown-content">
                     <a href="/Profile">Profile</a>
-                    <a href="/Logout">Favorites</a>
-                    <a href="/Login">Log out</a>
+                    <a href="#">Favorites</a>
+                    <a href="/Logout">Log out</a>
                 </div>
             </div>
         }
         else
         {
             <MudText>@userInfo</MudText>
+            <MudButton href="/Login"> Login</MudButton>
+            <MudButton href="/Signup"> Register</MudButton>
         }
 
 
@@ -90,6 +89,7 @@
     private IAccountService? AccountService { get; set; }
     private string userInfo = "";
     private bool userFound = false;
+    private string profileLetter;
     
     private string TextValue { get; set; } = "";
 
@@ -114,7 +114,8 @@
                                                              {
                                                                  if (AccountService != null)
                                                                  {
-                                                                     userInfo = AccountService.User.Username; 
+                                                                     userInfo = AccountService.User.Username;
+                                                                     profileLetter = userInfo.Substring(0, 1);
                                                                      userFound = true;
                                                                  }
                                                                  else
@@ -126,7 +127,7 @@
                                                              catch (Exception e)
                                                              {
                                                                  userFound = false;
-                                                                 userInfo = "Guest";
+                                                                 userInfo = "Not logged in: ";
                                                                  Console.WriteLine(e);
                                                                  StateHasChanged();
                                                              }
