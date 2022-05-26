@@ -348,4 +348,14 @@ a, .btn-link {
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {display: block;}
 
-
+.stayDown {
+    position: relative; 
+    bottom: 0;
+    width: 100vw;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: space-between;
+    justify-content: center;
+}

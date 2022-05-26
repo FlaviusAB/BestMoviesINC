@@ -48,17 +48,19 @@
             NavigationManager.NavigateTo($"/");
         }
         Console.WriteLine(errorUsernameIncorrect);
-
     }
-    
-    protected override void OnInitialized() {
+
+    protected override void OnInitialized()
+    {
         base.OnInitialized();
         var timer = new System.Timers.Timer(1000);
-        timer.Elapsed += (s, e) => {
-                                       InvokeAsync(() => {
-                                                             errorUsernameIncorrectField = errorUsernameIncorrect;
-                                                             StateHasChanged();
-                                       });
+        timer.Elapsed += (s, e) =>
+        {
+            InvokeAsync(() =>
+            {
+                errorUsernameIncorrectField = errorUsernameIncorrect;
+                StateHasChanged();
+            });
         };
         timer.Start();
     }
