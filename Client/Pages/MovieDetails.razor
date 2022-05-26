@@ -144,11 +144,11 @@
             </MudItem>
             @if (@userFound)
             {
-                <MudText>@userInfo</MudText>
-            }
-            else
-            {
-                <MudText>@userInfo</MudText>
+                @* <MudCheckBox Checked="@FavoriteOrNot" Color="Color.Secondary" CheckedIcon="@Icons.Material.Filled.Favorite" *@
+                @*              UncheckedIcon="@Icons.Material.Filled.FavoriteBorder" @oninput="FavoriteMovie" Disabled="@isDisabled"/> *@
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite" 
+                           Color="Color.Primary" Disabled="@isDisabled" OnClick="FavoriteMovie">Favorite</MudButton>
+
             }
             <p class="knownFor">
                 <b>Similar movies:</b>
@@ -194,7 +194,11 @@
 
     [Parameter]
     public string? Value { get; set; }
-
+    
+    protected bool isDisabled { get; set; }
+    private bool FavoriteOrNot;
+    private FavoriteEntity favoriteEntity;
+    
     private string? PosterPath { get; set; }
     private string? MovieTitle { get; set; }
     private string? MovieDescription { get; set; }
@@ -221,13 +225,14 @@
 
     private string userInfo = "";
     private bool userFound = false;
+    
 
     protected override async Task OnParametersSetAsync()
     {
-        
         Genre = "";
         ProductionCompanies = "";
         Cast = "";
+        CheckFavorites();
         var id = Value;
         if (id != null)
         {
@@ -243,10 +248,6 @@
                 userInfo = AccountService.User.Username; 
                 userFound = true;
             }
-            else
-            {
-                
-            }
         }
         catch (Exception e)
         {
@@ -254,8 +255,31 @@
             userFound = false;
             Console.WriteLine(e);
         }
+    }
+
+    private void FavoriteMovie()
+    {
+        //TODO if its true -> update instead of insert
+        string like = "true";
+        isDisabled = true;
+        Console.WriteLine("FAVORITE MOVIE INSERT FUNCTION" + like);
+        FavoriteEntity favoriteEntity = new FavoriteEntity(AccountService.User.Username, Value, like);
+        IDbAccess dbAccess = new DbAccess();
+        dbAccess.SaveFavorite(favoriteEntity);
         
-        
+    // Console.WriteLine("FAVORITE MOVIE UPDATE FUNCTION" + like);
+            // FavoriteEntity favoriteEntity = new FavoriteEntity(AccountService.User.Username, Value, like);
+            // IDbAccess dbAccess = new DbAccess();
+            // dbAccess.UpdateFavorite(favoriteEntity);
+    }
+
+    private string CheckFavorites()
+    {
+        string favorited;
+        IDbAccess dbAccess = new DbAccess();
+        favorited = dbAccess.GetFavorite(AccountService.User.Username, Value).ToString();
+        Console.WriteLine("true or false? : "+favorited);
+        return favorited;
     }
 
     private async Task MovieDetailsApi(string id)

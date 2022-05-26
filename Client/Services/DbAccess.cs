@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Api.Models;
 using Blazored.LocalStorage;
-
+using Client.Exceptions;
 using Client.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -10,8 +10,10 @@ namespace Client.Services;
 
 public interface IDbAccess
 {
-    Task<string> RegisterUser(User user);
-    Task<string> UserAuthentication(UserCredentials user);
+    Task<string> SaveFavorite(FavoriteEntity favorite);
+    Task<string> DeleteFavorite(string username,int movie_id);
+    Task<string> GetFavorite(string username,string movie_id);
+    
 }
 
 public class DbAccess : IDbAccess
@@ -19,69 +21,48 @@ public class DbAccess : IDbAccess
     private HttpClient _httpClient = new HttpClient();
     // private readonly ILocalStorageService _localStorage ;
     // private readonly AuthenticationStateProvider _authStateProvider;
-    
-    public async Task<string> RegisterUser(User user)
+
+    public async Task<string> SaveFavorite(FavoriteEntity favorite)
     {
         var responseMsg = "failed";
-        using var client = new HttpClient();
-         
-        string content = await client.GetStringAsync("http://localhost:7071/api/user/" + user.Username);
-        
-        if (content.Equals("true"))
-        {
-            responseMsg = "username taken";
-        }
-        else
-        {
-            
-            string message = JsonSerializer.Serialize(user);
-            
-            byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(message);
-            var msg = new ByteArrayContent(messageBytes);
-            var response = await _httpClient.PostAsync("http://localhost:7071/api/signup", msg);
-            
-            
-            if (response.IsSuccessStatusCode)
-            {
-                
-                responseMsg = "user successfully registered";
-            }
-        }
 
-        return responseMsg;
-    }
-
-    public async Task<string> UserAuthentication(UserCredentials user)
-    {
-        var responseMsg = "failed";
-        string message = JsonSerializer.Serialize(user);
+        string message = JsonSerializer.Serialize(favorite);
+            
         byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(message);
         var msg = new ByteArrayContent(messageBytes);
-        var response = await _httpClient.PostAsync("http://localhost:7071/api/auth", msg);
-
-        user.authToken = await response.Content.ReadAsStringAsync();
-        Console.WriteLine(user.authToken);
-        // await _localStorage.SetItemAsync(user.username, user.authToken);
-        // ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(user.authToken);
-
-        //Console.WriteLine("STORAGE: " + _localStorage.GetItemAsync<string>(user.username));
+        var response = await _httpClient.PostAsync("http://localhost:7071/api/favorites", msg);
+            
+        
         if (response.IsSuccessStatusCode)
         {
-            responseMsg = "user successfully logged in";
-            return user.authToken;
-        }
-        else
-        {
-            responseMsg = "invalid information";
+                
+            responseMsg = "Movie successfully added to the favorites!";
         }
 
         return responseMsg;
     }
-    
-    // public async Task Logout()
-    // {
-    //     await _localStorage.RemoveItemAsync("authToken");
-    //     ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
-    //     _httpClient.DefaultRequestHeaders.Authorization = null;
-    // }
+
+    public async Task<string> DeleteFavorite(string username,int movie_id)
+    {
+        var responseMsg = "failed";
+
+        return responseMsg;
+    }
+
+    public async Task<string> GetFavorite(string username, string movie_id)
+    {
+        string responseBool="false";
+        
+        var response = await _httpClient.GetAsync($"http://localhost:7071/api/favorites/{username}/{movie_id}");
+            
+        
+        if (response.IsSuccessStatusCode)
+        {
+
+            // var e = response.Content.ReadAsStringAsync();
+            responseBool = "true";
+        }
+
+        return responseBool;
+    }
 }

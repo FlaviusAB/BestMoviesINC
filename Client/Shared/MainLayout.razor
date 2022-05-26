@@ -124,6 +124,7 @@
             {
                 try
                 {
+                    AccountService.Initialize();
                     if (AccountService != null)
                     {
                         userInfo = AccountService.User.Username;
