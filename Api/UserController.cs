@@ -26,7 +26,7 @@ namespace Api
             
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
             var input = JsonConvert.DeserializeObject<UserCredentials>(requestBody); 
-           
+            User authUser = new User();
             try
             {
                 var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
@@ -37,7 +37,8 @@ namespace Api
                     {  
                         Console.WriteLine(input.username);
                         
-                        var query = $"select username from login where username='{input.username}' and password='{input.password}'";  
+                        
+                        var query = $"select * from login where username='{input.username}' and password='{input.password}'";  
                         SqlCommand command = new SqlCommand(query, conn);
                         
                         var reader = await command.ExecuteReaderAsync();
@@ -45,13 +46,16 @@ namespace Api
                         {
 
                             foundUsername = reader["username"].ToString();
+                            if (!string.IsNullOrWhiteSpace(foundUsername))
+                            {
+                                authenticated = true;
+                                authUser.Username = foundUsername;
+                                authUser.Email = reader["email"].ToString();
+                            }
 
                         }
 
-                        if (!string.IsNullOrWhiteSpace(foundUsername))
-                        {
-                            authenticated = true;
-                        }
+                        
                     }  
                 }  
             }  
@@ -70,7 +74,8 @@ namespace Api
             } else {
                 GenerateJWTToken generateJWTToken = new();
                 string token = generateJWTToken.IssuingJWT(input.username);
-                return await Task.FromResult(new OkObjectResult(token)).ConfigureAwait(false);
+                authUser.Token = token;
+                return await Task.FromResult(new OkObjectResult(authUser)).ConfigureAwait(false);
             }
         }
         
@@ -87,11 +92,11 @@ namespace Api
                 using (SqlConnection conn = new SqlConnection(appsettingvalue))  
                 {
                     conn.Open();  
-                    if(!String.IsNullOrEmpty(input.username))  
+                    if(!String.IsNullOrEmpty(input.Username))  
                     {  
-                        Console.WriteLine(input.email +" EMAIL");
-                        Console.WriteLine(input.username +" USERNAME");
-                        var query = $"INSERT INTO [login] (username,password,email,accessType) VALUES('{input.username}', '{input.password}' , '{input.email}' , '{input.accessType}')";  
+                        Console.WriteLine(input.Email +" EMAIL");
+                        Console.WriteLine(input.Username +" USERNAME");
+                        var query = $"INSERT INTO [login] (username,password,email) VALUES('{input.Username}', '{input.Password}' , '{input.Email}')";  
                         SqlCommand command = new SqlCommand(query, conn);  
                         command.ExecuteNonQuery();  
                     }  

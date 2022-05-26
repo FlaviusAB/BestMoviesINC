@@ -1,6 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using Client.ServicesClient
+@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
-
 <MudThemeProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
@@ -19,25 +19,25 @@
         @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
         <MudSpacer/>
         
-        
+        @if (@userFound)
+        {
             <div class="dropdown">
-              <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">user</MudAvatar>
+                <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">@profileLetter</MudAvatar>
                 <div class="dropdown-content">
-                        <a href="#">Profile</a>
-                        <a href="#">Favorites</a>
-                    <AuthorizeView>
-                        <NotAuthorized>
-                            <a href="/Login">Log in</a>
-                        </NotAuthorized>
-                        <Authorized>
-                            <a href="/">Log out</a>
-                        </Authorized>
-                    </AuthorizeView>
+                    <a href="/Profile">Profile</a>
+                    <a href="#">Favorites</a>
+                    <a href="/Logout">Log out</a>
                 </div>
             </div>
+        }
+        else
+        {
+            <MudText>@userInfo</MudText>
+            <MudButton href="/Login"> Login</MudButton>
+            <MudButton href="/Signup"> Register</MudButton>
+        }
 
     </MudAppBar>
-
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.False">
             @Body
@@ -65,7 +65,12 @@
 
 
 @code {
-
+    [Inject]
+    private IAccountService? AccountService { get; set; }
+    private string userInfo = "";
+    private bool userFound = false;
+    private string profileLetter;
+    
     private string TextValue { get; set; } = "";
 
     private readonly MudTheme _theme = new();
@@ -77,8 +82,41 @@
         NavigationManager.NavigateTo("/");
     }
 
+    protected override void OnInitialized()
+    {
+        
+        
+        base.OnInitialized();
+        var timer = new System.Timers.Timer(1000);
+        timer.Elapsed += (s, e) => {
+                                       InvokeAsync(() => {
+                                                             try
+                                                             {
+                                                                 if (AccountService != null)
+                                                                 {
+                                                                     userInfo = AccountService.User.Username;
+                                                                     profileLetter = userInfo.Substring(0, 1);
+                                                                     userFound = true;
+                                                                 }
+                                                                 else
+                                                                 {
+                                                                   
+                                                                     
+                                                                 }
+                                                             }
+                                                             catch (Exception e)
+                                                             {
+                                                                 userFound = false;
+                                                                 userInfo = "Not logged in: ";
+                                                                 Console.WriteLine(e);
+                                                                 StateHasChanged();
+                                                             }
+                                                             StateHasChanged();
+                                       });
+        };
+        timer.Start();
+    }
 
-    
     private void Search(string textValue)
     {
         NavigationManager.NavigateTo($"Search/{textValue}");

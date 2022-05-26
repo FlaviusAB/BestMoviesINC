@@ -1,21 +1,14 @@
-namespace Api.Models;
-
-public class User
+namespace Api.Models
 {
-    
-    public string username { get; set; }
-    public string password { get; set; }
-    public string email { get; set; }
-    
-    public string accessType { get; set; }
-    
-
-
-    public User(string username, string password, string accessType, string email)
+    public class User
     {
-        this.username = username;
-        this.password = password;
-        this.accessType = accessType;
-        this.email = email;
+        
+        public string Username { get; set; }
+        
+        public string Email { get; set; }
+        
+        public string Password { get; set; }
+        public string Token { get; set; }
+        
     }
 }

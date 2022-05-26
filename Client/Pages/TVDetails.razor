@@ -3,7 +3,14 @@
 @using Client.Services
 @inject NavigationManager NavigationManager
 
+<AuthorizeView>
+    <NotAuthorized>
+        
+    </NotAuthorized>
+    <Authorized>
 
+    </Authorized>
+</AuthorizeView>
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <MudGrid>

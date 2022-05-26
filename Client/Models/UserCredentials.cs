@@ -15,4 +15,10 @@ public class UserCredentials {
         get;
         set;
     }
+
+    public string authToken
+    {
+        get;
+        set;
+    }
 }

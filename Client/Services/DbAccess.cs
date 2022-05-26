@@ -1,9 +1,9 @@
-using System.Net.Http.Json;
 using System.Text.Json;
 using Api.Models;
-using Client.Exceptions;
-using Client.Models;
+using Blazored.LocalStorage;
 
+using Client.Models;
+using Microsoft.AspNetCore.Components.Authorization;
 
 
 namespace Client.Services;
@@ -17,13 +17,15 @@ public interface IDbAccess
 public class DbAccess : IDbAccess
 {
     private HttpClient _httpClient = new HttpClient();
+    // private readonly ILocalStorageService _localStorage ;
+    // private readonly AuthenticationStateProvider _authStateProvider;
     
     public async Task<string> RegisterUser(User user)
     {
         var responseMsg = "failed";
         using var client = new HttpClient();
          
-        string content = await client.GetStringAsync("http://localhost:7071/api/user/" + user.username);
+        string content = await client.GetStringAsync("http://localhost:7071/api/user/" + user.Username);
         
         if (content.Equals("true"))
         {
@@ -37,6 +39,7 @@ public class DbAccess : IDbAccess
             byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(message);
             var msg = new ByteArrayContent(messageBytes);
             var response = await _httpClient.PostAsync("http://localhost:7071/api/signup", msg);
+            
             
             if (response.IsSuccessStatusCode)
             {
@@ -56,9 +59,16 @@ public class DbAccess : IDbAccess
         var msg = new ByteArrayContent(messageBytes);
         var response = await _httpClient.PostAsync("http://localhost:7071/api/auth", msg);
 
+        user.authToken = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(user.authToken);
+        // await _localStorage.SetItemAsync(user.username, user.authToken);
+        // ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(user.authToken);
+
+        //Console.WriteLine("STORAGE: " + _localStorage.GetItemAsync<string>(user.username));
         if (response.IsSuccessStatusCode)
         {
             responseMsg = "user successfully logged in";
+            return user.authToken;
         }
         else
         {
@@ -67,4 +77,11 @@ public class DbAccess : IDbAccess
 
         return responseMsg;
     }
+    
+    // public async Task Logout()
+    // {
+    //     await _localStorage.RemoveItemAsync("authToken");
+    //     ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
+    //     _httpClient.DefaultRequestHeaders.Authorization = null;
+    // }
 }
