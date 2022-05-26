@@ -1,73 +1,43 @@
-@using Api.Models
-@using Client.Helpers
-
-@using Client.Services
-
-@using Client.ServicesClient
 @inject NavigationManager NavigationManager
 @inject IAccountService AccountService
 @inject IAlertService AlertService
+@inject ILocalStorageService LocalStorageService
 
 @page "/Login"
+<div class="card">
+    <h4 class="card-header">Login</h4>
+    <div class="card-body">
+        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Username</label>
+                <InputText @bind-Value="model.Username" class="form-control" />
+                <ValidationMessage For="@(() => model.Username)" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <InputText @bind-Value="model.Password" type="password" class="form-control" />
+                <ValidationMessage For="@(() => model.Password)" />
+            </div>
+            <button disabled="@loading" class="btn btn-primary">
+                @if (loading) 
+                {
+                    <span class="spinner-border spinner-border-sm mr-1"></span>
+                }
+                Login
+            </button>
+            <NavLink href="account/register" class="btn btn-link">Register</NavLink>
+        </EditForm>
+    </div>
+</div>
 
-<div class="empty-space"></div>
-<h3>Login</h3>
-
-<MudGrid>
-    <MudItem xs="12" sm="7">
-        <MudPaper Class="pa-4">
-            <MudForm @ref="form">
-                <MudTextField T="string" Label="Username" @bind-Value="username" Required="true" RequiredError="User name is required!"/>
-                <MudTextField T="string" Label="Password" @bind-Value="password" InputType="InputType.Password"/>
-                <div class="d-flex align-center justify-space-between mt-6">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(() => LoginFunc())">Login</MudButton>
-                </div>
-            </MudForm>
-        </MudPaper>
-        <MudText Color="@Color.Error">
-            @errorUsernameIncorrectField
-        </MudText>
-        <MudPaper Class="pa-4 mt-4" Width="350px">
-            <MudText> Dont have an account? register right now </MudText>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="/Signup">Sign up</MudButton>
-        </MudPaper>
-    </MudItem>
-</MudGrid>
-<div class="empty-space-large"></div>
-<div class="empty-space-large"></div>
 @code {
-
-    string errorUsernameIncorrect { get; set; }
-    string errorUsernameIncorrectField { get; set; }
-    string password;
-    string username;
-    MudForm form;
-
-    IDbAccess DbAccess = new DbAccess();
-    private bool authenticated;
-
     private Models.Account.Login model = new Models.Account.Login();
     private bool loading;
 
-    private async void LoginFunc()
+    private async void OnValidSubmit()
     {
-    // UserCredentials userData = new UserCredentials(username,password);
-    // Console.WriteLine(userData.ToString());
-    // errorUsernameIncorrect=await DbAccess.UserAuthentication(userData);
-    // // if (errorUsernameIncorrect.Equals("user successfully logged in"))
-    // // {
-    // //     NavigationManager.NavigateTo($"/");
-    // // }
-    // userData.authToken = errorUsernameIncorrect;
-    // //await _localStorage.SetItemAsync(username, userData.authToken);
-    //
-    //
-    //
-    // Console.WriteLine(errorUsernameIncorrect);
-
     // reset alerts on submit
-        model.Username = username;
-        model.Password = password;
         AlertService.Clear();
 
         loading = true;
@@ -84,20 +54,4 @@
             StateHasChanged();
         }
     }
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        var timer = new System.Timers.Timer(1000);
-        timer.Elapsed += (s, e) =>
-        {
-            InvokeAsync(() =>
-            {
-                errorUsernameIncorrectField = errorUsernameIncorrect;
-                StateHasChanged();
-            });
-        };
-        timer.Start();
-    }
-
 }

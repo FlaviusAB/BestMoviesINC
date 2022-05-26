@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Client;
 using Client.Services;
-using Client.ServicesClient;
 using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -20,5 +19,9 @@ builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 
 builder.Services.AddAuthorizationCore();
 
+var host = builder.Build();
 
-await builder.Build().RunAsync();
+var accountService = host.Services.GetRequiredService<IAccountService>();
+await accountService.Initialize();
+
+await host.RunAsync();

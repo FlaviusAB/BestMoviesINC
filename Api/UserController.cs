@@ -71,12 +71,12 @@ namespace Api
             
             if (!authenticated) {
                 return await Task.FromResult(new UnauthorizedResult()).ConfigureAwait(false);
-            } else {
-                GenerateJWTToken generateJWTToken = new();
-                string token = generateJWTToken.IssuingJWT(input.username);
-                authUser.Token = token;
-                return await Task.FromResult(new OkObjectResult(authUser)).ConfigureAwait(false);
             }
+
+            GenerateJWTToken generateJWTToken = new();
+            string token = generateJWTToken.IssuingJWT(input.username);
+            authUser.Token = token;
+            return await Task.FromResult(new OkObjectResult(authUser)).ConfigureAwait(false);
         }
         
         

@@ -1,4 +1,4 @@
-﻿@using Client.ServicesClient
+﻿
 @inherits LayoutComponentBase
 @inject IAccountService AccountService
 @inject NavigationManager NavigationManager
@@ -115,7 +115,6 @@
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
 
         var timer = new System.Timers.Timer(1000);
         timer.Elapsed += (s, e) =>
@@ -124,14 +123,12 @@
             {
                 try
                 {
+                    AccountService.Initialize();
                     if (AccountService != null)
                     {
                         userInfo = AccountService.User.Username;
                         profileLetter = userInfo.Substring(0, 1);
                         userFound = true;
-                    }
-                    else
-                    {
                     }
                 }
                 catch (Exception e)

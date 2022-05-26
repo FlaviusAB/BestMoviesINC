@@ -5,7 +5,7 @@ using Client.Models.Account;
 using Client.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace Client.ServicesClient
+namespace Client.Services
 {
     public interface IAccountService
     {
@@ -33,7 +33,9 @@ namespace Client.ServicesClient
             IHttpService httpService,
             NavigationManager navigationManager,
             ILocalStorageService localStorageService
-        ) {
+        )
+        {
+            User = new User();
             _httpService = httpService;
             _navigationManager = navigationManager;
             _localStorageService = localStorageService;
@@ -72,12 +74,12 @@ namespace Client.ServicesClient
             return await _httpService.Get<User>($"/users/{username}");
         }
 
-        public async Task Update(string id, EditUser model)
+        public async Task Update(string username, EditUser model)
         {
-            await _httpService.Put($"/users/{id}", model);
+            await _httpService.Put($"/users/{username}", model);
 
             // update stored user if the logged in user updated their own record
-            if (id == User.Id) 
+            if (username == User.Username) 
             {
                 // update local storage
                 
@@ -87,12 +89,12 @@ namespace Client.ServicesClient
             }
         }
 
-        public async Task Delete(string id)
+        public async Task Delete(string username)
         {
-            await _httpService.Delete($"/users/{id}");
+            await _httpService.Delete($"/users/{username}");
 
             // auto logout if the logged in user deleted their own record
-            if (id == User.Id)
+            if (username == User.Username)
                 await Logout();
         }
     }
