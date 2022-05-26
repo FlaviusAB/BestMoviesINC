@@ -4,6 +4,18 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+body {
+    height: 100vh; 
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    min-height: 150px;
+    margin-top: auto;
+}
+
 h1:focus {
     outline: none;
 } 
@@ -239,13 +251,13 @@ a, .btn-link {
 }
 
 .footer-basic ul a {
-    color:inherit;
-    text-decoration:none;
+    color: inherit;
+    text-decoration: none;
     opacity:0.8;
 }
 
 .footer-basic ul a:hover {
-    opacity:1;
+    opacity: 1;
 }
 
 .footer-basic .social {
@@ -352,14 +364,3 @@ a, .btn-link {
     padding: 50px;
 }
 
-.stayDown {
-    position: relative; 
-    bottom: 0;
-    width: 100vw;
-    max-width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    align-content: space-between;
-    justify-content: center;
-}
