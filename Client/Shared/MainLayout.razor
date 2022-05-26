@@ -104,15 +104,11 @@
                 try
                 {
                     AccountService.Initialize();
-                    if (AccountService != null)
+                    if (AccountService.User?.Username!= null)
                     {
                         userInfo = AccountService.User.Username;
                         profileLetter = userInfo.Substring(0, 1);
                         userFound = true;
-                    }
-                    else
-                    {
-                        
                     }
                 }
                 catch (Exception e)
