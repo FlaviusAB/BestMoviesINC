@@ -11,6 +11,7 @@
 @inject IAccountService AccountService
 
 @page "/Signup"
+<div class="empty-space"></div>
 <h3>Signup</h3>
 
 <MudGrid>
@@ -36,6 +37,7 @@
                 </div>
             </MudForm>
         </MudPaper>
+        <div class="paddingTop5"></div>
         <MudText Color="@Color.Error">
             @errorUsernameTextField
         </MudText>
@@ -46,6 +48,7 @@
     </MudItem>
 
 </MudGrid>
+<div class="empty-space-large"></div>
 
 @code {
     bool success;

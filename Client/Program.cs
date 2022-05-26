@@ -10,14 +10,13 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddMudServices();
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["apiUrl"]) });
 builder.Services.AddSingleton<IMoviesData, MoviesData>();
 builder.Services.AddScoped<IAlertService, AlertService>();
-builder.Services
-    .AddScoped<IAccountService, AccountService>()
-    .AddScoped<IAlertService, AlertService>()
-    .AddScoped<IHttpService, HttpService>()
-    .AddScoped<ILocalStorageService, LocalStorageService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAlertService, AlertService>();
+builder.Services.AddScoped<IHttpService, HttpService>();
+builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 
 builder.Services.AddAuthorizationCore();
 

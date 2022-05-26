@@ -1,5 +1,6 @@
 ﻿@using Client.ServicesClient
 @inherits LayoutComponentBase
+@inject IAccountService AccountService
 @inject NavigationManager NavigationManager
 <MudThemeProvider/>
 <MudDialogProvider/>
@@ -7,9 +8,9 @@
 
 
 <MudLayout>
-    <MudAppBar Fixed="true">       
+    <MudAppBar Fixed="true">
 
-        
+
         <MudButton OnClick="@(GoHome)">HOME</MudButton>
         <MudSpacer/>
 
@@ -18,7 +19,7 @@
         </MudTextField>
         @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
         <MudSpacer/>
-        
+
         @if (@userFound)
         {
             <div class="dropdown">
@@ -75,16 +76,16 @@
 
 
 @code {
-    [Inject]
-    private IAccountService? AccountService { get; set; }
+    
+
     private string userInfo = "";
     private bool userFound = false;
     private string profileLetter;
-    
+
     private string TextValue { get; set; } = "";
 
     private readonly MudTheme _theme = new();
-    private bool _isDarkMode=true;
+    private bool _isDarkMode = true;
 
 
     private void GoHome()
@@ -95,6 +96,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+
         var timer = new System.Timers.Timer(1000);
         timer.Elapsed += (s, e) =>
         {
@@ -130,7 +132,7 @@
         NavigationManager.NavigateTo($"Search/{textValue}");
         TextValue = "";
     }
-    
+
     private void Enter(KeyboardEventArgs e)
     {
         if (e.Code is not ("Enter" or "NumpadEnter") || TextValue.Equals("")) return;

@@ -1,24 +1,13 @@
 ﻿@page "/"
-@using Client.Models
-@using Client.Services
 
 @inject NavigationManager NavigationManager
 
 
 <PageTitle>Index</PageTitle>
 
-<div class="container">
-    <div id="content">
-        <form class="form-inline">
-            <div class="input-group">
-                <MudTextField class="orm-control search-form" id="search" T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter"></MudTextField>
-                <span class="input-group-btn" style="width:39px">
-                    <MudButton id="search-this" class="pull-right btn btn-default search-btn" OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton>
-                </span>
-            </div>
-        </form>
-        <p class="text-center">Search your favorite movie</p>
-    </div>
+
+<div class="d-flex justify-center">
+    <MudImage ObjectFit="ObjectFit.Cover" Height="150" Width="1600" Src="/boat.jpg" Alt="banner"  Elevation="25" Class="rounded-lg"/>
 </div>
 
 
@@ -73,7 +62,7 @@
                 </MudButton>
             }
         </div>
-        
+        <div class="paddingTop5"></div>
         <p>
             <b>Trending TV shows</b>
         </p>
@@ -142,20 +131,5 @@
         }
     }
 
-
-    private void Enter(KeyboardEventArgs e)
-    {
-        if (e.Code is not ("Enter" or "NumpadEnter")) return;
-        NavigationManager.@NavigateTo($"Search/{TextValue}");
-        TextValue = "";
-    }
-
-    private void Search(string textValue)
-    {
-        NavigationManager.NavigateTo($"Search/{textValue}");
-        TextValue = "";
-    }
-    
-    
 
 }
