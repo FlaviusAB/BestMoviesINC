@@ -46,7 +46,7 @@ namespace Client.ServicesClient
 
         public async Task Login(Login model)
         {
-            User = await _httpService.Post<User>("http://localhost:7071/api/auth", model);
+            User = await _httpService.Post<User>("/api/auth", model);
             await _localStorageService.SetItem(_userKey, User);
         }
 
@@ -59,7 +59,7 @@ namespace Client.ServicesClient
 
         public async Task Register(AddUser model)
         {
-            await _httpService.Post("http://localhost:7071/api/signup", model);
+            await _httpService.Post("/api/signup", model);
         }
 
         public async Task<IList<User>> GetAll()

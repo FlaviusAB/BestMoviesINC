@@ -1,5 +1,6 @@
 ﻿@using Client.ServicesClient
 @inherits LayoutComponentBase
+@inject IAccountService AccountService
 @inject NavigationManager NavigationManager
 <MudThemeProvider/>
 <MudDialogProvider/>
@@ -7,9 +8,9 @@
 
 
 <MudLayout>
-    <MudAppBar Fixed="true">       
+    <MudAppBar Fixed="true">
 
-        
+
         <MudButton OnClick="@(GoHome)">HOME</MudButton>
         <MudSpacer/>
 
@@ -18,7 +19,7 @@
         </MudTextField>
         @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
         <MudSpacer/>
-        
+
         @if (@userFound)
         {
             <div class="dropdown">
@@ -56,14 +57,14 @@
         @*     </div> *@
         @* *@
         @* </MudPaper> *@
-        
-        
+
+
     </MudAppBar>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.False">
             @Body
         </MudContainer>
-        
+
     </MudMainContent>
 </MudLayout>
 <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
@@ -71,13 +72,23 @@
 <div class="footer-basic">
     <footer class="stayDown">
         <div class="social">
-            <a href="https://github.com/FlaviusAB" target="_blank"><MudAvatar title="Flavius" Image="/github_icon.png"/></a>
-            <a href="https://github.com/prOcenTas" target="_blank"><MudAvatar title="Faustas" Image="/github_icon.png"/></a>
-            <a href="https://github.com/Avender" target="_blank"><MudAvatar title="Mihai" Image="/github_icon.png"/></a>
+            <a href="https://github.com/FlaviusAB" target="_blank">
+                <MudAvatar title="Flavius" Image="/github_icon.png"/>
+            </a>
+            <a href="https://github.com/prOcenTas" target="_blank">
+                <MudAvatar title="Faustas" Image="/github_icon.png"/>
+            </a>
+            <a href="https://github.com/Avender" target="_blank">
+                <MudAvatar title="Mihai" Image="/github_icon.png"/>
+            </a>
         </div>
         <ul class="list-inline">
-            <li class="list-inline-item"><a href="#">Home</a></li>
-            <li class="list-inline-item"><a href="/About">About</a></li>
+            <li class="list-inline-item">
+                <a href="#">Home</a>
+            </li>
+            <li class="list-inline-item">
+                <a href="/About">About</a>
+            </li>
         </ul>
         <p class="copyright">Best Movies © 2022</p>
     </footer>
@@ -85,16 +96,16 @@
 
 
 @code {
-    [Inject]
-    private IAccountService? AccountService { get; set; }
+    
+
     private string userInfo = "";
     private bool userFound = false;
     private string profileLetter;
-    
+
     private string TextValue { get; set; } = "";
 
     private readonly MudTheme _theme = new();
-    private bool _isDarkMode=true;
+    private bool _isDarkMode = true;
 
 
     private void GoHome()
@@ -104,35 +115,34 @@
 
     protected override void OnInitialized()
     {
-        
-        
         base.OnInitialized();
+
         var timer = new System.Timers.Timer(1000);
-        timer.Elapsed += (s, e) => {
-                                       InvokeAsync(() => {
-                                                             try
-                                                             {
-                                                                 if (AccountService != null)
-                                                                 {
-                                                                     userInfo = AccountService.User.Username;
-                                                                     profileLetter = userInfo.Substring(0, 1);
-                                                                     userFound = true;
-                                                                 }
-                                                                 else
-                                                                 {
-                                                                   
-                                                                     
-                                                                 }
-                                                             }
-                                                             catch (Exception e)
-                                                             {
-                                                                 userFound = false;
-                                                                 userInfo = "Not logged in: ";
-                                                                 Console.WriteLine(e);
-                                                                 StateHasChanged();
-                                                             }
-                                                             StateHasChanged();
-                                       });
+        timer.Elapsed += (s, e) =>
+        {
+            InvokeAsync(() =>
+            {
+                try
+                {
+                    if (AccountService != null)
+                    {
+                        userInfo = AccountService.User.Username;
+                        profileLetter = userInfo.Substring(0, 1);
+                        userFound = true;
+                    }
+                    else
+                    {
+                    }
+                }
+                catch (Exception e)
+                {
+                    userFound = false;
+                    userInfo = "Not logged in: ";
+                    Console.WriteLine(e);
+                    StateHasChanged();
+                }
+                StateHasChanged();
+            });
         };
         timer.Start();
     }
@@ -142,7 +152,7 @@
         NavigationManager.NavigateTo($"Search/{textValue}");
         TextValue = "";
     }
-    
+
     private void Enter(KeyboardEventArgs e)
     {
         if (e.Code is not ("Enter" or "NumpadEnter") || TextValue.Equals("")) return;
