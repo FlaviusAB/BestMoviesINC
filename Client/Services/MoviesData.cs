@@ -13,10 +13,12 @@ public interface IMoviesData
     Task<List<Movie>> GetSimilar(string id);
     Task<List<Movie>> GetSearchMovies(string query);
     
-    Task<List<TV>> GetTrendingTv();
+    Task<List<Tv>> GetTrendingTv();
     
     Task<Movie> GetMovieDetails(string id);
-    Task<TV> GetTvDetails(string id);
+    Task<Tv> GetTvDetails(string id);
+    Task<Season> GetSeasonDetails(string id, int num);
+
     
     Task<List<PeopleEntity>> GetMovieCast(string id);
     Task<List<PeopleEntity>> GetTvCast(string id);
@@ -24,16 +26,30 @@ public interface IMoviesData
     Task<PeopleEntity> GetMovieCastSingle(string id);
     
     Task<List<Movie>> GetMovieCredits(string id);
-    Task<List<TV>> GetTvCredits(string id);
+    Task<List<Tv>> GetTvCredits(string id);
     
     Task<List<PeopleEntity>> GetMovieCrew(string id);
+    Task<List<PeopleEntity>> GetTvCrew(string id);
+    Task<List<PeopleEntity>> GetCreatedBy(string id);
+
+
 
 }
 
 public class MoviesData : IMoviesData
 {
     private readonly HttpClient _client = new();
-    
+    private static IEnumerable<JToken> AllChildren(JToken json)
+    {
+        foreach (var c in json.Children())
+        {
+            yield return c;
+            foreach (var cc in AllChildren(c))
+            {
+                yield return cc;
+            }
+        }
+    }
 
     public async Task<List<Movie>> GetTrending()
     {
@@ -147,9 +163,9 @@ public class MoviesData : IMoviesData
     }
     
     
-    public async Task<List<TV>> GetTrendingTv()
+    public async Task<List<Tv>> GetTrendingTv()
     {
-        var tvs = new List<TV>();
+        var tvs = new List<Tv>();
         var response =
             await _client.GetAsync(
                 "https://api.themoviedb.org/3/trending/tv/week?api_key=a5ab4805002668ee4999f8bac7a4691d");
@@ -162,7 +178,7 @@ public class MoviesData : IMoviesData
 
         foreach (var result in resultObjects)
         {
-            var obj = JsonConvert.DeserializeObject<TV>(result.ToString());
+            var obj = JsonConvert.DeserializeObject<Tv>(result.ToString());
             tvs.Add(obj);
         }
 
@@ -179,14 +195,23 @@ public class MoviesData : IMoviesData
         return obj;
     }
     
-    public async Task<TV> GetTvDetails(string id)
+    public async Task<Tv> GetTvDetails(string id)
     {
         HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/tv/"+id+"?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
         response.EnsureSuccessStatusCode();
         string responseBody = await response.Content.ReadAsStringAsync();
-        var obj = JsonConvert.DeserializeObject<TV>(responseBody);
+        var obj = JsonConvert.DeserializeObject<Tv>(responseBody);
         return obj;
     }
+    public async Task<Season> GetSeasonDetails(string id, int num)
+    {
+        HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/tv/"+ id +"/season/" + num +"?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        var obj = JsonConvert.DeserializeObject<Season>(responseBody);
+        return obj;
+    }
+
     
 
     public async Task<List<PeopleEntity>> GetMovieCast(string id)
@@ -260,9 +285,9 @@ public class MoviesData : IMoviesData
         return movies;
     }
 
-    public async Task<List<TV>> GetTvCredits(string id)
+    public async Task<List<Tv>> GetTvCredits(string id)
     {
-        var tvs = new List<TV>();
+        var tvs = new List<Tv>();
         var response =
             await _client.GetAsync(
                 "https://api.themoviedb.org/3/person/"+id+"/tv_credits?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
@@ -275,7 +300,7 @@ public class MoviesData : IMoviesData
 
         foreach (var result in resultObjects)
         {
-            var obj = JsonConvert.DeserializeObject<TV>(result.ToString());
+            var obj = JsonConvert.DeserializeObject<Tv>(result.ToString());
             tvs.Add(obj);
         }
 
@@ -302,18 +327,42 @@ public class MoviesData : IMoviesData
         return crew;
     }
     
-    
-    
-    private static IEnumerable<JToken> AllChildren(JToken json)
+    public async Task<List<PeopleEntity>> GetTvCrew(string id)
     {
-        foreach (var c in json.Children())
+        var crew = new List<PeopleEntity>();
+        HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/tv/" + id + "/credits?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("crew"))
+            .Children<JObject>();
+        
+        foreach (JObject result in resultObjects)
         {
-            yield return c;
-            foreach (var cc in AllChildren(c))
-            {
-                yield return cc;
-            }
+            var obj = JsonConvert.DeserializeObject<PeopleEntity>(result.ToString());
+            crew.Add(obj);
         }
+
+        return crew;
+    }
+
+    public async Task<List<PeopleEntity>> GetCreatedBy(string id)
+    {
+        var crew = new List<PeopleEntity>();
+        HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/tv/" + id + "/credits?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        var resultObjects = AllChildren(JObject.Parse(responseBody))
+            .First(c => c.Type == JTokenType.Array && c.Path.Contains("crew"))
+            .Children<JObject>();
+        
+        foreach (JObject result in resultObjects)
+        {
+            var obj = JsonConvert.DeserializeObject<PeopleEntity>(result.ToString());
+            crew.Add(obj);
+        }
+
+        return crew;
     }
     
 }

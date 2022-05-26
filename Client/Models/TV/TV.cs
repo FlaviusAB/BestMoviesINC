@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Client.Models;
 
-public class TV
+public class Tv
 {
     
         [JsonProperty("adult")]

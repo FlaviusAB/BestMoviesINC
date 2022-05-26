@@ -1,0 +1,103 @@
+﻿@page "/SeasonDetails/{Value}/season/{Num}"
+@using Client.Services
+@inject NavigationManager NavigationManager
+
+<MudLayout>
+    <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+        <MudGrid>
+            <MudItem xs="12" sm="3">
+                @if (@PosterPath == null)
+                {
+                    <MudImage Width="299" Height="399" Src="/no-image-icon-6.png" Fluid="true" Alt="@Name" Elevation="25" Class="rounded-lg"/>
+                }
+                else
+                {
+                    <MudImage Width="299" Height="399" Src="@PosterPath" Fluid="true" Alt="@Name" Elevation="25" Class="rounded-lg"/>
+                }
+            </MudItem>
+            <MudItem xs="12" sm="9">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5">
+                                @Name
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                     
+
+                        <MudText Class="paddingTop5 paddingBottom5">
+                            @SeasonDescription
+                        </MudText>
+                       
+                       
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">First Episode</span><span>@AirDate</span>
+                        </MudText>
+                        
+
+
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+
+            <div class="empty-space"></div>
+
+        </MudGrid>
+    </MudContainer>
+</MudLayout>
+
+
+@code {
+    [Inject]
+    private IMoviesData? MoviesData { get; set; }
+    
+    [Parameter]
+    public string? Value { get; set; }
+    
+    [Parameter]
+    public int Num { get; set; }
+    
+    private string? PosterPath { get; set; }
+    private string? Name { get; set; }
+    private string? SeasonDescription { get; set; }
+    private string? AirDate { get; set; }
+    private List<PeopleEntity> _crewList = new();
+    private List<PeopleEntity> _people = new();
+    
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var id = Value;
+        var num = Num;
+        if (id != null)
+        {
+            await SeasonInfo(id, num);
+        }
+    }
+
+    private async Task SeasonInfo(string id ,int num)
+    {
+        if (MoviesData != null)
+        {
+            var obj = await MoviesData.GetSeasonDetails(id, num);
+            if (obj.PosterPath == null)
+            {
+                PosterPath = "/no-image-icon-6.png";
+            }
+            else
+            {
+                PosterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
+            }
+
+            Name = obj.Name;
+            SeasonDescription = obj.Overview;
+            AirDate = obj.AirDate;
+        }
+    }
+
+
+}

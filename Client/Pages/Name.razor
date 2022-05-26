@@ -27,7 +27,7 @@
                     </MudCardHeader>
                     <MudCardContent>
                         <MudText Class="paddingTop2">
-                            @PersonBiograpgy
+                            @PersonBiography
                         </MudText>
                         <MudText Class="paddingTop2">
                             <span class="paddingRight5 bold">Born:</span><span>@PersonDob</span><span>@PersonPlaceOfBirth</span>
@@ -42,26 +42,27 @@
         <div class="container2">
             @foreach (var item in _movies)
             {
-                var poster = "";
-                if (@item.PosterPath == null)
-                {
-                    poster = "/no-image-icon-6.png";
-                    <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                            <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                            <p class="no-image-text">@item.Title</p>
-                        </MudPaper>
-                    </MudButton>
-                }
-                else
-                {
-                    poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
-                    <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                            <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                        </MudPaper>
-                    </MudButton>
-                }
+                string poster;
+                    if (@item.PosterPath == null)
+                    {
+                        poster = "/no-image-icon-6.png";
+                        <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                                <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                                <p class="no-image-text">@item.Title</p>
+                            </MudPaper>
+                        </MudButton>
+                    }
+                    else
+                    {
+                        poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                        <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                                <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                            </MudPaper>
+                        </MudButton>
+                    }
+                
             }
         </div>
         <div class="paddingTop5"></div>
@@ -69,58 +70,57 @@
             TV shows
         </p>
         <div class="container2">
-                    @foreach (var item in _tvs)
-                    {
-                        var poster = "";
-                        if (@item.PosterPath == null)
-                        {
-                            poster = "/no-image-icon-6.png";
-                            <MudButton OnClick="@(() => TvDetails(@item.Id))">
-                                <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                                    <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
-                                    <p class="no-image-text">@item.Name</p>
-                                </MudPaper>
-                            </MudButton>
-                        }
-                        else
-                        {
-                            poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
-                            <MudButton OnClick="@(() => TvDetails(@item.Id))">
-                                <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                                    <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
-                                </MudPaper>
-                            </MudButton>
-                        }
-                    }
-                </div>
+            @foreach (var item in _tvs)
+            {
+                string poster;
+                if (@item.PosterPath == null)
+                {
+                    poster = "/no-image-icon-6.png";
+                    <MudButton OnClick="@(() => TvDetails(@item.Id))">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                            <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+                            <p class="no-image-text">@item.Name</p>
+                        </MudPaper>
+                    </MudButton>
+                }
+                else
+                {
+                    poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                    <MudButton OnClick="@(() => TvDetails(@item.Id))">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                            <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+                        </MudPaper>
+                    </MudButton>
+                }
+            }
+        </div>
         <div class="paddingTop5"></div>
 
     </MudContainer>
 </MudLayout>
 
 
-
-
 @code {
-    [Inject] private IMoviesData? MoviesData { get; set; }
-    
-    
+
+    [Inject]
+    private IMoviesData? MoviesData { get; set; }
+
+
     [Parameter]
     public string? Value { get; set; }
-    
+
     private string? ProfilePath { get; set; }
     private string? PersonName { get; set; }
     private string? PersonDob { get; set; }
-    private string? PersonBiograpgy { get; set; }
+    private string? PersonBiography { get; set; }
     private string? PersonPlaceOfBirth { get; set; }
-    
+
     private List<Movie> _movies = new();
-    private List<TV> _tvs = new();
+    private List<Tv> _tvs = new();
 
 
     protected override async Task OnParametersSetAsync()
     {
-    
         var id = Value;
         if (id != null)
         {
@@ -132,7 +132,7 @@
     private async Task NameApi(string id)
     {
         var obj = await MoviesData?.GetMovieCastSingle(id)!;
-        if(obj.ProfilePath == null) 
+        if (obj.ProfilePath == null)
         {
             ProfilePath = "/wp-person-placeholder.png";
         }
@@ -140,18 +140,18 @@
         {
             ProfilePath = "https://image.tmdb.org/t/p/w200" + obj.ProfilePath;
         }
-        
-        
+
+
         PersonName = obj.Name;
         PersonDob = obj.Birthday;
-        PersonBiograpgy = obj.Biography;
-        if(obj.PlaceOfBirth==null)
+        PersonBiography = obj.Biography;
+        if (obj.PlaceOfBirth == null)
         {
             PersonPlaceOfBirth = "";
         }
         else
         {
-            PersonPlaceOfBirth = " in "+obj.PlaceOfBirth;
+            PersonPlaceOfBirth = " in " + obj.PlaceOfBirth;
         }
     }
 
@@ -159,18 +159,18 @@
     {
         _movies = new List<Movie>();
         if (MoviesData != null) _movies = await MoviesData.GetMovieCredits(id);
-        _tvs = new List<TV>();
+        _tvs = new List<Tv>();
         if (MoviesData != null) _tvs = await MoviesData.GetTvCredits(id);
-
     }
-    
+
     void MovieDetails(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");
     }
-    
+
     void TvDetails(int id)
     {
         NavigationManager.NavigateTo($"TVDetails/{id}");
     }
+
 }
