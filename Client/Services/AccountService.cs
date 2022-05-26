@@ -1,11 +1,9 @@
-
 using BlazorApp.Models.Account;
 using Client.Models;
 using Client.Models.Account;
-using Client.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace Client.ServicesClient
+namespace Client.Services
 {
     public interface IAccountService
     {
@@ -22,9 +20,9 @@ namespace Client.ServicesClient
 
     public class AccountService : IAccountService
     {
-        private IHttpService _httpService;
-        private NavigationManager _navigationManager;
-        private ILocalStorageService _localStorageService;
+        private readonly IHttpService _httpService;
+        private readonly NavigationManager _navigationManager;
+        private readonly ILocalStorageService _localStorageService;
         private string _userKey = "user";
 
         public User User { get; private set; }

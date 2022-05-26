@@ -1,5 +1,4 @@
-﻿@using Client.ServicesClient
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 @inject IAccountService AccountService
 @inject NavigationManager NavigationManager
 <MudThemeProvider/>
@@ -50,28 +49,28 @@
 
 <footer>
     <div class="footer-basic">
-        <div class="social">
-            <a href="https://github.com/FlaviusAB" target="_blank">
-                <MudAvatar title="Flavius" Image="/github_icon.png"/>
-            </a>
-            <a href="https://github.com/prOcenTas" target="_blank">
-                <MudAvatar title="Faustas" Image="/github_icon.png"/>
-            </a>
-            <a href="https://github.com/Avender" target="_blank">
-                <MudAvatar title="Mihai" Image="/github_icon.png"/>
-            </a>
+            <div class="social">
+                <a href="https://github.com/FlaviusAB" target="_blank">
+                    <MudAvatar title="Flavius" Image="/github_icon.png"/>
+                </a>
+                <a href="https://github.com/prOcenTas" target="_blank">
+                    <MudAvatar title="Faustas" Image="/github_icon.png"/>
+                </a>
+                <a href="https://github.com/Avender" target="_blank">
+                    <MudAvatar title="Mihai" Image="/github_icon.png"/>
+                </a>
+            </div>
+            <br/>
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="#">Home</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="/About">About</a>
+                </li>
+            </ul>
+            <p class="copyright">Best Movies © 2022</p>
         </div>
-        <br/>
-        <ul class="list-inline">
-            <li class="list-inline-item">
-                <a href="#">Home</a>
-            </li>
-            <li class="list-inline-item">
-                <a href="/About">About</a>
-            </li>
-        </ul>
-        <p class="copyright">Best Movies © 2022</p>
-    </div>
 </footer>
 
 
@@ -104,6 +103,7 @@
             {
                 try
                 {
+                    AccountService.Initialize();
                     if (AccountService != null)
                     {
                         userInfo = AccountService.User.Username;
@@ -112,6 +112,7 @@
                     }
                     else
                     {
+                        
                     }
                 }
                 catch (Exception e)

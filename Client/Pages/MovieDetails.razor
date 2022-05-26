@@ -3,7 +3,6 @@
 
 @using Client.Models
 @using Client.Services
-@using Client.ServicesClient
 @inject NavigationManager NavigationManager
 
 
@@ -224,6 +223,7 @@
     public string? Value { get; set; }
 
     private string? PosterPath { get; set; }
+    private string? MainPosterPath { get; set; }
     private string? MovieTitle { get; set; }
     private string? MovieDescription { get; set; }
     private string? RunTime { get; set; }
@@ -300,8 +300,19 @@
             }
             else
             {
-                PosterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
+                PosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
             }
+            
+            
+            
+            // if (obj.PosterPath == null)
+            // {
+            //     MainPosterPath = "/no-image-icon-6.png";
+            // }
+            // else
+            // {
+            //     MainPosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
+            // }
 
             MovieTitle = obj.Title;
             MovieDescription = obj.Overview;

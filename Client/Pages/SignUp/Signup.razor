@@ -3,7 +3,6 @@
 @using BlazorApp.Models.Account
 @using Client.Exceptions
 @using Client.Services
-@using Client.ServicesClient
 @using IAlertService = Client.Services.IAlertService
 @using MudBlazor
 @inject NavigationManager NavigationManager
@@ -82,6 +81,7 @@
             NavigationManager.NavigateTo($"/Login");
             
         }
+        
         catch (Exception ex)
         {
             AlertService.Error(ex.Message);

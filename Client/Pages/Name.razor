@@ -1,6 +1,4 @@
 ﻿@page "/Name/{Value}"
-@using Client.Models
-@using Client.Services
 @inject NavigationManager NavigationManager
 
 <MudLayout>
@@ -25,6 +23,11 @@
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
+                    <div class="box">
+                        <span>
+                            @Math.Round(_ratings, 2)
+                        </span>
+                    </div>
                     <MudCardContent>
                         <MudText Class="paddingTop2">
                             @PersonBiography
@@ -36,13 +39,16 @@
                 </MudCard>
             </MudItem>
         </MudGrid>
-        <p class="knownFor">
-            <b>Known for: Movies</b>
-        </p>
-        <div class="container2">
-            @foreach (var item in _movies)
-            {
-                string poster;
+
+        @if (_movies.Count != 0)
+        {
+            <p class="knownFor">
+                <b>Known for: @_movies.Count Movies </b>
+            </p>
+            <div class="container2">
+                @foreach (var item in _movies)
+                {
+                    string poster;
                     if (@item.PosterPath == null)
                     {
                         poster = "/no-image-icon-6.png";
@@ -62,39 +68,42 @@
                             </MudPaper>
                         </MudButton>
                     }
-                
-            }
-        </div>
-        <div class="paddingTop5"></div>
-        <p>
-            TV shows
-        </p>
-        <div class="container2">
-            @foreach (var item in _tvs)
-            {
-                string poster;
-                if (@item.PosterPath == null)
-                {
-                    poster = "/no-image-icon-6.png";
-                    <MudButton OnClick="@(() => TvDetails(@item.Id))">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                            <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
-                            <p class="no-image-text">@item.Name</p>
-                        </MudPaper>
-                    </MudButton>
                 }
-                else
+            </div>
+            <div class="paddingTop5"></div>
+        }
+        @if (_tvs.Count != 0)
+        {
+            <p class="knownFor">
+                <b> @_tvs.Count TV shows </b>
+            </p>
+            <div class="container2">
+                @foreach (var item in _tvs)
                 {
-                    poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
-                    <MudButton OnClick="@(() => TvDetails(@item.Id))">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                            <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
-                        </MudPaper>
-                    </MudButton>
+                    string poster;
+                    if (@item.PosterPath == null)
+                    {
+                        poster = "/no-image-icon-6.png";
+                        <MudButton OnClick="@(() => TvDetails(@item.Id))">
+                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                                <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+                                <p class="no-image-text">@item.Name</p>
+                            </MudPaper>
+                        </MudButton>
+                    }
+                    else
+                    {
+                        poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                        <MudButton OnClick="@(() => TvDetails(@item.Id))">
+                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                                <MudImage id="noImagePoster" Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+                            </MudPaper>
+                        </MudButton>
+                    }
                 }
-            }
-        </div>
-        <div class="paddingTop5"></div>
+            </div>
+            <div class="paddingTop5"></div>
+        }
 
     </MudContainer>
 </MudLayout>
@@ -118,6 +127,7 @@
     private List<Movie> _movies = new();
     private List<Tv> _tvs = new();
 
+    private double _ratings;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -125,6 +135,7 @@
         if (id != null)
         {
             await NameApi(id);
+            await TotalStats(id);
             await CreditApi(id);
         }
     }
@@ -138,7 +149,7 @@
         }
         else
         {
-            ProfilePath = "https://image.tmdb.org/t/p/w200" + obj.ProfilePath;
+            ProfilePath = "https://image.tmdb.org/t/p/original" + obj.ProfilePath;
         }
 
 
@@ -152,6 +163,29 @@
         else
         {
             PersonPlaceOfBirth = " in " + obj.PlaceOfBirth;
+        }
+    }
+
+
+    private async Task TotalStats(string id)
+    {
+        if (MoviesData != null)
+        {
+            _movies = new List<Movie>();
+            if (MoviesData != null) _movies = await MoviesData.GetMovieCredits(id);
+
+            var totalRatings = 0.0;
+            var count = 0;
+
+            foreach (var item in _movies)
+            {
+                if (item.VoteCount > 1)
+                {
+                    totalRatings += item.VoteAverage;
+                    count++;
+                }
+            }
+            _ratings = totalRatings / count;
         }
     }
 

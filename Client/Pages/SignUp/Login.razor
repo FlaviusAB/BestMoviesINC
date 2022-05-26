@@ -2,8 +2,6 @@
 @using Client.Helpers
 
 @using Client.Services
-
-@using Client.ServicesClient
 @inject NavigationManager NavigationManager
 @inject IAccountService AccountService
 @inject IAlertService AlertService
@@ -13,12 +11,12 @@
 <div class="empty-space"></div>
 <h3>Login</h3>
 
-<MudGrid>
-    <MudItem xs="12" sm="7">
+<MudLayout>
+    <MudContainer MaxWidth="MaxWidth.Medium">
         <MudPaper Class="pa-4">
             <MudForm @ref="form">
-                <MudTextField T="string" Label="Username" @bind-Value="username" Required="true" RequiredError="User name is required!"/>
-                <MudTextField T="string" Label="Password" @bind-Value="password" InputType="InputType.Password"/>
+                <MudTextField T="string" Label="Username" Varian="Variant.Outlined" @bind-Value="username" RequiredError="User name is required!"/>
+                <MudTextField T="string" Immediate="true" @onkeydown="@Enter" Label="Password" @bind-Value="password" InputType="InputType.Password"/>
                 <div class="d-flex align-center justify-space-between mt-6">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(() => LoginFunc())">Login</MudButton>
                 </div>
@@ -31,10 +29,9 @@
             <MudText> Dont have an account? register right now </MudText>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="/Signup">Sign up</MudButton>
         </MudPaper>
-    </MudItem>
-</MudGrid>
-<div class="empty-space-large"></div>
-<div class="empty-space-large"></div>
+    </MudContainer>
+</MudLayout>
+
 @code {
 
     string errorUsernameIncorrect { get; set; }
@@ -51,6 +48,7 @@
 
     private async void LoginFunc()
     {
+        
     // UserCredentials userData = new UserCredentials(username,password);
     // Console.WriteLine(userData.ToString());
     // errorUsernameIncorrect=await DbAccess.UserAuthentication(userData);
@@ -66,6 +64,8 @@
     // Console.WriteLine(errorUsernameIncorrect);
 
     // reset alerts on submit
+        
+        
         model.Username = username;
         model.Password = password;
         AlertService.Clear();
@@ -98,6 +98,12 @@
             });
         };
         timer.Start();
+    }
+    
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code is not ("Enter" or "NumpadEnter")) return;
+        LoginFunc();
     }
 
 }

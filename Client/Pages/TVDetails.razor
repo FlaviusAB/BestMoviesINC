@@ -174,7 +174,7 @@
             <div class="container2">
                 @foreach (var item in _seasons)
                 {
-                    var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                    var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
                     // <MudButton OnClick="@(() => SeasonDetails(Value, @item.SeasonNumber))"> 
                         <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
@@ -262,7 +262,7 @@
             }
             else
             {
-                PosterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
+                PosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
             }
 
             TvTitle = obj.Name;
@@ -338,7 +338,7 @@
             }
             else
             {
-                SeasonPosterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
+                SeasonPosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
             }
         }
     }

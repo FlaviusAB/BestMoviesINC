@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using System;
 using System.Net;
-using Client.ServicesClient;
+using Client.Services;
 
 namespace Client.Helpers
 {
