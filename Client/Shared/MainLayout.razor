@@ -97,7 +97,6 @@
 
 @code {
     
-
     private string userInfo = "";
     private bool userFound = false;
     private string profileLetter;
@@ -121,23 +120,21 @@
         {
             InvokeAsync(() =>
             {
-                try
-                {
+                
                     AccountService.Initialize();
-                    if (AccountService != null)
+                    if (AccountService.User?.Username!= null)
                     {
                         userInfo = AccountService.User.Username;
                         profileLetter = userInfo.Substring(0, 1);
                         userFound = true;
                     }
-                }
-                catch (Exception e)
-                {
+                    else
+                    {
                     userFound = false;
                     userInfo = "Not logged in: ";
                     Console.WriteLine(e);
                     StateHasChanged();
-                }
+                    }
                 StateHasChanged();
             });
         };

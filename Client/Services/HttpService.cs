@@ -142,7 +142,7 @@ namespace Client.Services
             var user = await _localStorageService.GetItem<User>("user");
             var isApiUrl = !request.RequestUri.IsAbsoluteUri;
             if (user != null && isApiUrl)
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", user.Token);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", user.SessionToken);
         }
 
         private async Task handleErrors(HttpResponseMessage response)
