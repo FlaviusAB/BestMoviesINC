@@ -112,25 +112,26 @@ namespace Api
         [FunctionName("GetFavorites")]
         public static async Task<IActionResult> GetFavorites(ExecutionContext context,
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "favorites/{username}/{movie_id}")]
-            HttpRequest req, ILogger log,string username, string movie_id)
+            HttpRequest req, ILogger log, string username, string movie_id)
         {
-            string favorited="false";
+            string foundFavorited = "";
             string exists = "";
+
             var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
             
             using (SqlConnection conn = new SqlConnection(appsettingvalue))
             {
                 conn.Open();
-                var query = @"select favorite from favorites where username = '@username' and movie_id = '@movie_id'";
+                var query = @"select * from favorites where username = @username and movie_id = @movie_id";
                 SqlCommand command = new SqlCommand(query, conn);
                 command.Parameters.AddWithValue("@username", username);
-                command.Parameters.AddWithValue("@movie_id", movie_id);
+                command.Parameters.AddWithValue("@movie_id", Int32.Parse(movie_id));
                 var reader = await command.ExecuteReaderAsync();
                 while (reader.Read())
                 {
-                    favorited = reader["favorite"].ToString();
+                    foundFavorited = reader["username"].ToString();
                 }
-                if (string.IsNullOrWhiteSpace(favorited))
+                if (string.IsNullOrWhiteSpace(foundFavorited))
                 {
                     exists = "false";
                 }
@@ -140,8 +141,8 @@ namespace Api
                 }
                 
             }
-            Console.WriteLine(favorited);
-            return new OkResult();
+            Console.WriteLine(username);
+            return new OkObjectResult(exists);
         }
         
         //TODO change to DELETE
