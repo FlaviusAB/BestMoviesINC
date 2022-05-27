@@ -1,6 +1,6 @@
 
 using Client.Models;
-
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -71,13 +71,11 @@ public class DbAccess : IDbAccess
 
     public async Task<List<string>> GetAllFavorite(string username)
     {
-        
         var response = await _httpClient.GetAsync($"http://localhost:7071/api/favorites/{username}");
         response.EnsureSuccessStatusCode();
+
         string responseBody = await response.Content.ReadAsStringAsync();
-        var favArray =  responseBody.Split(",");
-        var favList = new List<string>();
-        favList.AddRange(favArray);
+        var favList = JsonConvert.DeserializeObject<List<string>>(responseBody).ToList();
         return favList;
     }
     

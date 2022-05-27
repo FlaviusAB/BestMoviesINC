@@ -303,7 +303,7 @@
         DbAccess?.SaveFavorite(favorite);
     }
 
-    private Task<List<string>>? GetAllfavorites()
+    private Task<List<string>>? GetAllFavorites()
     {
         var allFav = DbAccess?.GetAllFavorite(AccountService.User?.Username!);
         return allFav;
@@ -311,7 +311,7 @@
 
     private async Task<string> CheckFavorites()
     {
-        await GetAllfavorites()!;
+        await GetAllFavorites()!;
         var result = await DbAccess?.GetFavorite(AccountService.User?.Username!, Int32.Parse(Value));
         return result;
     }
