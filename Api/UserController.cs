@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Api.Models;
@@ -95,7 +96,7 @@ namespace Api
                     conn.Open();  
                     if(!String.IsNullOrEmpty(input.username))  
                     {
-                        var query = $"INSERT INTO [favorites] (username,movie_id,favorite) VALUES('{input.username}', '{input.movie_id}')";  
+                        var query = $"INSERT INTO [favorites] (username,movie_id) VALUES('{input.username}', '{input.movie_id}')";  
                         SqlCommand command = new SqlCommand(query, conn);  
                         command.ExecuteNonQuery();  
                     }  
@@ -144,15 +145,66 @@ namespace Api
             return new OkObjectResult(exists);
         }
         
-        //TODO change to DELETE
-        [FunctionName("DeleteFavorite")]
-        public static async Task<IActionResult> UpdateFavorite(ExecutionContext context,
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "favorites/{username}/{movie_id}")]
-            HttpRequest req, ILogger log)
+        [FunctionName("GetAllFavorites")]
+        public static async Task<IActionResult> GetAllFavorites(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "favorites/{username}")]
+            HttpRequest req, ILogger log, string username)
         {
-            return null;
+            List<string> foundMovies = new List<string>();
+
+            var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+            
+            using (SqlConnection conn = new SqlConnection(appsettingvalue))
+            {
+                conn.Open();
+                var query = @"select movie_id from favorites where username = @username";
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@username", username);
+                var reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    foundMovies.Add(reader["movie_id"].ToString()) ;
+                }
+            }
+            return new OkObjectResult(foundMovies);
         }
         
+        [FunctionName("DeleteFavorites")]
+        public static async Task<IActionResult> DeleteFavorites(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "favorites/{username}/{movie_id}")]
+            HttpRequest req, ILogger log, string username, int movie_id)
+        {
+            
+            string foundFavorited = "";
+            string exists = "";
+            
+            var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+            
+            using (SqlConnection conn = new SqlConnection(appsettingvalue))
+            {
+                conn.Open();
+                var query = @"delete from favorites where username = @username and movie_id = @movie_id";
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@movie_id", movie_id);
+                var reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    foundFavorited = reader["username"].ToString();
+                }
+                if (string.IsNullOrWhiteSpace(foundFavorited))
+                {
+                    exists = "false";
+                }
+                else
+                {
+                    exists = "true";
+                }
+                
+            }
+            return new OkObjectResult(exists);  
+        }
+
         [FunctionName("CreateUser")]  
         public static async Task<IActionResult> CreateUser(ExecutionContext context,
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "signup")] HttpRequest req, ILogger log)  
