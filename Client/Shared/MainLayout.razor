@@ -101,8 +101,7 @@
         {
             InvokeAsync(() =>
             {
-                try
-                {
+               
                     AccountService.Initialize();
                     if (AccountService.User?.Username!= null)
                     {
@@ -110,8 +109,8 @@
                         profileLetter = userInfo.Substring(0, 1);
                         userFound = true;
                     }
-                }
-                catch (Exception e)
+                
+                else
                 {
                     userFound = false;
                     userInfo = "Not logged in: ";

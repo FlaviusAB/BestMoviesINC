@@ -30,7 +30,10 @@
 
                 <div class="d-flex align-center justify-space-between mt-6">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto"
-                               OnClick="@(() => SignUp())">
+                               OnClick="@(() => SignUp())">@if (loading) 
+                                                                           {
+                                                                               <span class="spinner-border spinner-border-sm mr-1"></span>
+                                                                           }
                         Register
                     </MudButton>
                 </div>
@@ -50,6 +53,7 @@
 <div class="empty-space-large"></div>
 
 @code {
+    bool loading;
     bool success;
     string[] errors = { };
 
@@ -73,7 +77,7 @@
         //User userData = new User(username, password, email, "user");
         //message = await DbAccess.RegisterUser(userData);
 
-        
+        loading = true;
         try
         {
             await AccountService.Register(model);
@@ -84,6 +88,7 @@
         
         catch (Exception ex)
         {
+            loading = false;
             AlertService.Error(ex.Message);
             message = "User already existing";
             StateHasChanged();
