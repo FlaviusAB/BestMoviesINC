@@ -15,6 +15,7 @@ builder.Services.AddScoped<IAlertService, AlertService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAlertService, AlertService>();
 builder.Services.AddScoped<IHttpService, HttpService>();
+builder.Services.AddScoped<IDbAccess, DbAccess>();
 builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 
 builder.Services.AddAuthorizationCore();

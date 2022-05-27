@@ -1,8 +1,5 @@
 ﻿@page "/MovieDetails/{Value}"
 
-
-@using Client.Models
-@using Client.Services
 @inject NavigationManager NavigationManager
 
 
@@ -169,19 +166,19 @@
                     </MudCardContent>
                 </MudCard>
             </MudItem>
-            @if (@userFound)
+            @if (_userFound)
             {
-                if (favoriteButton.Equals("false"))
+                if (_favoriteButton.Equals("false"))
                 {
                      
                     <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite" 
-                               Color="Color.Primary" Disabled="@isDisabled1" OnClick="FavoriteMovie">Favorite</MudButton>
+                               Color="Color.Primary" Disabled="@IsDisabled1" OnClick="FavoriteMovie">Favorite</MudButton>
                                     
                 }
                 else
                 {
                     <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite" 
-                               Color="Color.Primary" Disabled="@isDisabled2" OnClick="RemoveFavoriteMovie">Remove Favorite</MudButton>
+                               Color="Color.Primary" Disabled="@IsDisabled2" OnClick="RemoveFavoriteMovie">Remove Favorite</MudButton>
                 }
 
             }
@@ -226,17 +223,18 @@
     private IAccountService? AccountService { get; set; }
     [Inject]
     private IMoviesData? MoviesData { get; set; }
+    
+    [Inject]
+    private IDbAccess? DbAccess{ get; set; }
+    
 
     [Parameter]
     public string? Value { get; set; }
-    
-    protected bool isDisabled1 { get; set; }
-    protected bool isDisabled2 { get; set; }
-    private bool FavoriteOrNot;
-    private FavoriteEntity favoriteEntity;
-    
+
+    private bool IsDisabled1 { get; set; }
+    private bool IsDisabled2 { get; set; }
+
     private string? PosterPath { get; set; }
-    private string? MainPosterPath { get; set; }
     private string? MovieTitle { get; set; }
     private string? MovieDescription { get; set; }
     private string? RunTime { get; set; }
@@ -262,9 +260,8 @@
     private string _crewName = "";
     private List<Movie> _movies = new();
 
-    private string userInfo = "";
-    private bool userFound = false;
-    private string favoriteButton = "false";
+    private bool _userFound;
+    private string _favoriteButton = "false";
     
 
     protected override async Task OnParametersSetAsync()
@@ -283,55 +280,46 @@
             await Similar(id);
             await MovieCrewApi(id);
         }
-        try
-        {
-            if (AccountService.User?.Username != null)
+        
+        if (AccountService.User?.Username!= null)
             {
-                userInfo = AccountService.User.Username; 
-                userFound = true;
-                favoriteButton = await CheckFavorites();
+                _userFound = true;
+                _favoriteButton = await CheckFavorites();
             }
-        }
-        catch (Exception e)
+        
+        else
         {
-            favoriteButton = "false";
-            userInfo = "Guest";
-            userFound = false;
-            Console.WriteLine(e);
+            _favoriteButton = "false";
+            _userFound = false;
+           
         }
     }
 
     private void FavoriteMovie()
     {
         //TODO if its true -> update instead of insert
-        isDisabled1 = true;
-        FavoriteEntity favoriteEntity = new FavoriteEntity(AccountService.User.Username, Value);
-        IDbAccess dbAccess = new DbAccess();
-        dbAccess.SaveFavorite(favoriteEntity);
+        IsDisabled1 = true;
+        FavoriteEntity favorite = new FavoriteEntity(AccountService.User?.Username!, Value);
+        DbAccess?.SaveFavorite(favorite);
     }
 
-    private Task<List<string>> GetAllfavorites()
+    private Task<List<string>>? GetAllfavorites()
     {
-        IDbAccess dbAccess = new DbAccess();
-        List<string> all = new List<string>();
-        dbAccess.GetAllFavorite(AccountService.User.Username);
-        return null;
+        var allFav = DbAccess?.GetAllFavorite(AccountService.User?.Username!);
+        return allFav;
     } 
 
     private async Task<string> CheckFavorites()
     {
-        GetAllfavorites();
-        IDbAccess dbAccess = new DbAccess();
-        string result;
-        result = await dbAccess.GetFavorite(AccountService.User.Username, Int32.Parse(Value));
+        await GetAllfavorites()!;
+        var result = await DbAccess?.GetFavorite(AccountService.User?.Username!, Int32.Parse(Value));
         return result;
     }
 
     private void RemoveFavoriteMovie()
     {
-        isDisabled2 = true;
-        IDbAccess dbAccess = new DbAccess();
-        dbAccess.DeleteFavorite(AccountService.User.Username, Int32.Parse(Value));
+        IsDisabled2 = true;
+        DbAccess?.DeleteFavorite(AccountService.User?.Username!, Int32.Parse(Value));
     }
 
     private async Task MovieDetailsApi(string id)
@@ -349,15 +337,6 @@
             }
             
             
-            
-            // if (obj.PosterPath == null)
-            // {
-            //     MainPosterPath = "/no-image-icon-6.png";
-            // }
-            // else
-            // {
-            //     MainPosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
-            // }
 
             MovieTitle = obj.Title;
             MovieDescription = obj.Overview;
