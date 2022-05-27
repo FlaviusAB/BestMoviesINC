@@ -22,19 +22,22 @@
         @*         </MudCard> *@
         @*     </MudItem> *@
         @* </MudGrid> *@
-        <div class="container2" >
-                    @foreach (var item in @ProfileFavorites)
-                    {
-                        var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
-                       
-                        <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                                <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                            </MudPaper>
-                        </MudButton>
-        
-                    }
-                </div>
+        <div class="container2">
+            
+                 @foreach (var item in ProfileFavorites)
+                            {
+                                var poster = "https://image.tmdb.org/t/p/original" + @PosterPath;
+                                <p>INSIDE</p>
+                                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                                        <MudImage Src="@poster" Fluid="true" Alt=@MovieTitle Elevation="25" Class="rounded-lg"/>
+                                    </MudPaper>
+                                </MudButton>
+                
+                            }
+            
+           
+        </div>
     </MudContainer>
 </MudLayout>
 
@@ -60,7 +63,7 @@
     string email = "";
     
     //call GetMovieDetails with an id and then take the posterpath and the title from it
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         username = AccountService.User.Username;
         email = AccountService.User.Email;
@@ -69,15 +72,16 @@
         if (MoviesData != null)
         {
             ProfileFavorites = new List<Movie>();
-            foreach (var VARIABLE in AllFavorites)
-            {
-                favoriteEntity = await MoviesData.GetMovieDetails(VARIABLE);
-                ProfileFavorites.Add(favoriteEntity);
-                @foreach (var obj in ProfileFavorites)
-                {
-                   Console.WriteLine("INITIALIZE: " + obj.PosterPath); 
-                }
-            }
+             foreach (var VARIABLE in AllFavorites)
+             {
+                 Console.WriteLine(VARIABLE);
+                 await MovieDetailsApi(VARIABLE);
+                 ProfileFavorites.Add(favoriteEntity); 
+    //  
+    // foreach (var obj in ProfileFavorites)      { 
+    //     Console.WriteLine("INITIALIZE: " + obj.Id);  
+    //  } 
+             } 
             
         }
     }
