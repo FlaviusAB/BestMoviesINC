@@ -19,10 +19,11 @@
                 <MudTextField T="string" Immediate="true" @onkeydown="@Enter" Label="Password" @bind-Value="password" Required="true" InputType="InputType.Password"/>
                 <div class="d-flex align-center justify-space-between mt-6">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => LoginFunc())">
-                        @if (loading) 
-                                        {
-                                            <span class="spinner-border spinner-border-sm mr-1"></span>
-                                        }Login
+                        @if (loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
+                        Login
                     </MudButton>
                 </div>
             </MudForm>
@@ -55,11 +56,10 @@
 
     private async void LoginFunc()
     {
-        
         model.Username = username;
         model.Password = password;
-       
-        
+
+
         loading = true;
         try
         {
@@ -68,8 +68,8 @@
         catch (Exception ex)
         {
             loading = false;
-            errorUsernameIncorrect="User does not exists. Please register";
-            
+            errorUsernameIncorrect = "User does not exists. Please register";
+
             Console.WriteLine(ex.ToString());
         }
     }
@@ -88,7 +88,7 @@
         };
         timer.Start();
     }
-    
+
     private void Enter(KeyboardEventArgs e)
     {
         if (e.Code is not ("Enter" or "NumpadEnter")) return;
