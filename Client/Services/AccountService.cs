@@ -7,14 +7,14 @@ namespace Client.Services
 {
     public interface IAccountService
     {
-        User? User { get; }
+        User User { get; }
         Task Initialize();
-        Task Login(Login? model);
+        Task Login(Login model);
         Task Logout();
-        Task Register(AddUser? model);
-        Task<IList<User>?> GetAll();
-        Task<User?> GetById(string id);
-        Task Update(string id, EditUser? model);
+        Task Register(AddUser model);
+        Task<IList<User>> GetAll();
+        Task<User> GetById(string id);
+        Task Update(string id, EditUser model);
         Task Delete(string id);
     }
 
@@ -25,7 +25,7 @@ namespace Client.Services
         private readonly ILocalStorageService _localStorageService;
         private string _userKey = "user";
 
-        public User? User { get; private set; }
+        public User User { get; private set; }
 
         public AccountService(
             IHttpService httpService,
@@ -42,7 +42,7 @@ namespace Client.Services
             User = await _localStorageService.GetItem<User>(_userKey);
         }
 
-        public async Task Login(Login? model)
+        public async Task Login(Login model)
         {
             User = await _httpService.Post<User>("/api/auth", model);
             await _localStorageService.SetItem(_userKey, User);
@@ -55,22 +55,22 @@ namespace Client.Services
             _navigationManager.NavigateTo("/");
         }
 
-        public async Task Register(AddUser? model)
+        public async Task Register(AddUser model)
         {
             await _httpService.Post("/api/signup", model);
         }
 
-        public async Task<IList<User>?> GetAll()
+        public async Task<IList<User>> GetAll()
         {
             return await _httpService.Get<IList<User>>("/users");
         }
 
-        public async Task<User?> GetById(string username)
+        public async Task<User> GetById(string username)
         {
             return await _httpService.Get<User>($"/users/{username}");
         }
 
-        public async Task Update(string id, EditUser? model)
+        public async Task Update(string id, EditUser model)
         {
             await _httpService.Put($"/users/{id}", model);
 

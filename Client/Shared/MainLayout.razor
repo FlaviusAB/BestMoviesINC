@@ -101,15 +101,14 @@
         {
             InvokeAsync(() =>
             {
-               
-                    AccountService.Initialize();
-                    if (AccountService.User?.Username!= null)
-                    {
-                        userInfo = AccountService.User.Username;
-                        profileLetter = userInfo.Substring(0, 1);
-                        userFound = true;
-                    }
                 
+                AccountService.Initialize();
+                if (AccountService.User?.Username!= null)
+                {
+                    userInfo = AccountService.User.Username;
+                    profileLetter = userInfo.Substring(0, 1);
+                    userFound = true;
+                }
                 else
                 {
                     userFound = false;

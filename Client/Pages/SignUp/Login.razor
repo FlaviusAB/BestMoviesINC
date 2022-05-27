@@ -9,22 +9,16 @@
 @page "/Login"
 
 <div class="empty-space"></div>
+<h3>Login</h3>
 
 <MudLayout>
-    <MudContainer MaxWidth="MaxWidth.Medium">
-        <h3>Login</h3>
-
-        <MudPaper class="pa-4 LogInLayout">
+    <MudContainer class="LogInLayout" MaxWidth="MaxWidth.Medium">
+        <MudPaper Class="pa-4">
             <MudForm @ref="form">
                 <MudTextField T="string" Label="Username" class="LogInForm" Varian="Variant.Outlined" @bind-Value="username" RequiredError="User name is required!"/>
                 <MudTextField T="string" Immediate="true" @onkeydown="@Enter" Label="Password" @bind-Value="password" InputType="InputType.Password"/>
                 <div class="d-flex align-center justify-space-between mt-6">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => LoginFunc())">
-                        @if (loading) 
-                                        {
-                                            <span class="spinner-border spinner-border-sm mr-1"></span>
-                                        }Login
-                    </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(() => LoginFunc())">Login</MudButton>
                 </div>
             </MudForm>
         </MudPaper>
@@ -32,14 +26,14 @@
             @errorUsernameIncorrectField
         </MudText>
         <MudPaper Class="pa-4 mt-4" Width="350px">
-            <MudText> Don't have an account? Register right now </MudText>
+            <MudText> Dont have an account? register right now </MudText>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="/Signup">Sign up</MudButton>
         </MudPaper>
     </MudContainer>
 </MudLayout>
 
 @code {
-    bool success;
+
     string errorUsernameIncorrect { get; set; }
     string errorUsernameIncorrectField { get; set; }
     string password;
@@ -49,26 +43,27 @@
     IDbAccess DbAccess = new DbAccess();
     private bool authenticated;
 
-    private Models.Account.Login? model = new Models.Account.Login();
+    private Models.Account.Login model = new Models.Account.Login();
     private bool loading;
 
     private async void LoginFunc()
     {
         model.Username = username;
         model.Password = password;
-       
-        
+        AlertService.Clear();
+
         loading = true;
         try
         {
             await AccountService.Login(model);
+            var returnUrl = NavigationManager.QueryString("returnUrl") ?? "";
+            NavigationManager.NavigateTo(returnUrl);
         }
         catch (Exception ex)
         {
+            AlertService.Error(ex.Message);
             loading = false;
-            errorUsernameIncorrect="User does not exists. Please register";
-            
-            Console.WriteLine(ex.ToString());
+            StateHasChanged();
         }
     }
 
