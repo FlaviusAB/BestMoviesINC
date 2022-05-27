@@ -144,7 +144,7 @@
             </MudItem>
             @if (@userFound)
             {
-                if (favoriteButton)
+                if (favoriteButton.Equals("false"))
                 {
                      @* <MudCheckBox Checked="@FavoriteOrNot" Color="Color.Secondary" CheckedIcon="@Icons.Material.Filled.Favorite" *@
                                                                             @*              UncheckedIcon="@Icons.Material.Filled.FavoriteBorder" @oninput="FavoriteMovie" Disabled="@isDisabled"/> *@
@@ -230,7 +230,7 @@
 
     private string userInfo = "";
     private bool userFound = false;
-    private bool favoriteButton = false;
+    private string favoriteButton = "false";
     
 
     protected override async Task OnParametersSetAsync()
@@ -254,15 +254,12 @@
             {
                 userInfo = AccountService.User.Username; 
                 userFound = true;
-                Console.WriteLine("ERROR");
                 favoriteButton = await CheckFavorites();
-                Console.WriteLine("IF STATEMENT: "+favoriteButton);
             }
         }
         catch (Exception e)
         {
-            favoriteButton = false;
-            Console.WriteLine("CATCH STATEMENT: "+favoriteButton);
+            favoriteButton = "false";
             userInfo = "Guest";
             userFound = false;
             Console.WriteLine(e);
@@ -272,21 +269,18 @@
     private void FavoriteMovie()
     {
         //TODO if its true -> update instead of insert
-        string like = "true";
         isDisabled = true;
-        Console.WriteLine("FAVORITE MOVIE INSERT FUNCTION" + like);
-        FavoriteEntity favoriteEntity = new FavoriteEntity(AccountService.User.Username, Value, like);
+        FavoriteEntity favoriteEntity = new FavoriteEntity(AccountService.User.Username, Value);
         IDbAccess dbAccess = new DbAccess();
         dbAccess.SaveFavorite(favoriteEntity);
     }
 
-    private async Task<bool> CheckFavorites()
+    private async Task<string> CheckFavorites()
     {
         Console.WriteLine("PARAMETERS: "+AccountService.User.Username + Value);
         IDbAccess dbAccess = new DbAccess();
-        bool result;
-        Console.WriteLine("ERROR checkfavorites");
-        result = dbAccess.GetFavorite(AccountService.User.Username, Int32.Parse(Value)).Result;
+        string result;
+        result = await dbAccess.GetFavorite(AccountService.User.Username, Int32.Parse(Value));
         Console.WriteLine("RESULT: "+result);
         return result;
     }

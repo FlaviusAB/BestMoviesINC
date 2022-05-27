@@ -95,7 +95,7 @@ namespace Api
                     conn.Open();  
                     if(!String.IsNullOrEmpty(input.username))  
                     {
-                        var query = $"INSERT INTO [favorites] (username,movie_id,favorite) VALUES('{input.username}', '{input.movie_id}' , '{input.favorite}')";  
+                        var query = $"INSERT INTO [favorites] (username,movie_id,favorite) VALUES('{input.username}', '{input.movie_id}')";  
                         SqlCommand command = new SqlCommand(query, conn);  
                         command.ExecuteNonQuery();  
                     }  

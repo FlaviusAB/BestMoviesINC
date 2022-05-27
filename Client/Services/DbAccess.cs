@@ -12,7 +12,7 @@ public interface IDbAccess
 {
     Task<string> SaveFavorite(FavoriteEntity favorite);
     Task<string> DeleteFavorite(string username,int movie_id);
-    Task<bool> GetFavorite(string username,int movie_id);
+    Task<string> GetFavorite(string username,int movie_id);
     
 }
 
@@ -49,15 +49,15 @@ public class DbAccess : IDbAccess
         return responseMsg;
     }
 
-    public async Task<strin> GetFavorite(string username, int movie_id)
+    public async Task<string> GetFavorite(string username, int movie_id)
     {
-        bool responseBool=false;
+        string responseBool="false";
         
         var response = await _httpClient.GetStringAsync($"http://localhost:7071/api/favorites/{username}/{movie_id}");
         
         if (response.Equals("true"))
         {
-            responseBool = true;
+            responseBool = "true";
         }
         Console.WriteLine("DbAccess : "+responseBool);
         return responseBool;
