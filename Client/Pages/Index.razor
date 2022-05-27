@@ -22,9 +22,9 @@
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
                 <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                    </MudPaper>
+                
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="100" Class="rounded-lg"/>
+                   
                 </MudButton>
             }
         </div>
@@ -39,9 +39,9 @@
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
                 <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                    
                         <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                    </MudPaper>
+                    
                 </MudButton>
             }
         </div>
@@ -55,9 +55,9 @@
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
                 <MudButton OnClick="@(() => TvDetails(@item.Id))">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                    
                         <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
-                    </MudPaper>
+                    
                 </MudButton>
             }
         </div>
