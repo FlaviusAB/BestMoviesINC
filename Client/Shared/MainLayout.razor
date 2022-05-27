@@ -101,27 +101,22 @@
         {
             InvokeAsync(() =>
             {
-                try
+                
+                AccountService.Initialize();
+                if (AccountService.User?.Username!= null)
                 {
-                    AccountService.Initialize();
-                    if (AccountService != null)
-                    {
-                        userInfo = AccountService.User.Username;
-                        profileLetter = userInfo.Substring(0, 1);
-                        userFound = true;
-                    }
-                    else
-                    {
-                        
-                    }
+                    userInfo = AccountService.User.Username;
+                    profileLetter = userInfo.Substring(0, 1);
+                    userFound = true;
                 }
-                catch (Exception e)
+                else
                 {
                     userFound = false;
                     userInfo = "Not logged in: ";
                     Console.WriteLine(e);
                     StateHasChanged();
                 }
+               
                 StateHasChanged();
             });
         };

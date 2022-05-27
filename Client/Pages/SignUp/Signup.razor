@@ -1,26 +1,24 @@
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 @using BlazorApp.Models.Account
-@using Client.Exceptions
-@using Client.Services
 @using IAlertService = Client.Services.IAlertService
-@using MudBlazor
 @inject NavigationManager NavigationManager
 @inject IAlertService AlertService
 @inject IAccountService AccountService
 
 @page "/Signup"
 <div class="empty-space"></div>
-<h3>Signup</h3>
 
-<MudGrid>
-    <MudItem xs="12" sm="7">
+<MudLayout>
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <h3>Signup</h3>
+
         <MudPaper Class="pa-4">
-            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-                <MudTextField T="string" Label="Username" @bind-Value="username" Immediate="true" Required="true" RequiredError="User name is required!"/>
-                <MudTextField T="string" Label="Email" @bind-Value="email" Required="true" RequiredError="Email is required!"
+            <MudForm @ref="Form" @bind-IsValid="@_success" @bind-Errors="@_errors">
+                <MudTextField T="string" Label="Username" @bind-Value="_username" Immediate="true" Required="true" RequiredError="User name is required!"/>
+                <MudTextField T="string" Label="Email" @bind-Value="_email" Required="true" RequiredError="Email is required!"
                               Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })"/>
-                <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @bind-Value="password"
+                <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @bind-Value="_password"
                               InputType="InputType.Password"
                               Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
                               RequiredError="Password is required!"/>
@@ -29,8 +27,8 @@
                               Validation="@(new Func<string, string>(PasswordMatch))"/>
 
                 <div class="d-flex align-center justify-space-between mt-6">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto"
-                               OnClick="@(() => SignUp())">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_success)" Class="ml-auto"
+                               OnClick="@(SignUp)">
                         Register
                     </MudButton>
                 </div>
@@ -38,57 +36,56 @@
         </MudPaper>
         <div class="paddingTop5"></div>
         <MudText Color="@Color.Error">
-            @errorUsernameTextField
+            @ErrorUsernameTextField
         </MudText>
         <MudPaper Class="pa-4 mt-4" Width="350px">
             <MudText> Already have an account? Login now </MudText>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="/Login">Login</MudButton>
         </MudPaper>
-    </MudItem>
+    </MudContainer>
 
-</MudGrid>
+</MudLayout>
 <div class="empty-space-large"></div>
 
 @code {
-    bool success;
-    string[] errors = { };
+    bool _success;
+    string[] _errors = { };
 
-    string message { get; set; }
-    string errorUsernameTextField { get; set; }
+    string? Message { get; set; }
+    string? ErrorUsernameTextField { get; set; }
 
-    string password;
-    string username;
-    string email;
-    MudForm form;
-    IDbAccess DbAccess = new DbAccess();
-    private AddUser model = new AddUser();
+    string? _password;
+    string? _username;
+    string? _email;
+    MudForm? Form { get; set; }
+    // IDbAccess DbAccess = new DbAccess();
+    private readonly AddUser? _model = new AddUser();
     
     private async void SignUp()
     {
         AlertService.Clear();
-        model.Email = email;
-        model.Password = password;
-        model.Username = username;
-        
-        //User userData = new User(username, password, email, "user");
-        //message = await DbAccess.RegisterUser(userData);
+        if (_model == null) return;
+        _model.Email = _email;
+        _model.Password = _password;
+        _model.Username = _username;
 
-        
+    //User userData = new User(username, password, email, "user");
+    //message = await DbAccess.RegisterUser(userData);
+
+
         try
         {
-            await AccountService.Register(model);
+            await AccountService.Register(_model);
             AlertService.Success("Registration successful", keepAfterRouteChange: true);
             NavigationManager.NavigateTo($"/Login");
-            
         }
-        
+
         catch (Exception ex)
         {
             AlertService.Error(ex.Message);
-            message = "User already existing";
+            Message = "User already existing";
             StateHasChanged();
         }
-        
     }
 
 
@@ -114,22 +111,20 @@
     {
         base.OnInitialized();
         var timer = new System.Timers.Timer(1000);
-        timer.Elapsed += (s, e) =>
+        timer.Elapsed += (_, _) =>
         {
             InvokeAsync(() =>
             {
-                errorUsernameTextField = message;
+                ErrorUsernameTextField = Message;
                 StateHasChanged();
             });
         };
         timer.Start();
     }
 
-    private string PasswordMatch(string arg)
+    private string? PasswordMatch(string arg)
     {
-        if (password != arg)
-            return "Passwords don't match";
-        return null;
+        return _password != arg ? "Passwords don't match" : null;
     }
 
 }

@@ -199,7 +199,6 @@
     public string? Value { get; set; }
 
     private string? PosterPath { get; set; }
-    private string? SeasonPosterPath { get; set; }
     private string? TvTitle { get; set; }
     private string? TvDescription { get; set; }
     private string? VoteAverage { get; set; }
@@ -229,7 +228,7 @@
     private List<PeopleEntity> _crew = new();
     private string _crewName = "";
     private List<Tv> _tvs = new();
-    private List<Season> _seasons = new();
+    private readonly List<Season> _seasons = new();
 
     protected override async Task OnParametersSetAsync()
     {
@@ -330,15 +329,6 @@
             {
                 var obj2 = await MoviesData.GetSeasonDetails(id, i);
                 _seasons.Add(obj2);
-            }
-            
-            if (obj.PosterPath == null)
-            {
-                SeasonPosterPath = "/no-image-icon-6.png";
-            }
-            else
-            {
-                SeasonPosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
             }
         }
     }

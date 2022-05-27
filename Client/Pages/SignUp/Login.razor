@@ -9,13 +9,14 @@
 @page "/Login"
 
 <div class="empty-space"></div>
-<h3>Login</h3>
 
 <MudLayout>
     <MudContainer MaxWidth="MaxWidth.Medium">
-        <MudPaper Class="pa-4">
+        <h3>Login</h3>
+
+        <MudPaper class="pa-4 LogInLayout">
             <MudForm @ref="form">
-                <MudTextField T="string" Label="Username" Varian="Variant.Outlined" @bind-Value="username" RequiredError="User name is required!"/>
+                <MudTextField T="string" Label="Username" class="LogInForm" Varian="Variant.Outlined" @bind-Value="username" RequiredError="User name is required!"/>
                 <MudTextField T="string" Immediate="true" @onkeydown="@Enter" Label="Password" @bind-Value="password" InputType="InputType.Password"/>
                 <div class="d-flex align-center justify-space-between mt-6">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(() => LoginFunc())">Login</MudButton>
@@ -26,7 +27,7 @@
             @errorUsernameIncorrectField
         </MudText>
         <MudPaper Class="pa-4 mt-4" Width="350px">
-            <MudText> Dont have an account? register right now </MudText>
+            <MudText> Don't have an account? Register right now </MudText>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="/Signup">Sign up</MudButton>
         </MudPaper>
     </MudContainer>
@@ -43,29 +44,11 @@
     IDbAccess DbAccess = new DbAccess();
     private bool authenticated;
 
-    private Models.Account.Login model = new Models.Account.Login();
+    private Models.Account.Login? model = new Models.Account.Login();
     private bool loading;
 
     private async void LoginFunc()
     {
-        
-    // UserCredentials userData = new UserCredentials(username,password);
-    // Console.WriteLine(userData.ToString());
-    // errorUsernameIncorrect=await DbAccess.UserAuthentication(userData);
-    // // if (errorUsernameIncorrect.Equals("user successfully logged in"))
-    // // {
-    // //     NavigationManager.NavigateTo($"/");
-    // // }
-    // userData.authToken = errorUsernameIncorrect;
-    // //await _localStorage.SetItemAsync(username, userData.authToken);
-    //
-    //
-    //
-    // Console.WriteLine(errorUsernameIncorrect);
-
-    // reset alerts on submit
-        
-        
         model.Username = username;
         model.Password = password;
         AlertService.Clear();
@@ -105,5 +88,4 @@
         if (e.Code is not ("Enter" or "NumpadEnter")) return;
         LoginFunc();
     }
-
 }
