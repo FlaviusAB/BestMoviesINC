@@ -20,21 +20,21 @@
                 </MudCard>
             </MudItem>
         </MudGrid>
-        @* <div class="container2" > *@
-        @*             @for (int i=0;i<ProfileFavorites.Count;i++) *@
-        @*             { *@
-        @*                  *@
-        @*                      *@
-        @*                     var poster = "https://image.tmdb.org/t/p/original" + @i.PosterPath; *@
-        @*                              *@
-        @*                 <MudButton OnClick="@(() => MovieDetails(@i))"> *@
-        @*                     <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px"> *@
-        @*                         <MudImage Src="@poster" Fluid="true" Alt=@i.Title Elevation="25" Class="rounded-lg"/> *@
-        @*                     </MudPaper> *@
-        @*                 </MudButton> *@
-        @* *@
-        @*             } *@
-        @*         </div> *@
+        <div class="container2" >
+                    @for (int i=0;i<ProfileFavorites.Count;i++)
+                    {
+        
+        
+                            var poster = "https://image.tmdb.org/t/p/original" + @i.PosterPath;
+        
+                        <MudButton OnClick="@(() => MovieDetails(@i))">
+                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                                <MudImage Src="@poster" Fluid="true" Alt=@i.Title Elevation="25" Class="rounded-lg"/>
+                            </MudPaper>
+                        </MudButton>
+        
+                    }
+                </div>
     </MudContainer>
 </MudLayout>
 
