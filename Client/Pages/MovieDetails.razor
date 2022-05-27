@@ -24,6 +24,26 @@
                     @MovieTitle
                 </MudText>
             </CardHeaderContent>
+            <CardHeaderActions>
+                @if (_userFound)
+                                {
+                                    @if (bool.Parse(_favoriteButton))
+                                    {
+                                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                                                   Color="Color.Primary" OnClick="RemoveFavoriteMovie">
+                                            Remove
+                                        </MudButton>
+                                        
+                                    }
+                                    else
+                                    {
+                                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                                                   Color="Color.Primary" OnClick="FavoriteMovie">
+                                            Add
+                                        </MudButton>
+                                    }
+                                }
+            </CardHeaderActions>
         </MudCardHeader>
         <MudCardContent>
             <div>
@@ -167,24 +187,7 @@
     </MudCard>
 </MudItem>
 
-@if (_userFound)
-{
-    @if (bool.Parse(_favoriteButton))
-    {
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite"
-                   Color="Color.Primary" OnClick="RemoveFavoriteMovie">
-            Remove
-        </MudButton>
-        
-    }
-    else
-    {
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite"
-                   Color="Color.Primary" OnClick="FavoriteMovie">
-            Add
-        </MudButton>
-    }
-}
+
 
 <p class="knownFor">
     <b>Similar movies:</b>
