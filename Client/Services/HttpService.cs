@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.Json;
 using Client.Helpers;
 using Client.Models;
+using Client.Services;
+
 
 namespace Client.Services
 {
@@ -119,10 +121,14 @@ namespace Client.Services
             // auto logout on 401 response
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                _navigationManager.NavigateTo("account/logout");
-                return default;
-            }
+                _navigationManager.NavigateTo("/Login");
 
+            }
+            else
+            {
+                _navigationManager.NavigateTo("/");
+            }
+            
             await handleErrors(response);
 
             var options = new JsonSerializerOptions

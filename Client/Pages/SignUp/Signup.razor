@@ -27,8 +27,11 @@
                               Validation="@(new Func<string, string>(PasswordMatch))"/>
 
                 <div class="d-flex align-center justify-space-between mt-6">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_success)" Class="ml-auto"
-                               OnClick="@(SignUp)">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto"
+                               OnClick="@(() => SignUp())">@if (loading) 
+                                                                           {
+                                                                               <span class="spinner-border spinner-border-sm mr-1"></span>
+                                                                           }
                         Register
                     </MudButton>
                 </div>
@@ -48,6 +51,7 @@
 <div class="empty-space-large"></div>
 
 @code {
+    bool loading;
     bool _success;
     string[] _errors = { };
 
@@ -73,6 +77,7 @@
     //message = await DbAccess.RegisterUser(userData);
 
 
+        loading = true;
         try
         {
             await AccountService.Register(_model);
@@ -82,6 +87,7 @@
 
         catch (Exception ex)
         {
+            loading = false;
             AlertService.Error(ex.Message);
             Message = "User already existing";
             StateHasChanged();

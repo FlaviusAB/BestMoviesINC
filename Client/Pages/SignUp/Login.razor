@@ -19,7 +19,12 @@
                 <MudTextField T="string" Label="Username" class="LogInForm" Varian="Variant.Outlined" @bind-Value="username" RequiredError="User name is required!"/>
                 <MudTextField T="string" Immediate="true" @onkeydown="@Enter" Label="Password" @bind-Value="password" InputType="InputType.Password"/>
                 <div class="d-flex align-center justify-space-between mt-6">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(() => LoginFunc())">Login</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => LoginFunc())">
+                        @if (loading) 
+                                        {
+                                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                                        }Login
+                    </MudButton>
                 </div>
             </MudForm>
         </MudPaper>
@@ -34,7 +39,7 @@
 </MudLayout>
 
 @code {
-
+    bool success;
     string errorUsernameIncorrect { get; set; }
     string errorUsernameIncorrectField { get; set; }
     string password;
@@ -51,20 +56,19 @@
     {
         model.Username = username;
         model.Password = password;
-        AlertService.Clear();
-
+       
+        
         loading = true;
         try
         {
             await AccountService.Login(model);
-            var returnUrl = NavigationManager.QueryString("returnUrl") ?? "";
-            NavigationManager.NavigateTo(returnUrl);
         }
         catch (Exception ex)
         {
-            AlertService.Error(ex.Message);
             loading = false;
-            StateHasChanged();
+            errorUsernameIncorrect="User does not exists. Please register";
+            
+            Console.WriteLine(ex.ToString());
         }
     }
 
