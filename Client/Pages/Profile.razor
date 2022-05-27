@@ -20,21 +20,81 @@
                 </MudCard>
             </MudItem>
         </MudGrid>
+        <div class="container2" >
+                    @for (int i=0;i<AllFavorites.Count;i++)
+                    {
+                        foreach (var item in MovieDetailsApi(i.ToString()))
+                        {
+                            
+                        }
+                            
+                            var poster = "https://image.tmdb.org/t/p/original" + @i.PosterPath;
+                                    
+                        <MudButton OnClick="@(() => MovieDetails(@i))">
+                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                                <MudImage Src="@poster" Fluid="true" Alt=@i.Title Elevation="25" Class="rounded-lg"/>
+                            </MudPaper>
+                        </MudButton>
+
+                    }
+                </div>
     </MudContainer>
 </MudLayout>
 
 @code {
+    
     [Inject]
     private IAccountService? AccountService { get; set; }
+    [Inject]
+    private IDbAccess? DbAccess{ get; set; }
+    [Inject]
+    private IMoviesData? MoviesData { get; set; }
+
+    private string? PosterPath { get; set; }
+    private string? MovieTitle { get; set; }
+    
+    List<string> AllFavorites = new List<string>();
+    private List<Movie> ProfileFavorites = new();
     
     string username = "";
     string email = "";
     
-
-    protected override void OnInitialized()
+    //call GetMovieDetails with an id and then take the posterpath and the title from it
+    protected override async void OnInitialized()
     {
         username = AccountService.User.Username;
         email = AccountService.User.Email;
+        AllFavorites = await GetAllFavorites();
+        
+        if (MoviesData != null)
+        {
+            ProfileFavorites = new List<Movie>();
+            ProfileFavorites = await MoviesData.GetMovieDetails();
+        }
+    }
+    
+    private async Task<List<string>>? GetAllFavorites()
+    {
+        List<string> allFav = await DbAccess?.GetAllFavorite(AccountService.User?.Username!);
+        return allFav;
+    } 
+    
+    private async Task MovieDetailsApi(string id)
+    {
+        if (MoviesData != null)
+        {
+            var obj = await MoviesData.GetMovieDetails(id);
+            if (obj.PosterPath == null)
+            {
+                PosterPath = "/no-image-icon-6.png";
+            }
+            else
+            {
+                PosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
+            }
+            MovieTitle = obj.Title;
+        }
+        
     }
 
 }

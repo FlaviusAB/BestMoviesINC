@@ -54,7 +54,7 @@ namespace Client.Models
             public string? ReleaseDate;
 
             [JsonProperty("revenue")]
-            public int? Revenue;
+            public Int64? Revenue;
 
             [JsonProperty("runtime")]
             public int? Runtime;
