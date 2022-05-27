@@ -1,35 +1,35 @@
+@inject NavigationManager NavigationManager
+
 @page "/Profile"
 <MudLayout>
     <MudContainer>
-        <MudGrid>
-            <MudItem xs="12" sm="9">
-                <MudImage Width="199" Height="299" Fluid="true" Alt="@username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage>
-                <MudCard>
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h5">
-                                <b>@username</b>
-                            </MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <MudText Typo="Typo.body2">
-                            <a class="bold">Email: </a> @email
-                        </MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-        </MudGrid>
+        @* <MudGrid> *@
+        @*     <MudItem xs="12" sm="9"> *@
+        @*         <MudImage Width="199" Height="299" Fluid="true" Alt="@username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage> *@
+        @*         <MudCard> *@
+        @*             <MudCardHeader> *@
+        @*                 <CardHeaderContent> *@
+        @*                     <MudText Typo="Typo.h5"> *@
+        @*                         <b>@username</b> *@
+        @*                     </MudText> *@
+        @*                 </CardHeaderContent> *@
+        @*             </MudCardHeader> *@
+        @*             <MudCardContent> *@
+        @*                 <MudText Typo="Typo.body2"> *@
+        @*                     <a class="bold">Email: </a> @email *@
+        @*                 </MudText> *@
+        @*             </MudCardContent> *@
+        @*         </MudCard> *@
+        @*     </MudItem> *@
+        @* </MudGrid> *@
         <div class="container2" >
-                    @for (int i=0;i<ProfileFavorites.Count;i++)
+                    @foreach (var item in @ProfileFavorites)
                     {
-        
-        
-                            var poster = "https://image.tmdb.org/t/p/original" + @i.PosterPath;
-        
-                        <MudButton OnClick="@(() => MovieDetails(@i))">
+                        var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+                       
+                        <MudButton OnClick="@(() => MovieDetails(@item.Id))">
                             <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                                <MudImage Src="@poster" Fluid="true" Alt=@i.Title Elevation="25" Class="rounded-lg"/>
+                                <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
                             </MudPaper>
                         </MudButton>
         
@@ -50,8 +50,11 @@
     private string? PosterPath { get; set; }
     private string? MovieTitle { get; set; }
     
-    List<string> AllFavorites = new List<string>();
+    
+    List<string> AllFavorites;
     private List<Movie> ProfileFavorites = new();
+    Movie favoriteEntity = new Movie();
+    
     
     string username = "";
     string email = "";
@@ -66,7 +69,16 @@
         if (MoviesData != null)
         {
             ProfileFavorites = new List<Movie>();
-            //ProfileFavorites = await MoviesData.GetMovieDetails();
+            foreach (var VARIABLE in AllFavorites)
+            {
+                favoriteEntity = await MoviesData.GetMovieDetails(VARIABLE);
+                ProfileFavorites.Add(favoriteEntity);
+                @foreach (var obj in ProfileFavorites)
+                {
+                   Console.WriteLine("INITIALIZE: " + obj.PosterPath); 
+                }
+            }
+            
         }
     }
     
@@ -74,7 +86,9 @@
     {
         List<string> allFav = await DbAccess?.GetAllFavorite(AccountService.User?.Username!);
         return allFav;
-    } 
+    }
+
+    private Profile profileMovies;
     
     private async Task MovieDetailsApi(string id)
     {
@@ -89,9 +103,15 @@
             {
                 PosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
             }
+            
             MovieTitle = obj.Title;
         }
         
+    }
+    
+    void MovieDetails(int id)
+    {
+        NavigationManager.NavigateTo($"MovieDetails/{id}");
     }
 
 }
