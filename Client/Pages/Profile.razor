@@ -3,110 +3,79 @@
 @page "/Profile"
 <MudLayout>
     <MudContainer>
-        @* <MudGrid> *@
-        @*     <MudItem xs="12" sm="9"> *@
-        @*         <MudImage Width="199" Height="299" Fluid="true" Alt="@username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage> *@
-        @*         <MudCard> *@
-        @*             <MudCardHeader> *@
-        @*                 <CardHeaderContent> *@
-        @*                     <MudText Typo="Typo.h5"> *@
-        @*                         <b>@username</b> *@
-        @*                     </MudText> *@
-        @*                 </CardHeaderContent> *@
-        @*             </MudCardHeader> *@
-        @*             <MudCardContent> *@
-        @*                 <MudText Typo="Typo.body2"> *@
-        @*                     <a class="bold">Email: </a> @email *@
-        @*                 </MudText> *@
-        @*             </MudCardContent> *@
-        @*         </MudCard> *@
-        @*     </MudItem> *@
-        @* </MudGrid> *@
-        <div class="container2" >
-                    @foreach (var item in @ProfileFavorites)
-                    {
-                        var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
-                       
-                        <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                                <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                            </MudPaper>
-                        </MudButton>
-        
-                    }
-                </div>
+        <MudGrid>
+            <MudItem xs="12" sm="9">
+                <MudImage Width="199" Height="299" Fluid="true" Alt="@username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage>
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5">
+                                <b>@username</b>
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText Typo="Typo.body2">
+                            <a class="bold">Email: </a> @email
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+        <div class="container2">
+            @foreach (var item in ProfileFavorites)
+            {
+                var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+
+                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                    </MudPaper>
+                </MudButton>
+            }
+        </div>
     </MudContainer>
 </MudLayout>
 
 @code {
-    
+
     [Inject]
     private IAccountService? AccountService { get; set; }
+
     [Inject]
-    private IDbAccess? DbAccess{ get; set; }
+    private IDbAccess? DbAccess { get; set; }
+
     [Inject]
     private IMoviesData? MoviesData { get; set; }
 
-    private string? PosterPath { get; set; }
-    private string? MovieTitle { get; set; }
-    
-    
+
     List<string> AllFavorites;
-    private List<Movie> ProfileFavorites = new();
+    private readonly List<Movie> ProfileFavorites = new();
     Movie favoriteEntity = new Movie();
-    
-    
+
+
     string username = "";
     string email = "";
-    
+
     //call GetMovieDetails with an id and then take the posterpath and the title from it
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         username = AccountService.User.Username;
         email = AccountService.User.Email;
+        
         AllFavorites = await GetAllFavorites();
         
-        if (MoviesData != null)
+        foreach (var str in AllFavorites)
         {
-            ProfileFavorites = new List<Movie>();
-            foreach (var VARIABLE in AllFavorites)
-            {
-                favoriteEntity = await MoviesData.GetMovieDetails(VARIABLE);
-                ProfileFavorites.Add(favoriteEntity);
-                @foreach (var obj in ProfileFavorites)
-                {
-                   Console.WriteLine("INITIALIZE: " + obj.PosterPath); 
-                }
-            }
-            
+            favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
+            ProfileFavorites.Add(favoriteEntity);
         }
     }
-    
+
     private async Task<List<string>>? GetAllFavorites()
     {
         List<string> allFav = await DbAccess?.GetAllFavorite(AccountService.User?.Username!);
         return allFav;
-    }
-
-    private Profile profileMovies;
-    
-    private async Task MovieDetailsApi(string id)
-    {
-        if (MoviesData != null)
-        {
-            var obj = await MoviesData.GetMovieDetails(id);
-            if (obj.PosterPath == null)
-            {
-                PosterPath = "/no-image-icon-6.png";
-            }
-            else
-            {
-                PosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
-            }
-            
-            MovieTitle = obj.Title;
-        }
-        
     }
     
     void MovieDetails(int id)
