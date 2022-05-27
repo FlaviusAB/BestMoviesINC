@@ -171,11 +171,19 @@
             </MudItem>
             @if (@userFound)
             {
-                <MudText>@userInfo</MudText>
-            }
-            else
-            {
-                <MudText>@userInfo</MudText>
+                if (favoriteButton.Equals("false"))
+                {
+                     
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite" 
+                               Color="Color.Primary" Disabled="@isDisabled1" OnClick="FavoriteMovie">Favorite</MudButton>
+                                    
+                }
+                else
+                {
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite" 
+                               Color="Color.Primary" Disabled="@isDisabled2" OnClick="RemoveFavoriteMovie">Remove Favorite</MudButton>
+                }
+
             }
             <p class="knownFor">
                 <b>Similar movies:</b>
@@ -221,7 +229,12 @@
 
     [Parameter]
     public string? Value { get; set; }
-
+    
+    protected bool isDisabled1 { get; set; }
+    protected bool isDisabled2 { get; set; }
+    private bool FavoriteOrNot;
+    private FavoriteEntity favoriteEntity;
+    
     private string? PosterPath { get; set; }
     private string? MainPosterPath { get; set; }
     private string? MovieTitle { get; set; }
@@ -251,14 +264,17 @@
 
     private string userInfo = "";
     private bool userFound = false;
+    private string favoriteButton = "false";
+    
 
     protected override async Task OnParametersSetAsync()
     {
-        
         Genre = "";
         ProductionCompanies = "";
         _crew = new List<PeopleEntity>();
         Cast = "";
+        
+        
         var id = Value;
         if (id != null)
         {
@@ -269,24 +285,53 @@
         }
         try
         {
-            if (AccountService != null)
+            if (AccountService.User?.Username != null)
             {
                 userInfo = AccountService.User.Username; 
                 userFound = true;
-            }
-            else
-            {
-                
+                favoriteButton = await CheckFavorites();
             }
         }
         catch (Exception e)
         {
+            favoriteButton = "false";
             userInfo = "Guest";
             userFound = false;
             Console.WriteLine(e);
         }
-        
-        
+    }
+
+    private void FavoriteMovie()
+    {
+        //TODO if its true -> update instead of insert
+        isDisabled1 = true;
+        FavoriteEntity favoriteEntity = new FavoriteEntity(AccountService.User.Username, Value);
+        IDbAccess dbAccess = new DbAccess();
+        dbAccess.SaveFavorite(favoriteEntity);
+    }
+
+    private Task<List<string>> GetAllfavorites()
+    {
+        IDbAccess dbAccess = new DbAccess();
+        List<string> all = new List<string>();
+        dbAccess.GetAllFavorite(AccountService.User.Username);
+        return null;
+    } 
+
+    private async Task<string> CheckFavorites()
+    {
+        GetAllfavorites();
+        IDbAccess dbAccess = new DbAccess();
+        string result;
+        result = await dbAccess.GetFavorite(AccountService.User.Username, Int32.Parse(Value));
+        return result;
+    }
+
+    private void RemoveFavoriteMovie()
+    {
+        isDisabled2 = true;
+        IDbAccess dbAccess = new DbAccess();
+        dbAccess.DeleteFavorite(AccountService.User.Username, Int32.Parse(Value));
     }
 
     private async Task MovieDetailsApi(string id)
