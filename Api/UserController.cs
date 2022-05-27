@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Api.Models;
+using Client.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -78,12 +79,85 @@ namespace Api
                 return await Task.FromResult(new OkObjectResult(authUser)).ConfigureAwait(false);
             }
         }
+
+        [FunctionName("AddFavorite")]
+        public static async Task<IActionResult> AddFavorite(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "favorites")]
+            HttpRequest req, ILogger log)
+        {
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
+            var input = JsonConvert.DeserializeObject<FavoriteEntity>(requestBody);
+            try
+            {
+                var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+                using (SqlConnection conn = new SqlConnection(appsettingvalue))  
+                {
+                    conn.Open();  
+                    if(!String.IsNullOrEmpty(input.username))  
+                    {
+                        var query = $"INSERT INTO [favorites] (username,movie_id,favorite) VALUES('{input.username}', '{input.movie_id}')";  
+                        SqlCommand command = new SqlCommand(query, conn);  
+                        command.ExecuteNonQuery();  
+                    }  
+                }  
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            return new OkResult(); 
+        }
         
+        [FunctionName("GetFavorites")]
+        public static async Task<IActionResult> GetFavorites(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "favorites/{username}/{movie_id}")]
+            HttpRequest req, ILogger log, string username, int movie_id)
+        {
+            string foundFavorited = "";
+            string exists = "";
+
+            var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+            
+            using (SqlConnection conn = new SqlConnection(appsettingvalue))
+            {
+                conn.Open();
+                var query = @"select * from favorites where username = @username and movie_id = @movie_id";
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@movie_id", movie_id);
+                var reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    foundFavorited = reader["username"].ToString();
+                }
+                if (string.IsNullOrWhiteSpace(foundFavorited))
+                {
+                    exists = "false";
+                }
+                else
+                {
+                    exists = "true";
+                }
+                
+            }
+            return new OkObjectResult(exists);
+        }
+        
+        //TODO change to DELETE
+        [FunctionName("DeleteFavorite")]
+        public static async Task<IActionResult> UpdateFavorite(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "favorites/{username}/{movie_id}")]
+            HttpRequest req, ILogger log)
+        {
+            return null;
+        }
         
         [FunctionName("CreateUser")]  
         public static async Task<IActionResult> CreateUser(ExecutionContext context,
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "signup")] HttpRequest req, ILogger log)  
         {  
+            
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
             var input = JsonConvert.DeserializeObject<User>(requestBody);  
             try
@@ -108,6 +182,7 @@ namespace Api
                 return new BadRequestResult();  
             }  
             return new OkResult();  
+            
         }
 
         [FunctionName("GetUserByUsername")]
