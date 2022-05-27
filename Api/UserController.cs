@@ -112,7 +112,7 @@ namespace Api
         [FunctionName("GetFavorites")]
         public static async Task<IActionResult> GetFavorites(ExecutionContext context,
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "favorites/{username}/{movie_id}")]
-            HttpRequest req, ILogger log, string username, string movie_id)
+            HttpRequest req, ILogger log, string username, int movie_id)
         {
             string foundFavorited = "";
             string exists = "";
@@ -125,7 +125,7 @@ namespace Api
                 var query = @"select * from favorites where username = @username and movie_id = @movie_id";
                 SqlCommand command = new SqlCommand(query, conn);
                 command.Parameters.AddWithValue("@username", username);
-                command.Parameters.AddWithValue("@movie_id", Int32.Parse(movie_id));
+                command.Parameters.AddWithValue("@movie_id", movie_id);
                 var reader = await command.ExecuteReaderAsync();
                 while (reader.Read())
                 {
@@ -141,7 +141,6 @@ namespace Api
                 }
                 
             }
-            Console.WriteLine(username);
             return new OkObjectResult(exists);
         }
         

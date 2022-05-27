@@ -144,10 +144,15 @@
             </MudItem>
             @if (@userFound)
             {
-                @* <MudCheckBox Checked="@FavoriteOrNot" Color="Color.Secondary" CheckedIcon="@Icons.Material.Filled.Favorite" *@
-                @*              UncheckedIcon="@Icons.Material.Filled.FavoriteBorder" @oninput="FavoriteMovie" Disabled="@isDisabled"/> *@
-                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite" 
-                           Color="Color.Primary" Disabled="@isDisabled" OnClick="FavoriteMovie">Favorite</MudButton>
+                if (favoriteButton)
+                {
+                     @* <MudCheckBox Checked="@FavoriteOrNot" Color="Color.Secondary" CheckedIcon="@Icons.Material.Filled.Favorite" *@
+                                                                            @*              UncheckedIcon="@Icons.Material.Filled.FavoriteBorder" @oninput="FavoriteMovie" Disabled="@isDisabled"/> *@
+                                                                            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Favorite" 
+                                                                                       Color="Color.Primary" Disabled="@isDisabled" OnClick="FavoriteMovie">Favorite</MudButton>
+                                    
+                }
+                   
 
             }
             <p class="knownFor">
@@ -225,6 +230,7 @@
 
     private string userInfo = "";
     private bool userFound = false;
+    private bool favoriteButton = false;
     
 
     protected override async Task OnParametersSetAsync()
@@ -232,7 +238,8 @@
         Genre = "";
         ProductionCompanies = "";
         Cast = "";
-        CheckFavorites();
+        
+        
         var id = Value;
         if (id != null)
         {
@@ -243,14 +250,19 @@
         }
         try
         {
-            if (AccountService != null)
+            if (AccountService.User?.Username != null)
             {
                 userInfo = AccountService.User.Username; 
                 userFound = true;
+                Console.WriteLine("ERROR");
+                favoriteButton = await CheckFavorites();
+                Console.WriteLine("IF STATEMENT: "+favoriteButton);
             }
         }
         catch (Exception e)
         {
+            favoriteButton = false;
+            Console.WriteLine("CATCH STATEMENT: "+favoriteButton);
             userInfo = "Guest";
             userFound = false;
             Console.WriteLine(e);
@@ -266,20 +278,17 @@
         FavoriteEntity favoriteEntity = new FavoriteEntity(AccountService.User.Username, Value, like);
         IDbAccess dbAccess = new DbAccess();
         dbAccess.SaveFavorite(favoriteEntity);
-        
-    // Console.WriteLine("FAVORITE MOVIE UPDATE FUNCTION" + like);
-            // FavoriteEntity favoriteEntity = new FavoriteEntity(AccountService.User.Username, Value, like);
-            // IDbAccess dbAccess = new DbAccess();
-            // dbAccess.UpdateFavorite(favoriteEntity);
     }
 
-    private string CheckFavorites()
+    private async Task<bool> CheckFavorites()
     {
-        string favorited;
+        Console.WriteLine("PARAMETERS: "+AccountService.User.Username + Value);
         IDbAccess dbAccess = new DbAccess();
-        favorited = dbAccess.GetFavorite(AccountService.User.Username, Value).ToString();
-        Console.WriteLine("true or false? : "+favorited);
-        return favorited;
+        bool result;
+        Console.WriteLine("ERROR checkfavorites");
+        result = dbAccess.GetFavorite(AccountService.User.Username, Int32.Parse(Value)).Result;
+        Console.WriteLine("RESULT: "+result);
+        return result;
     }
 
     private async Task MovieDetailsApi(string id)
