@@ -1,7 +1,6 @@
 
 using Client.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
@@ -12,14 +11,19 @@ public interface IDbAccess
     Task<string> SaveFavorite(FavoriteEntity favorite);
     Task<string> DeleteFavorite(string username,int movie_id);
     Task<string> GetFavorite(string username,int movie_id);
-    Task<List<string>> GetAllFavorite(string username);
+    Task<List<string>?> GetAllFavorite(string username);
     
 
 }
 
 public class DbAccess : IDbAccess
 {
-    private HttpClient _httpClient = new HttpClient();
+    private readonly HttpClient _httpClient = new();
+
+    public DbAccess()
+    {
+        _httpClient.BaseAddress = new Uri("https://bestmoviesfunction.azurewebsites.net/");
+    }
 
     public async Task<string> SaveFavorite(FavoriteEntity favorite)
     {
@@ -29,7 +33,7 @@ public class DbAccess : IDbAccess
             
         byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(message);
         var msg = new ByteArrayContent(messageBytes);
-        var response = await _httpClient.PostAsync("http://localhost:7071/api/favorites", msg);
+        var response = await _httpClient.PostAsync("api/favorites", msg);
             
         
         if (response.IsSuccessStatusCode)
@@ -45,7 +49,7 @@ public class DbAccess : IDbAccess
     {
         var responseMsg = "Failed";
 
-        var response = await _httpClient.DeleteAsync($"http://localhost:7071/api/favorites/{username}/{movie_id}");
+        var response = await _httpClient.DeleteAsync($"api/favorites/{username}/{movie_id}");
         
         if (response.IsSuccessStatusCode)
         {
@@ -59,7 +63,7 @@ public class DbAccess : IDbAccess
     {
         string responseBool="false";
         
-        var response = await _httpClient.GetStringAsync($"http://localhost:7071/api/favorites/{username}/{movie_id}");
+        var response = await _httpClient.GetStringAsync($"api/favorites/{username}/{movie_id}");
         
         if (response.Equals("true"))
         {
@@ -83,10 +87,10 @@ public class DbAccess : IDbAccess
         return responseBool;
     }
 
-    public async Task<List<string>> GetAllFavorite(string username)
+    public async Task<List<string>?> GetAllFavorite(string username)
     {
         
-        var response = await _httpClient.GetAsync($"http://localhost:7071/api/favorites/{username}");
+        var response = await _httpClient.GetAsync($"api/favorites/{username}");
         response.EnsureSuccessStatusCode();
         
         string responseBody = await response.Content.ReadAsStringAsync();

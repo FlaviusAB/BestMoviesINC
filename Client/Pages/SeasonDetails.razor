@@ -1,6 +1,4 @@
 ﻿@page "/SeasonDetails/{Value}/season/{Num}"
-@using Client.Services
-@inject NavigationManager NavigationManager
 
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
@@ -64,9 +62,7 @@
     private string? Name { get; set; }
     private string? SeasonDescription { get; set; }
     private string? AirDate { get; set; }
-    private List<PeopleEntity> _crewList = new();
-    private List<PeopleEntity> _people = new();
-    
+
 
 
     protected override async Task OnInitializedAsync()

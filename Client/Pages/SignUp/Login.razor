@@ -1,25 +1,22 @@
-@using Api.Models
-@using Client.Helpers
-
-@using Client.Services
 @inject NavigationManager NavigationManager
 @inject IAccountService AccountService
-@inject IAlertService AlertService
+
 
 @page "/Login"
 
 <div class="empty-space"></div>
-<h3>Login</h3>
 
 <MudLayout>
     <MudContainer MaxWidth="MaxWidth.Medium">
+        <h3>Login</h3>
+
         <MudPaper Class="pa-4">
-            <MudForm @ref="form" @bind-IsValid="@success">
-                <MudTextField T="string" Label="Username" Varian="Variant.Outlined" @bind-Value="username" Required="true" RequiredError="Type your username"/>
-                <MudTextField T="string" Immediate="true" @onkeydown="@Enter" Label="Password" @bind-Value="password" Required="true" InputType="InputType.Password"/>
+            <MudForm @ref="_form" @bind-IsValid="@_success">
+                <MudTextField T="string" Label="Username" Varian="Variant.Outlined" @bind-Value="_username" Required="true" RequiredError="Type your username"/>
+                <MudTextField T="string" Immediate="true" @onkeydown="@Enter" Label="Password" @bind-Value="_password" Required="true" InputType="InputType.Password"/>
                 <div class="d-flex align-center justify-space-between mt-6">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => LoginFunc())">
-                        @if (loading)
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_success)" Class="ml-auto" OnClick="@(() => LoginFunc())">
+                        @if (_loading)
                         {
                             <span class="spinner-border spinner-border-sm mr-1"></span>
                         }
@@ -29,7 +26,7 @@
             </MudForm>
         </MudPaper>
         <MudText Color="@Color.Error">
-            @errorUsernameIncorrectField
+            @ErrorUsernameIncorrectField
         </MudText>
         <MudPaper Class="pa-4 mt-4" Width="350px">
             <MudText> Dont have an account? register right now </MudText>
@@ -41,34 +38,33 @@
 </MudLayout>
 
 @code {
-    bool success;
-    string errorUsernameIncorrect { get; set; }
-    string errorUsernameIncorrectField { get; set; }
-    string password;
-    string username;
-    MudForm form;
-
-    IDbAccess DbAccess = new DbAccess();
-    private bool authenticated;
+    bool _success;
+    string? ErrorUsernameIncorrect { get; set; }
+    string? ErrorUsernameIncorrectField { get; set; }
+    string? _password;
+    string? _username;
+    MudForm? _form;
+    
 
     private Models.Account.Login model = new Models.Account.Login();
-    private bool loading;
+    private bool _loading;
 
     private async void LoginFunc()
     {
-        model.Username = username;
-        model.Password = password;
+        model.Username = _username;
+        model.Password = _password;
 
 
-        loading = true;
+        _loading = true;
         try
         {
             await AccountService.Login(model);
         }
         catch (Exception ex)
         {
-            loading = false;
-            errorUsernameIncorrect = "User does not exists. Please register";
+            _loading = false;
+            ErrorUsernameIncorrect = "User does not exists. Please register";
+            _password = "";
 
             Console.WriteLine(ex.ToString());
         }
@@ -82,7 +78,7 @@
         {
             InvokeAsync(() =>
             {
-                errorUsernameIncorrectField = errorUsernameIncorrect;
+                ErrorUsernameIncorrectField = ErrorUsernameIncorrect;
                 StateHasChanged();
             });
         };

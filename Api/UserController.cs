@@ -9,7 +9,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 namespace Api
@@ -20,10 +19,9 @@ namespace Api
         [FunctionName(nameof(UserAuthenication))]
         public static async Task < IActionResult > UserAuthenication(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth")] HttpRequest req, ILogger log) {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("C# HTTP trigger function processed a request");
             
             // TODO: Perform custom authentication here; we're just using a simple hard coded check for this example
-            string foundUsername = "";
             bool authenticated = false;
             
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
@@ -46,15 +44,13 @@ namespace Api
                         var reader = await command.ExecuteReaderAsync();
                         while (reader.Read())
                         {
-
-                            foundUsername = reader["username"].ToString();
+                            var foundUsername = reader["username"].ToString();
                             if (!string.IsNullOrWhiteSpace(foundUsername))
                             {
                                 authenticated = true;
                                 authUser.Username = foundUsername;
                                 authUser.Email = reader["email"].ToString();
                             }
-
                         }
 
                         
@@ -116,7 +112,7 @@ namespace Api
             HttpRequest req, ILogger log, string username, int movie_id)
         {
             string foundFavorited = "";
-            string exists = "";
+            string exists;
 
             var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
             
@@ -176,7 +172,7 @@ namespace Api
         {
             
             string foundFavorited = "";
-            string exists = "";
+            string exists;
             
             var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
             
@@ -243,7 +239,7 @@ namespace Api
             HttpRequest req, ILogger log, string username)
         {
             string foundUsername = "";
-            string exists = "";
+            string exists;
 
             var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
             
@@ -296,9 +292,9 @@ namespace Api
         }
         public static string GetSqlAzureConnectionString(string name)
         {
-            string conStr = System.Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
+            string conStr = Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
             if (string.IsNullOrEmpty(conStr)) // Azure Functions App Service naming convention
-                conStr = System.Environment.GetEnvironmentVariable($"{name}", EnvironmentVariableTarget.Process);
+                conStr = Environment.GetEnvironmentVariable($"{name}", EnvironmentVariableTarget.Process);
             return conStr;
         }
     }

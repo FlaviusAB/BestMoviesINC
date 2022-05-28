@@ -15,7 +15,7 @@ namespace Client.Models
             public BelongsToCollection? MovieCollection;
 
             [JsonProperty("budget")]
-            public int? Budget;
+            public Int64? Budget;
 
             [JsonProperty("genres")]
             public List<Genre>? Genres;
