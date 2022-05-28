@@ -325,7 +325,7 @@
     private async Task<string> CheckFavorites()
     {
         await GetAllfavorites()!;
-        var result = await DbAccess?.GetFavorite(AccountService.User?.Username!, Int32.Parse(Value));
+        var result = await DbAccess?.GetFavorite(AccountService.User?.Username!, Int32.Parse(Value!))!;
         return result;
     }
 
