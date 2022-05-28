@@ -92,6 +92,13 @@
                             <span class="paddingRight5 bold">Production:</span><span>@ProductionCompanies</span>
                         </MudText>
                         <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Budget:</span><span>$@Budget</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Revenue:</span><span>$@Revenue</span>
+                        </MudText>
+                        
+                        <MudText Class="paddingTop2">
                             <span class="paddingRight5 bold">Casts:</span>
                             @if (_showMore)
                             {
@@ -235,6 +242,8 @@
     private bool FavoriteOrNot;
     private FavoriteEntity favoriteEntity;
     
+    private string? Budget { get; set; }
+    private string? Revenue { get; set; }
     private string? PosterPath { get; set; }
     private string? MainPosterPath { get; set; }
     private string? MovieTitle { get; set; }
@@ -347,17 +356,6 @@
             {
                 PosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
             }
-            
-            
-            
-            // if (obj.PosterPath == null)
-            // {
-            //     MainPosterPath = "/no-image-icon-6.png";
-            // }
-            // else
-            // {
-            //     MainPosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
-            // }
 
             MovieTitle = obj.Title;
             MovieDescription = obj.Overview;
@@ -368,6 +366,9 @@
             _productionCountry = obj.ProductionCountries;
             _genres = obj.Genres;
             _productionCompanyList = obj.ProductionCompanies;
+
+            Budget = $"{obj.Budget:n0}";
+            Revenue = $"{obj.Revenue:n0}";
         }
 
         if (_productionCountry != null)

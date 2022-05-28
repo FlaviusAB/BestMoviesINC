@@ -11,13 +11,14 @@
 
 @page "/Signup"
 <div class="empty-space"></div>
-<h3>Signup</h3>
 
-<MudGrid>
-    <MudItem xs="12" sm="7">
+<MudLayout>
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <h3>Signup</h3>
+
         <MudPaper Class="pa-4">
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-                <MudTextField T="string" Label="Username" @bind-Value="username" Immediate="true" Required="true" RequiredError="User name is required!"/>
+                <MudTextField T="string" Label="Username" @bind-Value="username"  Required="true" RequiredError="User name is required!"/>
                 <MudTextField T="string" Label="Email" @bind-Value="email" Required="true" RequiredError="Email is required!"
                               Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })"/>
                 <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @bind-Value="password"
@@ -25,12 +26,16 @@
                               Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
                               RequiredError="Password is required!"/>
                 <MudTextField T="string"
-                              Label="Password" HelperText="Repeat the password" InputType="InputType.Password"
+                              Label="Password" HelperText="Repeat the password" InputType="InputType.Password" @onkeydown="@Enter"
                               Validation="@(new Func<string, string>(PasswordMatch))"/>
 
                 <div class="d-flex align-center justify-space-between mt-6">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto"
                                OnClick="@(() => SignUp())">
+                        @if (loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
                         Register
                     </MudButton>
                 </div>
@@ -44,17 +49,20 @@
             <MudText> Already have an account? Login now </MudText>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="/Login">Login</MudButton>
         </MudPaper>
-    </MudItem>
+    </MudContainer>
 
-</MudGrid>
+</MudLayout>
 <div class="empty-space-large"></div>
 
 @code {
+    bool loading;
     bool success;
     string[] errors = { };
 
     string message { get; set; }
     string errorUsernameTextField { get; set; }
+    
+    string password2;
 
     string password;
     string username;
@@ -73,7 +81,7 @@
         //User userData = new User(username, password, email, "user");
         //message = await DbAccess.RegisterUser(userData);
 
-        
+        loading = true;
         try
         {
             await AccountService.Register(model);
@@ -84,6 +92,7 @@
         
         catch (Exception ex)
         {
+            loading = false;
             AlertService.Error(ex.Message);
             message = "User already existing";
             StateHasChanged();
@@ -130,6 +139,12 @@
         if (password != arg)
             return "Passwords don't match";
         return null;
+    }
+    
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code is not ("Enter" or "NumpadEnter")) return;
+        SignUp();
     }
 
 }
