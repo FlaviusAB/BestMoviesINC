@@ -72,12 +72,8 @@
 
     private List<Movie> _trendingMovies = new();
     private List<Movie> _popularMovies = new();
-    private List<Movie> _nowPlaying = new();
-    
+   
     private List<Tv> _trendingTVs = new();
-
-    private string? TextValue { get; set; }
-    
 
     void MovieDetails(int id)
     {
@@ -99,9 +95,6 @@
 
             _popularMovies = new List<Movie>();
             _popularMovies = await MoviesData.GetPopular();
-
-            _nowPlaying = new List<Movie>();
-            _nowPlaying = await MoviesData.GetNowPlaying();
 
             _trendingTVs = new List<Tv>();
             _trendingTVs = await MoviesData.GetTrendingTv();

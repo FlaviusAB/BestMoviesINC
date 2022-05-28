@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 using System.Text.Json;
-using System.Threading.Tasks;
+
 
 namespace Client.Services
 {
@@ -24,10 +24,7 @@ namespace Client.Services
         {
             var json = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", key);
 
-            if (json == null)
-                return default;
-
-            return JsonSerializer.Deserialize<T>(json);
+            return JsonSerializer.Deserialize<T>(json)!;
         }
 
         public async Task SetItem<T>(string key, T value)

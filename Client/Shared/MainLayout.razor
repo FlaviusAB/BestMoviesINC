@@ -19,10 +19,10 @@
         @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
         <MudSpacer/>
 
-        @if (@userFound)
+        @if (_userFound)
         {
             <div class="dropdown">
-                <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">@profileLetter</MudAvatar>
+                <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">@_profileLetter</MudAvatar>
                 <div class="dropdown-content">
                     <a href="/Profile">Profile</a>
                     <a href="#">Favorites</a>
@@ -32,7 +32,7 @@
         }
         else
         {
-            <MudText>@userInfo</MudText>
+            <MudText>@_userInfo</MudText>
             <MudButton href="/Login"> Login</MudButton>
             <MudButton href="/Signup"> Register</MudButton>
         }
@@ -77,9 +77,9 @@
 @code {
     
 
-    private string userInfo = "";
-    private bool userFound = false;
-    private string profileLetter;
+    private string _userInfo = "";
+    private bool _userFound;
+    private string? _profileLetter;
 
     private string TextValue { get; set; } = "";
 
@@ -105,15 +105,15 @@
                     AccountService.Initialize();
                     if (AccountService.User?.Username!= null)
                     {
-                        userInfo = AccountService.User.Username;
-                        profileLetter = userInfo.Substring(0, 1);
-                        userFound = true;
+                        _userInfo = AccountService.User.Username;
+                        _profileLetter = _userInfo.Substring(0, 1);
+                        _userFound = true;
                     }
                 
                 else
                 {
-                    userFound = false;
-                    userInfo = "Not logged in: ";
+                    _userFound = false;
+                    _userInfo = "Not logged in: ";
                     Console.WriteLine(e);
                     StateHasChanged();
                 }

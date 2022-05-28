@@ -9,13 +9,13 @@ namespace BlazorApp.Models.Account
         
 
         [Required]
-        public string Username { get; set; }
+        public string? Username { get; set; }
         
         [Required]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         [MinLength(6, ErrorMessage = "The Password field must be a minimum of 6 characters")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
     }
 }

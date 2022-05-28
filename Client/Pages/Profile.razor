@@ -5,25 +5,25 @@
     <MudContainer>
         <MudGrid>
             <MudItem xs="12" sm="9">
-                <MudImage Width="199" Height="299" Fluid="true" Alt="@username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage>
+                <MudImage Width="199" Height="299" Fluid="true" Alt="@_username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage>
                 <MudCard>
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h5">
-                                <b>@username</b>
+                                <b>@_username</b>
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
                         <MudText Typo="Typo.body2">
-                            <a class="bold">Email: </a> @email
+                            <a class="bold">Email: </a> @_email
                         </MudText>
                     </MudCardContent>
                 </MudCard>
             </MudItem>
         </MudGrid>
         <div class="container2">
-            @foreach (var item in ProfileFavorites)
+            @foreach (var item in _profileFavorites)
             {
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
@@ -49,32 +49,32 @@
     private IMoviesData? MoviesData { get; set; }
 
 
-    List<string> AllFavorites;
-    private readonly List<Movie> ProfileFavorites = new();
-    Movie favoriteEntity = new Movie();
+    List<string>? _allFavorites;
+    private readonly List<Movie> _profileFavorites = new();
+    Movie _favoriteEntity = new Movie();
 
 
-    string username = "";
-    string email = "";
+    string _username = "";
+    string _email = "";
 
     //call GetMovieDetails with an id and then take the posterpath and the title from it
     protected override async Task OnInitializedAsync()
     {
-        username = AccountService.User.Username;
-        email = AccountService.User.Email;
+        _username = AccountService?.User.Username!;
+        _email = AccountService?.User.Email!;
         
-        AllFavorites = await GetAllFavorites();
+        _allFavorites = await GetAllFavorites()!;
         
-        foreach (var str in AllFavorites)
+        foreach (var str in _allFavorites!)
         {
-            favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
-            ProfileFavorites.Add(favoriteEntity);
+            _favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
+            _profileFavorites.Add(_favoriteEntity);
         }
     }
 
-    private async Task<List<string>>? GetAllFavorites()
+    private async Task<List<string>?>? GetAllFavorites()
     {
-        List<string> allFav = await DbAccess?.GetAllFavorite(AccountService.User?.Username!);
+        List<string>? allFav = await DbAccess?.GetAllFavorite(AccountService.User?.Username!);
         return allFav;
     }
     

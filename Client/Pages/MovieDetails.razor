@@ -238,7 +238,7 @@
     [Parameter]
     public string? Value { get; set; }
 
-    private string Favored { get; set; }
+
 
     private string? PosterPath { get; set; }
     private string? MovieTitle { get; set; }
@@ -266,7 +266,7 @@
     private List<Movie> _movies = new();
 
     private bool _userFound;
-    private string _favoriteButton;
+    private string? _favoriteButton;
 
 
     protected override async Task OnParametersSetAsync()
@@ -285,7 +285,7 @@
             await MovieCrewApi(id);
         }
 
-        if (AccountService.User?.Username != null)
+        if (AccountService!.User?.Username != null)
         {
             _userFound = true;
             _favoriteButton = await CheckFavorites();
@@ -305,7 +305,7 @@
     //TODO if its true -> update instead of insert
         
         _favoriteButton = "true";
-        FavoriteEntity favorite = new FavoriteEntity(AccountService.User?.Username!, Value);
+        FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, Value!);
         DbAccess?.SaveFavorite(favorite);
     }
 
@@ -313,19 +313,13 @@
     {
        
         _favoriteButton = "false";
-        DbAccess?.DeleteFavorite(AccountService.User?.Username!, Int32.Parse(Value));
-    }
-
-    private async Task<List<string>>? GetAllfavorites()
-    {
-        var allFav = await DbAccess?.GetAllFavorite(AccountService.User?.Username!);
-        return allFav;
+        DbAccess?.DeleteFavorite(AccountService!.User?.Username!, Int32.Parse(Value!));
     }
 
     private async Task<string> CheckFavorites()
     {
-        await GetAllfavorites()!;
-        var result = await DbAccess?.GetFavorite(AccountService.User?.Username!, Int32.Parse(Value!))!;
+        
+        var result = await DbAccess?.GetFavorite(AccountService!.User?.Username!, Int32.Parse(Value!))!;
         return result;
     }
 

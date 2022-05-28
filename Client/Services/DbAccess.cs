@@ -1,7 +1,6 @@
 
 using Client.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
@@ -12,7 +11,7 @@ public interface IDbAccess
     Task<string> SaveFavorite(FavoriteEntity favorite);
     Task<string> DeleteFavorite(string username,int movie_id);
     Task<string> GetFavorite(string username,int movie_id);
-    Task<List<string>> GetAllFavorite(string username);
+    Task<List<string>?> GetAllFavorite(string username);
     
 
 }
@@ -74,7 +73,7 @@ public class DbAccess : IDbAccess
         return responseBool;
     }
 
-    public async Task<List<string>> GetAllFavorite(string username)
+    public async Task<List<string>?> GetAllFavorite(string username)
     {
         
         var response = await _httpClient.GetAsync($"api/favorites/{username}");
