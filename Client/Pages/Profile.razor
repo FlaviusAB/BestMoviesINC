@@ -1,40 +1,86 @@
+@inject NavigationManager NavigationManager
+
 @page "/Profile"
 <MudLayout>
     <MudContainer>
         <MudGrid>
             <MudItem xs="12" sm="9">
-                <MudImage Width="199" Height="299" Fluid="true" Alt="@username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage>
+                <MudImage Width="199" Height="299" Fluid="true" Alt="@_username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage>
                 <MudCard>
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h5">
-                                <b>@username</b>
+                                <b>@_username</b>
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
                         <MudText Typo="Typo.body2">
-                            <a class="bold">Email: </a> @email
+                            <a class="bold">Email: </a> @_email
                         </MudText>
                     </MudCardContent>
                 </MudCard>
             </MudItem>
         </MudGrid>
+        <div class="container2">
+            @foreach (var item in _profileFavorites)
+            {
+                var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+
+                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                    
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                    
+                </MudButton>
+            }
+        </div>
     </MudContainer>
 </MudLayout>
 
 @code {
+
     [Inject]
     private IAccountService? AccountService { get; set; }
-    
-    string username = "";
-    string email = "";
-    
 
-    protected override void OnInitialized()
+    [Inject]
+    private IDbAccess? DbAccess { get; set; }
+
+    [Inject]
+    private IMoviesData? MoviesData { get; set; }
+
+
+    List<string>? _allFavorites;
+    private readonly List<Movie> _profileFavorites = new();
+    Movie _favoriteEntity = new Movie();
+
+
+    string _username = "";
+    string _email = "";
+
+    //call GetMovieDetails with an id and then take the posterpath and the title from it
+    protected override async Task OnInitializedAsync()
     {
-        username = AccountService.User.Username;
-        email = AccountService.User.Email;
+        _username = AccountService?.User.Username!;
+        _email = AccountService?.User.Email!;
+        
+        _allFavorites = await GetAllFavorites()!;
+        
+        foreach (var str in _allFavorites!)
+        {
+            _favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
+            _profileFavorites.Add(_favoriteEntity);
+        }
+    }
+
+    private async Task<List<string>?>? GetAllFavorites()
+    {
+        List<string>? allFav = await DbAccess?.GetAllFavorite(AccountService.User?.Username!);
+        return allFav;
+    }
+    
+    void MovieDetails(int id)
+    {
+        NavigationManager.NavigateTo($"MovieDetails/{id}");
     }
 
 }
