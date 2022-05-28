@@ -144,7 +144,7 @@ namespace Api
             }
             return new OkObjectResult(exists);
         }
-        
+
         [FunctionName("GetAllFavorites")]
         public static async Task<IActionResult> GetAllFavorites(ExecutionContext context,
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "favorites/{username}")]

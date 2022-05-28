@@ -195,6 +195,7 @@
     [Inject]
     private IMoviesData? MoviesData { get; set; }
 
+
     [Parameter]
     public string? Value { get; set; }
 
@@ -250,6 +251,8 @@
             await SeasonDetailsApi(id);
         }
     }
+    
+    
 
     private async Task TvDetailsApi(string id)
     {

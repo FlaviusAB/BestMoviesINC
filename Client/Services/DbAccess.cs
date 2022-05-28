@@ -68,6 +68,20 @@ public class DbAccess : IDbAccess
         Console.WriteLine("DbAccess GetFavorite : "+responseBool);
         return responseBool;
     }
+    
+    public async Task<string> GetFavoriteTV(string username, int movie_id)
+    {
+        string responseBool="false";
+        
+        var response = await _httpClient.GetStringAsync($"http://localhost:7071/api/favorites/{username}/{movie_id}");
+        
+        if (response.Equals("true"))
+        {
+            responseBool = "true";
+        }
+        Console.WriteLine("DbAccess GetFavoriteTV : "+responseBool);
+        return responseBool;
+    }
 
     public async Task<List<string>> GetAllFavorite(string username)
     {
