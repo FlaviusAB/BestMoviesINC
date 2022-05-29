@@ -113,7 +113,7 @@ namespace Api
                         Console.WriteLine(input.Username +" USERNAME");
                         Guid id = Guid.NewGuid();
                         string sessionToken = id.ToString();
-                        var query = $"INSERT INTO [login] (username,password,email) VALUES('{input.Username}', '{input.Password}' , '{input.Email}', {sessionToken})";  
+                        var query = $"INSERT INTO login (username,password,email,sessionToken) VALUES('{input.Username}', '{input.Password}' , '{input.Email}', '{sessionToken}')";  
                         SqlCommand command = new SqlCommand(query, conn);  
                         command.ExecuteNonQuery();  
                     }  
