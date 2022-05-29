@@ -393,7 +393,8 @@ a, .btn-link {
 .dropdown:hover .dropdown-content {display: block;}
 
 .profileContent{
-    padding: 50px;
+    padding: 50px
+    
 }
 
 .LogInForm {
@@ -404,25 +405,32 @@ a, .btn-link {
 }
 
 .favorite-item {
-    height: 90px;
-    width: fit-content;
+    height: 110px;
+    background-color: #3dd5f3;
     
 }
 
 .favorite-list {
     width: 50px;
-    height: 70px;
+    height: 75px;
     float: left;
 }
 
+.favorite-list2 {
+    width: 20px;
+    height: 70px;
+    float: left;
+    text-align: center;
+    padding-top: 30px;
+}
+
 .favorite-text {
-    padding: 50px 0;
-    height: 82px;
-    width: 70%;
+    height: 87px;
+    width: 60%;
 }
 
 .favorite-text-style {
-    text-align: left;
+    text-align: center;
 
 }
 

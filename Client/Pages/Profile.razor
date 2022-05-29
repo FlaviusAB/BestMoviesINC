@@ -27,8 +27,11 @@
             @foreach (var item in _profileFavorites)
             {
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
-
+                
                 <MudItem xs="12" class="favorite-item">
+                    <div class="favorite-list2">
+                        @count
+                    </div>
                     <MudButton OnClick="@(() => MovieDetails(@item.Id))">
                         <div class="favorite-list">
                             <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
@@ -48,6 +51,8 @@
 
 @code {
 
+    
+    
     [Inject]
     private IAccountService? AccountService { get; set; }
 
@@ -62,7 +67,7 @@
     private readonly List<Movie> _profileFavorites = new();
     Movie _favoriteEntity = new Movie();
 
-
+    int count = 1;
     string _username = "";
     string _email = "";
 
