@@ -14,17 +14,33 @@
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <p>
+            <b>TOP 20 Users Favorites</b>
+        </p>
+        <div class="container2">
+            @foreach (var item in _profileFavorites)
+            {
+                var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+        
+                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                            
+                    <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                            
+                </MudButton>
+            }
+        </div>
+        <div class="paddingTop5"></div>
+        <p>
             <b>Trending Movies</b>
         </p>
-        <div class="container2" >
+        <div class="container2">
             @foreach (var item in _trendingMovies)
             {
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
                 <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                
-                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="100" Class="rounded-lg"/>
-                   
+
+                    <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="100" Class="rounded-lg"/>
+
                 </MudButton>
             }
         </div>
@@ -33,15 +49,15 @@
         <p>
             <b>Popular Movies</b>
         </p>
-        <div class="container2" >
+        <div class="container2">
             @foreach (var item in _popularMovies)
             {
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
                 <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                    
-                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                    
+
+                    <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+
                 </MudButton>
             }
         </div>
@@ -55,9 +71,9 @@
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
                 <MudButton OnClick="@(() => TvDetails(@item.Id))">
-                    
-                        <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
-                    
+
+                    <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+
                 </MudButton>
             }
         </div>
@@ -84,7 +100,14 @@
     
     protected override async Task OnInitializedAsync()
     {
-            
+        _allFavorites = await GetAllUsersFavorites()!;  
+        
+        foreach (var str in _allFavorites!)
+        {
+            _favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
+            _profileFavorites.Add(_favoriteEntity);
+        }
+        
         _trendingMovies = new List<Movie>();
         if (MoviesData != null)
         {
@@ -98,7 +121,7 @@
         }
     }
     
-    private async Task<List<string>?>? GetAllFavorites()
+    private async Task<List<string>?>? GetAllUsersFavorites()
     {
         List<string>? allFav = await DbAccess?.GetAllUsersFavorite();
         return allFav;
