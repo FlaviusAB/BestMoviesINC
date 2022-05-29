@@ -34,19 +34,23 @@
                                             Remove
                                         </MudButton>
                                         
-                                        <MudText Color="Color.Primary" >Favorited by
-                                            <span id="lime">@_favoriteCount</span> Users
-                                        </MudText>
+                                            <MudText Color="Color.Primary">Favorited by
+                                                <span id="lime">@_favoriteCount</span> Users
+                                            </MudText>
+                                        
                                     }
                                     else
                                     {
-                                        <MudButon Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
-                                                  Color="Color.Primary" OnClick="FavoriteMovie">
+                                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                                                   Color="Color.Primary" OnClick="FavoriteMovie">
                                             Add
-                                        </MudButon>
-                                        <MudText Color="Color.Primary">Favorited by
-                                            <span id="lime">@_favoriteCount</span> Users
-                                        </MudText>
+                                        </MudButton>
+                                        
+                                            <MudText Color="Color.Primary">Favorited by
+                                                <span id="lime">@_favoriteCount</span> Users
+                                            </MudText>
+                                        
+                                       
                                     }
                                 }
             </CardHeaderActions>
@@ -282,7 +286,10 @@
 
     private bool _userFound;
     private string? _favoriteButton;
+    
+    
     private string? _favoriteCount;
+    
 
 
     protected override async Task OnParametersSetAsync()
@@ -307,10 +314,12 @@
             _favoriteCount = await FavoriteCount();
             _favoriteButton = await CheckFavorites();
             
+            
         }
 
         else
         {
+            
             _favoriteButton = "false";
             _userFound = false;
             
@@ -319,10 +328,12 @@
 
     private void FavoriteMovie()
     {
+        
     //TODO if its true -> update instead of insert
         _favoriteButton = "true";
         FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, Value!);
         DbAccess?.SaveFavorite(favorite);
+        _favoriteCount = (int.Parse(_favoriteCount)+ 1).ToString();
     }
 
     private async Task<string> FavoriteCount()
@@ -333,12 +344,14 @@
 
     private void RemoveFavoriteMovie()
     {
+        _favoriteCount = (int.Parse(_favoriteCount) - 1).ToString();
         _favoriteButton = "false";
         DbAccess?.DeleteFavorite(AccountService!.User?.Username!, Int32.Parse(Value!));
     }
 
     private async Task<string> CheckFavorites()
     {
+        
         var result = await DbAccess?.GetFavorite(AccountService!.User?.Username!, Int32.Parse(Value!))!;
         return result;
     }
