@@ -12,9 +12,8 @@ public interface IDbAccess
     Task<string> DeleteFavorite(string username,int movie_id);
     Task<string> GetFavorite(string username,int movie_id);
     Task<List<string>?> GetAllFavorite(string username);
-
     Task<string> GetFavoriteCount(int movie_id);
-
+    Task<List<string>?> GetAllUsersFavorite();
 
 }
 
@@ -89,5 +88,14 @@ public class DbAccess : IDbAccess
         var response = await _httpClient.GetStringAsync($"api/favoriteCount/{movie_id}");
         return response;
     }
-    
+
+    public async Task<List<string>?> GetAllUsersFavorite()
+    {
+        var response = await _httpClient.GetAsync($"api/allFavorite/All");
+        response.EnsureSuccessStatusCode();
+        
+        string responseBody = await response.Content.ReadAsStringAsync();
+        var favList = JsonConvert.DeserializeObject<List<string>>(responseBody).ToList();
+        return favList;
+    }
 }
