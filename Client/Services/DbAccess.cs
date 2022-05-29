@@ -12,7 +12,9 @@ public interface IDbAccess
     Task<string> DeleteFavorite(string username,int movie_id);
     Task<string> GetFavorite(string username,int movie_id);
     Task<List<string>?> GetAllFavorite(string username);
-    
+
+    Task<string> GetFavoriteCount(int movie_id);
+
 
 }
 
@@ -22,7 +24,7 @@ public class DbAccess : IDbAccess
 
     public DbAccess()
     {
-        _httpClient.BaseAddress = new Uri("https://bestmoviesfunction.azurewebsites.net/");
+        _httpClient.BaseAddress = new Uri("http://localhost:7071/");
     }
 
     public async Task<string> SaveFavorite(FavoriteEntity favorite)
@@ -55,7 +57,6 @@ public class DbAccess : IDbAccess
         {
             responseMsg = "Success!";
         }
-        Console.WriteLine("DbAccess DeleteFavorite: " + responseMsg);
         return responseMsg;
     }
 
@@ -69,7 +70,6 @@ public class DbAccess : IDbAccess
         {
             responseBool = "true";
         }
-        Console.WriteLine("DbAccess GetFavorite : "+responseBool);
         return responseBool;
     }
 
@@ -83,6 +83,11 @@ public class DbAccess : IDbAccess
         var favList = JsonConvert.DeserializeObject<List<string>>(responseBody).ToList();
         return favList;
     }
+
+    public async Task<string> GetFavoriteCount(int movie_id)
+    {
+        var response = await _httpClient.GetStringAsync($"api/favoriteCount/{movie_id}");
+        return response;
+    }
     
-  
 }

@@ -53,8 +53,6 @@ namespace Api
                                 authUser.Email = reader["email"].ToString();
                             }
                         }
-
-                        
                     }  
                 }  
             }  
@@ -155,7 +153,7 @@ namespace Api
             }
             return new OkObjectResult(exists);
         }
-        
+
         [FunctionName("GetAllFavorites")]
         public static async Task<IActionResult> GetAllFavorites(ExecutionContext context,
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "favorites/{username}")]
@@ -178,6 +176,31 @@ namespace Api
                 }
             }
             return new OkObjectResult(foundMovies);
+        }
+        
+        [FunctionName("GetFavoriteCount")]
+        public static async Task<IActionResult> GetFavoriteCount(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "favoriteCount/{movie_id}")]
+            HttpRequest req, ILogger log, int movie_id)
+        {
+            string count="";
+
+            var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+            
+            using (SqlConnection conn = new SqlConnection(appsettingvalue))
+            {
+                conn.Open();
+                var query = @"select count(username) from favorites where movie_id = @movie_id";
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@movie_id", movie_id);
+                var reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    count = reader[""].ToString();
+                    Console.WriteLine(count);
+                }
+            }
+            return new OkObjectResult(count);
         }
         
         [FunctionName("DeleteFavorites")]
