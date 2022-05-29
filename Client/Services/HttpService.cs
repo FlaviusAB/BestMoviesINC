@@ -124,10 +124,7 @@ namespace Client.Services
                 _navigationManager.NavigateTo("/Login");
 
             }
-            else
-            {
-                _navigationManager.NavigateTo("/");
-            }
+            
             
             await handleErrors(response);
 
