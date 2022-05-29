@@ -1,5 +1,5 @@
 @inject NavigationManager NavigationManager
-
+@inject IAccountService AccountService
 @page "/Profile"
 <MudLayout>
     <MudContainer>
@@ -38,9 +38,7 @@
 </MudLayout>
 
 @code {
-
-    [Inject]
-    private IAccountService? AccountService { get; set; }
+    
 
     [Inject]
     private IDbAccess? DbAccess { get; set; }
@@ -59,15 +57,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _username = AccountService?.User.Username!;
-        _email = AccountService?.User.Email!;
         
-        _allFavorites = await GetAllFavorites()!;
+        if (AccountService.User?.Username != null)
+        {
+            _username = AccountService.User?.Username!;
+            _email = AccountService.User?.Email!;
+            _allFavorites = await GetAllFavorites()!;
+        
         
         foreach (var str in _allFavorites!)
         {
             _favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
             _profileFavorites.Add(_favoriteEntity);
+        }
         }
     }
 

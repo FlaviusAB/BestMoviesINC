@@ -20,11 +20,4 @@ builder.Services.AddScoped<IDbAccess, DbAccess>();
 builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 builder.Services.AddAuthorizationCore();
 
-builder.Services.AddCors(policy =>
-{
-    policy.AddPolicy("_myAllowSpecificOrigins", builder => builder.WithOrigins("https://bestmoviesfunction.azurewebsites.net","https://kind-cliff-0d9de4a03-2.westeurope.1.azurestaticapps.net")
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials());
-});
 await builder.Build().RunAsync();

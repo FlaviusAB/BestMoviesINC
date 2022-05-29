@@ -75,14 +75,14 @@ namespace Client.Services
             await _httpService.Put($"/users/{id}", model);
 
             // update stored user if the logged in user updated their own record
-            if (id == User.Id) 
-            {
-                // update local storage
-                
-                User.Email = model.Email;
-                User.Username = model.Username;
-                await _localStorageService.SetItem(_userKey, User);
-            }
+            // if (id == User.Id) 
+            // {
+            //     // update local storage
+            //     
+            //     User.Email = model.Email;
+            //     User.Username = model.Username;
+            //     await _localStorageService.SetItem(_userKey, User);
+            // }
         }
 
         public async Task Delete(string id)
@@ -90,8 +90,8 @@ namespace Client.Services
             await _httpService.Delete($"/users/{id}");
 
             // auto logout if the logged in user deleted their own record
-            if (id == User.Id)
-                await Logout();
+            // if (id == User.Id)
+            //     await Logout();
         }
     }
 }
