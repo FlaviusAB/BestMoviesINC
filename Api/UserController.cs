@@ -52,8 +52,6 @@ namespace Api
                                 authUser.Email = reader["email"].ToString();
                             }
                         }
-
-                        
                     }  
                 }  
             }  
@@ -140,7 +138,7 @@ namespace Api
             }
             return new OkObjectResult(exists);
         }
-        
+
         [FunctionName("GetAllFavorites")]
         public static async Task<IActionResult> GetAllFavorites(ExecutionContext context,
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "favorites/{username}")]
@@ -163,6 +161,54 @@ namespace Api
                 }
             }
             return new OkObjectResult(foundMovies);
+        }
+        
+        [FunctionName("GetFavoriteCount")]
+        public static async Task<IActionResult> GetFavoriteCount(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "favoriteCount/{movie_id}")]
+            HttpRequest req, ILogger log, int movie_id)
+        {
+            string count="";
+
+            var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+            
+            using (SqlConnection conn = new SqlConnection(appsettingvalue))
+            {
+                conn.Open();
+                var query = @"select count(*) from favorites where movie_id = @movie_id";
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@movie_id", movie_id);
+                var reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    count = reader[""].ToString();
+                    Console.WriteLine(count);
+                }
+            }
+            return new OkObjectResult(count);
+        }
+        
+        [FunctionName("GetAllUsersFavorite")]
+        public static async Task<IActionResult> GetAllUsersFavorite(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "allFavorite/{var}")]
+            HttpRequest req, ILogger log)
+        {
+            List<string> MostFavorited = new List<string>();
+
+            var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+            
+            using (SqlConnection conn = new SqlConnection(appsettingvalue))
+            {
+                conn.Open();
+                var query = @"select top 20 movie_id, count(movie_id) as c from favorites group by movie_id order by c DESC";
+                SqlCommand command = new SqlCommand(query, conn);
+                var reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    MostFavorited.Add(reader["movie_id"].ToString());
+                }
+            }
+            return new OkObjectResult(MostFavorited);
         }
         
         [FunctionName("DeleteFavorites")]
