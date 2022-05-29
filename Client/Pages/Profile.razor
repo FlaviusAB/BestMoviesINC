@@ -57,6 +57,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await AccountService.Initialize();
         
         if (AccountService.User?.Username != null)
         {
