@@ -68,12 +68,41 @@
 @code {
 
     [Inject]
+    private IDbAccess? DbAccess { get; set; }
+    
+    [Inject]
     private IMoviesData? MoviesData { get; set; }
 
     private List<Movie> _trendingMovies = new();
     private List<Movie> _popularMovies = new();
    
     private List<Tv> _trendingTVs = new();
+    
+    List<string>? _allFavorites;
+    private readonly List<Movie> _profileFavorites = new();
+    Movie _favoriteEntity = new Movie();
+    
+    protected override async Task OnInitializedAsync()
+    {
+            
+        _trendingMovies = new List<Movie>();
+        if (MoviesData != null)
+        {
+            _trendingMovies = await MoviesData.GetTrending();
+    
+            _popularMovies = new List<Movie>();
+            _popularMovies = await MoviesData.GetPopular();
+    
+            _trendingTVs = new List<Tv>();
+            _trendingTVs = await MoviesData.GetTrendingTv();
+        }
+    }
+    
+    private async Task<List<string>?>? GetAllFavorites()
+    {
+        List<string>? allFav = await DbAccess?.GetAllUsersFavorite();
+        return allFav;
+    }
 
     void MovieDetails(int id)
     {
@@ -85,21 +114,7 @@
         NavigationManager.NavigateTo($"TVDetails/{id}");
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        
-        _trendingMovies = new List<Movie>();
-        if (MoviesData != null)
-        {
-            _trendingMovies = await MoviesData.GetTrending();
-
-            _popularMovies = new List<Movie>();
-            _popularMovies = await MoviesData.GetPopular();
-
-            _trendingTVs = new List<Tv>();
-            _trendingTVs = await MoviesData.GetTrendingTv();
-        }
-    }
+    
 
 
 }
