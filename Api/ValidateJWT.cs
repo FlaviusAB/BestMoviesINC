@@ -11,6 +11,7 @@ namespace Api
         public bool IsValid { get; }
         public string Username { get; }
         public string Role { get; }
+        public string SessionToken { get; }
         public ValidateJWT(HttpRequest request)
         {
             // Check if we have a header.
@@ -66,6 +67,9 @@ namespace Api
             IsValid = true;
             Username = Convert.ToString(claims["username"]);
             Role = Convert.ToString(claims["role"]);
+            SessionToken = Convert.ToString(claims["sessionToken"]);
+           
+            IsValid = true;
         }
     }
 }

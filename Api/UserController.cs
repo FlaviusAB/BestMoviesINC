@@ -27,9 +27,10 @@ namespace Api
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
             var input = JsonConvert.DeserializeObject<UserCredentials>(requestBody); 
             User authUser = new User();
+            var appsettingvalue = "";
             try
             {
-                var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+                appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
                 using (SqlConnection conn = new SqlConnection(appsettingvalue))  
                 {
                     conn.Open();  
@@ -69,9 +70,23 @@ namespace Api
                 return await Task.FromResult(new UnauthorizedResult()).ConfigureAwait(false);
             } else {
                 GenerateJWTToken generateJWTToken = new();
-                string token = generateJWTToken.IssuingJWT(input.username);
-                authUser.Token = token;
-                return await Task.FromResult(new OkObjectResult(authUser)).ConfigureAwait(false);
+
+                Guid id = Guid.NewGuid();
+            string sessionToken = id.ToString();
+
+            using (SqlConnection conn = new SqlConnection(appsettingvalue))
+            {
+                conn.Open();
+                var query = $"UPDATE login SET sessionToken = '{sessionToken}' WHERE username = '{input.username}'";  
+                SqlCommand command = new SqlCommand(query, conn);
+                        
+                await command.ExecuteReaderAsync();
+                
+            }
+
+            string token = generateJWTToken.IssuingJWT(input.username, sessionToken);
+            authUser.SessionToken = token;
+            return await Task.FromResult(new OkObjectResult(authUser)).ConfigureAwait(false);
             }
         }
 
@@ -264,9 +279,10 @@ namespace Api
                     {  
                         Console.WriteLine(input.Email +" EMAIL");
                         Console.WriteLine(input.Username +" USERNAME");
+                        
                         var query = $"INSERT INTO [login] (username,password,email) VALUES('{input.Username}', '{input.Password}' , '{input.Email}')";  
                         SqlCommand command = new SqlCommand(query, conn);  
-                        command.ExecuteNonQuery();  
+                        command.ExecuteNonQuery();   
                     }  
                 }  
             }  

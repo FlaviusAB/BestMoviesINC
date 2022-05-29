@@ -22,7 +22,7 @@ namespace Api
             _base64Encoder = new JwtBase64UrlEncoder();
             _jwtEncoder = new JwtEncoder(_algorithm, _serializer, _base64Encoder);
         }
-        public string IssuingJWT(string user)
+        public string IssuingJWT(string user, string sessionToken)
         {
             Dictionary<string, object> claims = new Dictionary<string, object>
         {
@@ -30,7 +30,9 @@ namespace Api
             { "username", user },
  
             // TODO: Add other claims here as necessary; maybe from a user database
-            { "role", "admin"}
+            { "role", "admin"},
+
+            { "token", sessionToken }
         };
 
             string token = _jwtEncoder.Encode(claims, "Your Secret Securtity key string"); // Put this key in config

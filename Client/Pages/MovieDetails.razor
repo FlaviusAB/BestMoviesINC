@@ -34,9 +34,10 @@
                                             Remove
                                         </MudButton>
                                         
-                                        <MudText Color="Color.Primary" >Favorited by
-                                            <span id="lime">@_favoriteCount</span> Users
-                                        </MudText>
+                                            <MudText Color="Color.Primary">Favorited by
+                                                <span id="lime">@_favoriteCount</span> Users
+                                            </MudText>
+                                        
                                     }
                                     else
                                     {
@@ -323,6 +324,7 @@
         _favoriteButton = "true";
         FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, Value!);
         DbAccess?.SaveFavorite(favorite);
+        _favoriteCount = (int.Parse(_favoriteCount)+ 1).ToString();
     }
 
     private async Task<string> FavoriteCount()
@@ -333,6 +335,7 @@
 
     private void RemoveFavoriteMovie()
     {
+        _favoriteCount = (int.Parse(_favoriteCount) - 1).ToString();
         _favoriteButton = "false";
         DbAccess?.DeleteFavorite(AccountService!.User?.Username!, Int32.Parse(Value!));
     }
