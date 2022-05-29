@@ -42,7 +42,15 @@
                             <p class="favorite-text-style">@item.Title (@item.ReleaseDate.Substring(0, 4))</p>
                         </div>
                     </MudButton>
+                    <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                               Color="Color.Primary" OnClick="@(() => RemoveFavoriteMovie(@item.Id))">
+                        Remove
+                    </MudButton>
+                    
                 </MudItem>
+                
+                
+               
             }
             <div class="pa-6"></div>
         </MudGrid>
@@ -66,6 +74,7 @@
     List<string>? _allFavorites;
     private readonly List<Movie> _profileFavorites = new();
     Movie _favoriteEntity = new Movie();
+    // private string? _favoriteButton;
 
     int count = 1;
     string _username = "";
@@ -82,6 +91,7 @@
         {
             _favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
             _profileFavorites.Add(_favoriteEntity);
+            // _favoriteButton = await CheckFavorites(id);
         }
     }
 
@@ -94,6 +104,24 @@
     void MovieDetails(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");
+    }
+    
+    // private void FavoriteMovie(int id)
+    // {
+    //     _favoriteButton = "true";
+    //     FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, id.ToString());
+    //     DbAccess?.SaveFavorite(favorite);
+    // }
+    
+    // private async Task<string> CheckFavorites(int id)
+    // {
+    //     var result = await DbAccess?.GetFavorite(AccountService!.User?.Username!, id)!;
+    //     return result;
+    // }
+    
+    private void RemoveFavoriteMovie(int id)
+    {
+        DbAccess?.DeleteFavorite(AccountService!.User?.Username!, id);
     }
 
 }

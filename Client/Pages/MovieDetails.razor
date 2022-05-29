@@ -26,29 +26,31 @@
             </CardHeaderContent>
             <CardHeaderActions>
                 @if (_userFound)
-                                {
-                                    @if (bool.Parse(_favoriteButton))
-                                    {
-                                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
-                                                   Color="Color.Primary" OnClick="RemoveFavoriteMovie">
-                                            Remove
-                                        </MudButton>
-                                        
-                                        <MudText Color="Color.Primary" >Favorited by
-                                            <span id="lime">@_favoriteCount</span> Users
-                                        </MudText>
-                                    }
-                                    else
-                                    {
-                                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
-                                                  Color="Color.Primary" OnClick="FavoriteMovie">
-                                            Add
-                                        </MudButton>
-                                        <MudText Color="Color.Primary">Favorited by
-                                            <span id="lime">@_favoriteCount</span> Users
-                                        </MudText>
-                                    }
-                                }
+                {
+                    @if (bool.Parse(_favoriteButton))
+                    {
+                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                                   Color="Color.Primary" OnClick="RemoveFavoriteMovie">
+                            Remove
+                        </MudButton>
+
+                        <MudText Color="Color.Primary">
+                            Favorited by
+                            <span id="lime">@_favoriteCount</span> Users
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                                   Color="Color.Primary" OnClick="FavoriteMovie">
+                            Add
+                        </MudButton>
+                        <MudText Color="Color.Primary">
+                            Favorited by
+                            <span id="lime">@_favoriteCount</span> Users
+                        </MudText>
+                    }
+                }
             </CardHeaderActions>
         </MudCardHeader>
         <MudCardContent>
@@ -315,7 +317,6 @@
 
     private void FavoriteMovie()
     {
-    //TODO if its true -> update instead of insert
         _favoriteButton = "true";
         FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, Value!);
         DbAccess?.SaveFavorite(favorite);
