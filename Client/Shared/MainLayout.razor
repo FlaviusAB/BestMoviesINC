@@ -7,16 +7,15 @@
 
 
 <MudLayout>
-    <MudAppBar Fixed="true">
-
-
+    <MudAppBar Fixed="true" Dense="true" >
+        
         <MudButton OnClick="@(GoHome)">HOME</MudButton>
         <MudSpacer/>
 
         <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
 
         </MudTextField>
-        @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
+        
         <MudSpacer/>
 
         @if (AccountService.GetIsLoggedIn()|| AccountService.User?.Username!= null)

@@ -4,7 +4,7 @@
 <MudLayout>
     <MudContainer>
         <MudGrid>
-            <MudItem xs="12" sm="9">
+            <MudItem xs="12">
                 <MudImage Width="199" Height="299" Fluid="true" Alt="@_username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage>
                 <MudCard>
                     <MudCardHeader>
@@ -22,23 +22,47 @@
                 </MudCard>
             </MudItem>
         </MudGrid>
-        <div class="container2">
+        <MudPaper class="list-start"></MudPaper>
+        <MudGrid>
             @foreach (var item in _profileFavorites)
             {
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
-
-                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                
+                <MudItem xs="12" class="favorite-item">
+                    <div class="favorite-list2">
+                        @count
+                    </div>
+                    <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                        <div class="favorite-list">
+                            <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                        </div>
+                    </MudButton>
+                    <MudButton class="favorite-text" OnClick="@(() => MovieDetails(@item.Id))">
+                        <div>
+                            <p class="favorite-text-style">@item.Title (@item.ReleaseDate.Substring(0, 4))</p>
+                        </div>
+                    </MudButton>
+                    <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                               Color="Color.Primary" OnClick="@(() => RemoveFavoriteMovie(@item.Id))">
+                        Remove
+                    </MudButton>
                     
-                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                    
-                </MudButton>
+                </MudItem>
+                
+                
+               
             }
-        </div>
+            <div class="pa-6"></div>
+        </MudGrid>
     </MudContainer>
 </MudLayout>
 
 @code {
+
     
+    
+    [Inject]
+    private IAccountService? AccountService { get; set; }
 
     [Inject]
     private IDbAccess? DbAccess { get; set; }
@@ -50,27 +74,24 @@
     List<string>? _allFavorites;
     private readonly List<Movie> _profileFavorites = new();
     Movie _favoriteEntity = new Movie();
+    // private string? _favoriteButton;
 
-
+    int count = 1;
     string _username = "";
     string _email = "";
 
     protected override async Task OnInitializedAsync()
     {
-        await AccountService.Initialize();
-        
-        if (AccountService.User?.Username != null)
-        {
-            _username = AccountService.User?.Username!;
-            _email = AccountService.User?.Email!;
-            _allFavorites = await GetAllFavorites()!;
-        
-        
+        _username = AccountService?.User.Username!;
+        _email = AccountService?.User.Email!;
+
+        _allFavorites = await GetAllFavorites()!;
+
         foreach (var str in _allFavorites!)
         {
             _favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
             _profileFavorites.Add(_favoriteEntity);
-        }
+            // _favoriteButton = await CheckFavorites(id);
         }
     }
 
@@ -79,10 +100,28 @@
         List<string>? allFav = await DbAccess?.GetAllFavorite(AccountService.User?.Username!);
         return allFav;
     }
-    
+
     void MovieDetails(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");
+    }
+    
+    // private void FavoriteMovie(int id)
+    // {
+    //     _favoriteButton = "true";
+    //     FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, id.ToString());
+    //     DbAccess?.SaveFavorite(favorite);
+    // }
+    
+    // private async Task<string> CheckFavorites(int id)
+    // {
+    //     var result = await DbAccess?.GetFavorite(AccountService!.User?.Username!, id)!;
+    //     return result;
+    // }
+    
+    private void RemoveFavoriteMovie(int id)
+    {
+        DbAccess?.DeleteFavorite(AccountService!.User?.Username!, id);
     }
 
 }
