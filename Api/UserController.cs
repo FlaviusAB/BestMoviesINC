@@ -276,11 +276,8 @@ namespace Api
                 {
                     conn.Open();  
                     if(!String.IsNullOrEmpty(input.Username))  
-                    {  
-                        Console.WriteLine(input.Email +" EMAIL");
-                        Console.WriteLine(input.Username +" USERNAME");
-                        
-                        var query = $"INSERT INTO [login] (username,password,email) VALUES('{input.Username}', '{input.Password}' , '{input.Email}')";  
+                    {
+                        var query = $"INSERT INTO [login] (username,password,email,registration_date) VALUES('{input.Username}', '{input.Password}' , '{input.Email}', '{input.RegistrationDate}')";  
                         SqlCommand command = new SqlCommand(query, conn);  
                         command.ExecuteNonQuery();   
                     }  
@@ -327,10 +324,7 @@ namespace Api
                 {
                     exists = "true";
                 }
-
-
             }
-            Console.WriteLine(username);
             return new OkObjectResult(exists);
             
         }

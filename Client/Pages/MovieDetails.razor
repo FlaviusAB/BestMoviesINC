@@ -26,31 +26,33 @@
             </CardHeaderContent>
             <CardHeaderActions>
                 @if (_userFound)
-                {
-                    @if (bool.Parse(_favoriteButton))
-                    {
-                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
-                                   Color="Color.Primary" OnClick="RemoveFavoriteMovie">
-                            Remove
-                        </MudButton>
-
-                        <MudText Color="Color.Primary">
-                            Favorited by
-                            <span id="lime">@_favoriteCount</span> Users
-                        </MudText>
-                    }
-                    else
-                    {
-                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
-                                   Color="Color.Primary" OnClick="FavoriteMovie">
-                            Add
-                        </MudButton>
-                        <MudText Color="Color.Primary">
-                            Favorited by
-                            <span id="lime">@_favoriteCount</span> Users
-                        </MudText>
-                    }
-                }
+                                {
+                                    @if (bool.Parse(_favoriteButton))
+                                    {
+                                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                                                   Color="Color.Primary" OnClick="RemoveFavoriteMovie">
+                                            Remove
+                                        </MudButton>
+                                        
+                                            <MudText Color="Color.Primary">Favorited by
+                                                <span id="lime">@_favoriteCount</span> Users
+                                            </MudText>
+                                        
+                                    }
+                                    else
+                                    {
+                                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                                                   Color="Color.Primary" OnClick="FavoriteMovie">
+                                            Add
+                                        </MudButton>
+                                        
+                                            <MudText Color="Color.Primary">Favorited by
+                                                <span id="lime">@_favoriteCount</span> Users
+                                            </MudText>
+                                        
+                                       
+                                    }
+                                }
             </CardHeaderActions>
         </MudCardHeader>
         <MudCardContent>
@@ -78,129 +80,130 @@
                     </div>
                 </span>
 
-            </div>
-            <MudText Class="paddingTop5 paddingBottom5">
-                @MovieDescription
-            </MudText>
-            <MudText>
-                <span class="paddingRight5 bold">Country:</span><span>@CountryName</span>
-            </MudText>
-            <MudText Class="paddingTop2">
-                <span class="paddingRight5 bold">Genre:</span><span>@Genre</span>
-            </MudText>
-            <MudText Class="paddingTop2">
-                <span class="paddingRight5 bold">Director(s):</span>
-                @for (int i = 0; i < _crew.Count; i++)
-                {
-                    if (i < _crew.Count - 1)
-                    {
-                        _crewName = _crew[i].Name + ", ";
-                    }
-                    else
-                    {
-                        _crewName = _crew[i].Name;
-                    }
-                    var num = i;
-                    <button>
-                        <a class="abc" onclick="@(() => NamePage(_crew[num].Id))">
-                            <span class="paddingRight2">
-                                @_crewName
-                            </span>
-                        </a>
-                    </button>
-                }
-            </MudText>
-            <MudText Class="paddingTop2">
-                <span class="paddingRight5 bold">Released:</span><span>@ReleaseDate</span>
-            </MudText>
-            <MudText Class="paddingTop2">
-                <span class="paddingRight5 bold">Production:</span><span>@ProductionCompanies</span>
-            </MudText>
-            <MudText Class="paddingTop2">
-                <span class="paddingRight5 bold">Budget:</span><span>@Budget</span>
-            </MudText>
-            <MudText Class="paddingTop2">
-                <span class="paddingRight5 bold">Revenue:</span><span>@Revenue</span>
-            </MudText>
-
-            <MudText Class="paddingTop2">
-                <span class="paddingRight5 bold">Casts:</span>
-                @if (_showMore)
-                {
-                    @if (_people.Count > 10)
-                    {
-                        @for (int i = 0; i < 10; i++)
-                        {
-                            if (i < 9)
+                        </div>
+                        <MudText Class="paddingTop5 paddingBottom5">
+                            @MovieDescription
+                        </MudText>
+                        <MudText>
+                            <span class="paddingRight5 bold">Country:</span><span>@CountryName</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Genre:</span><span>@Genre</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Director(s):</span>
+                            @for (int i = 0; i < _crew.Count; i++)
                             {
-                                Cast = _people[i].Name + ", ";
+                                if (i < _crew.Count - 1)
+                                {
+                                    _crewName = _crew[i].Name + ", ";
+                                }
+                                else
+                                {
+                                    _crewName = _crew[i].Name;
+                                }
+                                var num = i;
+                                <button>
+                                    <a class="abc" onclick="@(() => NamePage(_crew[num].Id))">
+                                        <span class="paddingRight2">
+                                            @_crewName
+                                        </span>
+                                    </a>
+                                </button>
+                            }
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Released:</span><span>@ReleaseDate</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Production:</span><span>@ProductionCompanies</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Budget:</span><span>$@Budget</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Revenue:</span><span>$@Revenue</span>
+                        </MudText>
+                        
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Casts:</span>
+                            @if (_showMore)
+                            {
+                                @if (_people.Count > 10)
+                                {
+                                    @for (int i = 0; i < 10; i++)
+                                    {
+                                        if (i < 9)
+                                        {
+                                            Cast = _people[i].Name + ", ";
+                                        }
+                                        else
+                                        {
+                                            Cast = _people[i].Name;
+                                        }
+                                        var num = i;
+                                        <button>
+                                            <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                                <span class="paddingRight2">
+                                                    @Cast
+                                                </span>
+                                            </a>
+                                        </button>
+                                    }
+                                    <button style="color: white" onclick="@ShowMore">Show more...</button>
+                                }
+                                else
+                                {
+                                    @for (int i = 0; i < _people.Count; i++)
+                                    {
+                                        if (i < _people.Count - 1)
+                                        {
+                                            Cast = _people[i].Name + ", ";
+                                        }
+                                        else
+                                        {
+                                            Cast = _people[i].Name;
+                                        }
+                                        var num = i;
+                                        <button>
+                                            <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                                <span class="paddingRight2">
+                                                    @Cast
+                                                </span>
+                                            </a>
+                                        </button>
+                                    }
+                                }
                             }
                             else
                             {
-                                Cast = _people[i].Name;
+                                @for (int i = 0; i < _people.Count; i++)
+                                {
+                                    if (i < _people.Count - 1)
+                                    {
+                                        Cast = _people[i].Name + ", ";
+                                    }
+                                    else
+                                    {
+                                        Cast = _people[i].Name;
+                                    }
+                                    var num = i;
+                                    <button>
+                                        <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                            <span class="paddingRight2">
+                                                @Cast
+                                            </span>
+                                        </a>
+                                    </button>
+                                }
+                                _showMore = true;
                             }
-                            var num = i;
-                            <button>
-                                <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
-                                    <span class="paddingRight2">
-                                        @Cast
-                                    </span>
-                                </a>
-                            </button>
-                        }
-                        <button style="color: white" onclick="@ShowMore">Show more...</button>
-                    }
-                    else
-                    {
-                        @for (int i = 0; i < _people.Count; i++)
-                        {
-                            if (i < _people.Count - 1)
-                            {
-                                Cast = _people[i].Name + ", ";
-                            }
-                            else
-                            {
-                                Cast = _people[i].Name;
-                            }
-                            var num = i;
-                            <button>
-                                <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
-                                    <span class="paddingRight2">
-                                        @Cast
-                                    </span>
-                                </a>
-                            </button>
-                        }
-                    }
-                }
-                else
-                {
-                    @for (int i = 0; i < _people.Count; i++)
-                    {
-                        if (i < _people.Count - 1)
-                        {
-                            Cast = _people[i].Name + ", ";
-                        }
-                        else
-                        {
-                            Cast = _people[i].Name;
-                        }
-                        var num = i;
-                        <button>
-                            <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
-                                <span class="paddingRight2">
-                                    @Cast
-                                </span>
-                            </a>
-                        </button>
-                    }
-                    _showMore = true;
-                }
 
             </MudText>
         </MudCardContent>
     </MudCard>
 </MudItem>
+
 
 
 <p class="knownFor">
@@ -222,7 +225,7 @@
         }
         else
         {
-            poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+            poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
             <MudButton OnClick="@(() => SimilarMovies(@item.Id))">
                 <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
                     <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
@@ -251,6 +254,7 @@
 
     [Parameter]
     public string? Value { get; set; }
+
 
 
     private string? Budget { get; set; }
@@ -282,7 +286,10 @@
 
     private bool _userFound;
     private string? _favoriteButton;
+    
+    
     private string? _favoriteCount;
+    
 
 
     protected override async Task OnParametersSetAsync()
@@ -306,20 +313,25 @@
             _userFound = true;
             _favoriteCount = await FavoriteCount();
             _favoriteButton = await CheckFavorites();
+
         }
 
         else
         {
+            
             _favoriteButton = "false";
             _userFound = false;
+            
         }
     }
 
     private void FavoriteMovie()
     {
+        
         _favoriteButton = "true";
         FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, Value!);
         DbAccess?.SaveFavorite(favorite);
+        _favoriteCount = (int.Parse(_favoriteCount)+ 1).ToString();
     }
 
     private async Task<string> FavoriteCount()
@@ -332,10 +344,12 @@
     {
         _favoriteButton = "false";
         DbAccess?.DeleteFavorite(AccountService!.User?.Username!, Int32.Parse(Value!));
+        _favoriteCount = (int.Parse(_favoriteCount)- 1).ToString();
     }
 
     private async Task<string> CheckFavorites()
     {
+        
         var result = await DbAccess?.GetFavorite(AccountService!.User?.Username!, Int32.Parse(Value!))!;
         return result;
     }
@@ -366,24 +380,8 @@
             _genres = obj.Genres;
             _productionCompanyList = obj.ProductionCompanies;
 
-
-            if (obj.Budget > 0)
-            {
-                Budget = "$" + $"{obj.Budget:n0}";
-            }
-            else
-            {
-                Budget = "No data";
-            }
-
-            if (obj.Revenue > 0)
-            {
-                Revenue = "$" + $"{obj.Revenue:n0}";
-            }
-            else
-            {
-                Revenue = "No data";
-            }
+            Budget = $"{obj.Budget:n0}";
+            Revenue = $"{obj.Revenue:n0}";
         }
 
         if (_productionCountry != null)

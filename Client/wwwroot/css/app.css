@@ -452,3 +452,21 @@ a, .btn-link {
     -webkit-background-clip: text;
     color: transparent;
 }
+
+
+table {
+}
+
+th {
+    height: 30px;
+    padding: 5px;
+    text-align: center;
+    color: white;
+}
+ .text_count{
+    text-align: center;
+}
+
+.Search-fix {
+    padding-bottom: 20px;
+}
