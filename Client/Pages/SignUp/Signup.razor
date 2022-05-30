@@ -70,6 +70,8 @@
         _model.Email = _email;
         _model.Password = _password;
         _model.Username = _username;
+        _model.RegistrationDate = DateTime.UtcNow.ToString("dd-MM-yyyy");
+        
         _loading = true;
         try
         {
