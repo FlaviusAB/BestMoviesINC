@@ -9,7 +9,5 @@ namespace Client.Models
         public string Email { get; set; }
         public string SessionToken { get; set; }
         
-        public string RegistrationDate { get; set; }
-        
     }
 }

@@ -10,7 +10,5 @@ namespace Api.Models
         public string Password { get; set; }
         public string SessionToken { get; set; }
         
-        public string RegistrationDate { get; set; }
-        
     }
 }
