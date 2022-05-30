@@ -23,11 +23,17 @@
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
-                    <div class="box">
+                    <div>
                         <span>
-                            @Math.Round(_ratings, 2)
+                            <div class="smallBox">
+                                <span>Average movies rating:</span>
+                            </div>
+                            <div id="lime">
+                                @Math.Round(_ratings, 2)
+                            </div>
                         </span>
                     </div>
+                    
                     <MudCardContent>
                         <MudText Class="paddingTop2">
                             @PersonBiography
