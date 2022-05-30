@@ -1,6 +1,8 @@
 
+using Api.Models;
 using Client.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
@@ -14,6 +16,8 @@ public interface IDbAccess
     Task<List<string>?> GetAllFavorite(string username);
     Task<string> GetFavoriteCount(int movie_id);
     Task<List<string>?> GetAllUsersFavorite();
+    Task<string> SaveReview(MovieReviewEntity review);
+    Task<List<MovieReviewEntity>> GetReviews(int movie_id);
 
 }
 
@@ -108,4 +112,41 @@ public class DbAccess : IDbAccess
         
         return favList;
     }
+
+    public async Task<string> SaveReview(MovieReviewEntity review)
+    {
+        var responseMsg = "failed";
+
+        string message = JsonSerializer.Serialize(review);
+            
+        byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(message);
+        var msg = new ByteArrayContent(messageBytes);
+        var response = await _httpClient.PostAsync("api/review", msg);
+            
+        
+        if (response.IsSuccessStatusCode)
+        {
+                
+            responseMsg = "Review successfully added to the movie!";
+        }
+
+        return responseMsg;
+    }
+    
+    public async Task<List<MovieReviewEntity>> GetReviews(int movie_id)
+    {
+        var revList = new List<MovieReviewEntity>();
+        var response = await _httpClient.GetAsync($"api/review/{movie_id}");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        
+        revList = JsonConvert.DeserializeObject<List<MovieReviewEntity>>(responseBody);
+         for (int i = 0; i < revList.Count; i++)
+         {
+             Console.WriteLine("DBACCESS: " + revList[i].review);
+         }
+        
+        return revList;
+    }
+    
 }

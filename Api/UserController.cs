@@ -90,6 +90,69 @@ namespace Api
             return await Task.FromResult(new OkObjectResult(authUser)).ConfigureAwait(false);
             }
         }
+        
+        [FunctionName("AddReview")]
+        public static async Task<IActionResult> AddReview(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "review")]
+            HttpRequest req, ILogger log)
+        {
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();  
+            var input = JsonConvert.DeserializeObject<MovieReviewEntity>(requestBody);
+            try
+            {
+                var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+                using (SqlConnection conn = new SqlConnection(appsettingvalue))  
+                {
+                    conn.Open();  
+                    if(!String.IsNullOrEmpty(input.username))  
+                    {
+                        var query = $"INSERT INTO [reviews] (username,movie_id,review) VALUES('{input.username}', '{input.movie_id}', '{input.review}')";  
+                        SqlCommand command = new SqlCommand(query, conn);  
+                        command.ExecuteNonQuery();  
+                    }  
+                }  
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            return new OkResult(); 
+        }
+        
+        [FunctionName("GetReview")]
+        public static async Task<IActionResult> GetReview(ExecutionContext context,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "review/{movie_id}")]
+            HttpRequest req, ILogger log, int movie_id)
+        {
+            List<MovieReviewEntity> allReviews = new List<MovieReviewEntity>();
+            MovieReviewEntity foundReview;
+            string usernameL = "";
+            string movie_idL = "";
+            string reviewL = "";
+
+            var appsettingvalue = GetSqlAzureConnectionString("SQLConnectionString");
+            
+            using (SqlConnection conn = new SqlConnection(appsettingvalue))
+            {
+                conn.Open();
+                var query = @"select * from reviews where movie_id = @movie_id";
+                SqlCommand command = new SqlCommand(query, conn);
+
+                command.Parameters.AddWithValue("@movie_id", movie_id);
+                var reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    usernameL = reader["username"].ToString();
+                    movie_idL = reader["movie_id"].ToString();
+                    reviewL = reader["review"].ToString();
+                    foundReview = new MovieReviewEntity(usernameL, movie_idL, reviewL);
+                    allReviews.Add(foundReview);
+                }
+            }
+            Console.WriteLine(allReviews);
+            return new OkObjectResult(allReviews);
+        }
 
         [FunctionName("AddFavorite")]
         public static async Task<IActionResult> AddFavorite(ExecutionContext context,
