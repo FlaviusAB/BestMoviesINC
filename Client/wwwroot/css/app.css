@@ -486,4 +486,25 @@ td {
     float: left;
     padding-bottom: 15px;
     padding-top: 15px;
-} 
+}
+.top-left {
+    position: absolute;
+    top: 115px;
+    left: 42%;
+    
+}
+.titleStyle{
+    font-size:40px;
+    color: #ffff;
+    text-shadow:
+            0 0 2px #a3adbb,
+            0 0 5px #ced3dc,
+            0 0 11px #7892b4,
+            0 0 22px #61abdc,
+            0 0 52px #3656ad,
+            0 0 72px #164267,
+            0 0 92px #193779,
+            0 0 121px #03234d;
+    
+    
+}
