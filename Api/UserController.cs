@@ -149,9 +149,8 @@ namespace Api
                     foundReview = new MovieReviewEntity(usernameL, movie_idL, reviewL);
                     allReviews.Add(foundReview);
                 }
-
-                
             }
+            Console.WriteLine(allReviews);
             return new OkObjectResult(allReviews);
         }
 

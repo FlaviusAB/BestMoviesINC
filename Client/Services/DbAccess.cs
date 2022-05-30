@@ -2,6 +2,7 @@
 using Api.Models;
 using Client.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
@@ -16,6 +17,7 @@ public interface IDbAccess
     Task<string> GetFavoriteCount(int movie_id);
     Task<List<string>?> GetAllUsersFavorite();
     Task<string> SaveReview(MovieReviewEntity review);
+    Task<List<MovieReviewEntity>> GetReviews(int movie_id);
 
 }
 
@@ -120,4 +122,21 @@ public class DbAccess : IDbAccess
 
         return responseMsg;
     }
+    
+    public async Task<List<MovieReviewEntity>> GetReviews(int movie_id)
+    {
+        var revList = new List<MovieReviewEntity>();
+        var response = await _httpClient.GetAsync($"api/review/{movie_id}");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        
+        revList = JsonConvert.DeserializeObject<List<MovieReviewEntity>>(responseBody);
+         for (int i = 0; i < revList.Count; i++)
+         {
+             Console.WriteLine("DBACCESS: " + revList[i].review);
+         }
+        
+        return revList;
+    }
+    
 }
