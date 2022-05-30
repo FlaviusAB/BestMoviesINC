@@ -43,12 +43,12 @@
                         </MudButton>
                     }
                 }
-                
+
                 <MudText Color="Color.Primary">
                     Favorited by
                     <span id="lime">@_favoriteCount</span> Users
                 </MudText>
-                
+
             </CardHeaderActions>
         </MudCardHeader>
         <MudCardContent>
@@ -230,17 +230,30 @@
     }
 </div>
 <div class="empty-space"></div>
-<MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Comment.." Variant="Variant.Outlined" 
+<MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Comment.." Variant="Variant.Outlined"
               @onkeydown="@Enter"/>
 
-<br/>
-@foreach (var item in _allReviews)
-    {
-        <MudText>@item.username</MudText>
-        <MudText>@item.review</MudText>
-    }
-<div class="empty-space"></div>
 </MudGrid>
+<div class="empty-space"></div>
+
+<table>
+    @foreach (var item in _allReviews)
+    {
+        <tr>
+            <td class="smallBox">
+
+                <MudText>@item.username</MudText>
+            </td>
+            <td>
+
+                <MudText>@item.review</MudText>
+
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="empty-space"></div>
 </MudContainer>
 </MudLayout>
 
@@ -279,7 +292,7 @@
     private List<PeopleEntity> _crewList = new();
 
     bool _showMore = true;
-    
+
     private string TextValue { get; set; } = "";
 
     [Parameter]
@@ -302,7 +315,7 @@
         _crew = new List<PeopleEntity>();
         _allReviews = new List<MovieReviewEntity>();
         Cast = "";
-        
+
         var id = Value;
         if (id != null)
         {
@@ -313,7 +326,7 @@
             _allReviews = await GetAllReviews();
         }
 
-            _favoriteCount = await FavoriteCount();
+        _favoriteCount = await FavoriteCount();
         if (AccountService!.User?.Username != null)
         {
             _userFound = true;
@@ -334,27 +347,27 @@
         DbAccess?.SaveFavorite(favorite);
         _favoriteCount = (int.Parse(_favoriteCount) + 1).ToString();
     }
-    
+
     private async Task<List<MovieReviewEntity>?>? GetAllReviews()
     {
         Console.WriteLine("moviedetails 1: ");
         List<MovieReviewEntity>? allRev = await DbAccess?.GetReviews(Int32.Parse(Value!));
         Console.WriteLine("moviedetails 2: " + allRev);
-        for(int i=0;i<allRev.Count;i++)
+        for (int i = 0; i < allRev.Count; i++)
         {
-            Console.WriteLine("reviews: " + allRev[i].review);    
+            Console.WriteLine("reviews: " + allRev[i].review);
         }
-        
+
         return allRev;
     }
-    
+
     private void MovieReview()
     {
         MovieReviewEntity _movieReviewEntity = new MovieReviewEntity(AccountService!.User?.Username!, Value!, @TextValue);
         DbAccess?.SaveReview(_movieReviewEntity);
         TextValue = "";
     }
-    
+
     private void Enter(KeyboardEventArgs e)
     {
         if (e.Code is not ("Enter" or "NumpadEnter") || TextValue.Equals("")) return;
