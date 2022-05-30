@@ -1,4 +1,5 @@
 ﻿@page "/MovieDetails/{Value}"
+@using Api.Models
 
 @inject NavigationManager NavigationManager
 
@@ -232,6 +233,9 @@
     }
 </div>
 <div class="empty-space"></div>
+<MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" 
+              @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary"/>
+
 
 </MudGrid>
 </MudContainer>
@@ -272,6 +276,8 @@
     private List<PeopleEntity> _crewList = new();
 
     bool _showMore = true;
+    
+    private string TextValue { get; set; } = "";
 
     [Parameter]
     public string? Cast { get; set; }
@@ -320,6 +326,20 @@
         _favoriteButton = "true";
         FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, Value!);
         DbAccess?.SaveFavorite(favorite);
+    }
+    
+    private void MovieReview()
+    {
+        _favoriteButton = "true";
+        MovieReviewEntity _movieReviewEntity = new MovieReviewEntity(AccountService!.User?.Username!, Value!, @TextValue);
+        DbAccess?.SaveReview(_movieReviewEntity);
+        TextValue = "";
+    }
+    
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code is not ("Enter" or "NumpadEnter") || TextValue.Equals("")) return;
+        MovieReview();
     }
 
     private async Task<string> FavoriteCount()
