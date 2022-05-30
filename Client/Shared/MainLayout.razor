@@ -7,30 +7,32 @@
 
 
 <MudLayout>
-    <MudAppBar Fixed="true"  >
-        
+    <MudAppBar Fixed="true">
+
+
         <MudButton OnClick="@(GoHome)">HOME</MudButton>
         <MudSpacer/>
 
-        <MudTextField class="Search-fix" T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
+        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
 
         </MudTextField>
-        
+        @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
         <MudSpacer/>
 
-        @if (_userFound)
+        @if (AccountService.GetIsLoggedIn()|| AccountService.User?.Username!= null)
         {
             <div class="dropdown">
                 <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">@_profileLetter</MudAvatar>
                 <div class="dropdown-content">
                     <a href="/Profile">Profile</a>
+                    <a href="#">Favorites</a>
                     <a href="/Logout">Log out</a>
                 </div>
             </div>
         }
         else
         {
-            <MudText>@_userInfo</MudText>
+            
             <MudButton href="/Login"> Login</MudButton>
             <MudButton href="/Signup"> Register</MudButton>
         }
@@ -90,35 +92,20 @@
         NavigationManager.NavigateTo("/");
     }
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
-        base.OnInitialized();
-
-        var timer = new System.Timers.Timer(1000);
-        timer.Elapsed += (s, e) =>
-        {
-            InvokeAsync(() =>
-            {
-               
-                    AccountService.Initialize();
+        
+                   await AccountService.Initialize();
+                
                     if (AccountService.User?.Username!= null)
                     {
-                        _userInfo = AccountService.User.Username;
-                        _profileLetter = _userInfo.Substring(0, 1);
-                        _userFound = true;
+                       
+                        _profileLetter = AccountService.User.Username.Substring(0, 1);
+                        
                     }
-                
-                else
-                {
-                    _userFound = false;
-                    _userInfo = "";
-                    Console.WriteLine(e);
-                    StateHasChanged();
-                }
-                StateHasChanged();
-            });
-        };
-        timer.Start();
+        StateHasChanged();
+              
+        
     }
 
     private void Search(string textValue)

@@ -4,7 +4,7 @@
 <MudLayout>
     <MudContainer>
         <MudGrid>
-            <MudItem xs="12">
+            <MudItem xs="12" sm="9">
                 <MudImage Width="199" Height="299" Fluid="true" Alt="@_username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage>
                 <MudCard>
                     <MudCardHeader>
@@ -89,7 +89,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await AccountService.Initialize();
         
         if (AccountService.User?.Username != null)
         {
