@@ -470,3 +470,12 @@ th {
 .Search-fix {
     padding-bottom: 20px;
 }
+
+td {
+    padding: 0 5px;    
+}
+
+.profileAvatar {
+    width: 100px;
+    float: left;
+}

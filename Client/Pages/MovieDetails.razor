@@ -33,11 +33,6 @@
                                    Color="Color.Primary" OnClick="RemoveFavoriteMovie">
                             Remove
                         </MudButton>
-
-                        <MudText Color="Color.Primary">
-                            Favorited by
-                            <span id="lime">@_favoriteCount</span> Users
-                        </MudText>
                     }
                     else
                     {
@@ -45,13 +40,14 @@
                                    Color="Color.Primary" OnClick="FavoriteMovie">
                             Add
                         </MudButton>
-
-                        <MudText Color="Color.Primary">
-                            Favorited by
-                            <span id="lime">@_favoriteCount</span> Users
-                        </MudText>
                     }
                 }
+                
+                <MudText Color="Color.Primary">
+                    Favorited by
+                    <span id="lime">@_favoriteCount</span> Users
+                </MudText>
+                
             </CardHeaderActions>
         </MudCardHeader>
         <MudCardContent>
@@ -293,6 +289,7 @@
         _crew = new List<PeopleEntity>();
         Cast = "";
 
+
         var id = Value;
         if (id != null)
         {
@@ -302,10 +299,10 @@
             await MovieCrewApi(id);
         }
 
+            _favoriteCount = await FavoriteCount();
         if (AccountService!.User?.Username != null)
         {
             _userFound = true;
-            _favoriteCount = await FavoriteCount();
             _favoriteButton = await CheckFavorites();
         }
 
@@ -321,7 +318,7 @@
         _favoriteButton = "true";
         FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, Value!);
         DbAccess?.SaveFavorite(favorite);
-        _favoriteCount = (int.Parse(_favoriteCount)+ 1).ToString();
+        _favoriteCount = (int.Parse(_favoriteCount) + 1).ToString();
     }
 
     private async Task<string> FavoriteCount()
