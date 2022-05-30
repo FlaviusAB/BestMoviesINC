@@ -141,11 +141,7 @@ public class DbAccess : IDbAccess
         string responseBody = await response.Content.ReadAsStringAsync();
         
         revList = JsonConvert.DeserializeObject<List<MovieReviewEntity>>(responseBody);
-         for (int i = 0; i < revList.Count; i++)
-         {
-             Console.WriteLine("DBACCESS: " + revList[i].review);
-         }
-        
+
         return revList;
     }
     

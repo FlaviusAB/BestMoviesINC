@@ -1,6 +1,6 @@
 ﻿@page "/MovieDetails/{Value}"
 @using Api.Models
-
+@implements IDisposable
 @inject NavigationManager NavigationManager
 
 
@@ -315,8 +315,25 @@
     private bool _userFound;
     private string? _favoriteButton;
     private string? _favoriteCount;
+    private System.Timers.Timer _timer = new();
 
     List<MovieReviewEntity>? _allReviews = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _timer = new System.Timers.Timer(4000);
+        _timer.Elapsed += (s, e) =>
+        {
+            InvokeAsync(async () =>
+            {
+                Console.WriteLine("Timmer running every "+_timer.Interval+" sec");
+                _allReviews = await GetAllReviews();
+                StateHasChanged();
+            });
+        };
+        _timer.Start();
+        
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -349,7 +366,10 @@
             _userFound = false;
         }
     }
-
+    public void Dispose()
+    {
+        _timer?.Dispose();        // because you need it here
+    }
     private void FavoriteMovie()
     {
         _favoriteButton = "true";
@@ -360,14 +380,7 @@
 
     private async Task<List<MovieReviewEntity>?>? GetAllReviews()
     {
-        Console.WriteLine("moviedetails 1: ");
         List<MovieReviewEntity>? allRev = await DbAccess?.GetReviews(Int32.Parse(Value!));
-        Console.WriteLine("moviedetails 2: " + allRev);
-        for (int i = 0; i < allRev.Count; i++)
-        {
-            Console.WriteLine("reviews: " + allRev[i].review);
-        }
-
         return allRev;
     }
 
@@ -376,7 +389,7 @@
         MovieReviewEntity _movieReviewEntity = new MovieReviewEntity(AccountService!.User?.Username!, Value!, @TextValue);
         DbAccess?.SaveReview(_movieReviewEntity);
         TextValue = "";
-        _allReviews.Add(_movieReviewEntity);
+        
     }
 
     private void Enter(KeyboardEventArgs e)
