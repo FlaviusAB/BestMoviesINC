@@ -51,6 +51,7 @@ namespace Api
                                 authenticated = true;
                                 authUser.Username = foundUsername;
                                 authUser.Email = reader["email"].ToString();
+                                authUser.RegistrationDate = reader["registration_date"].ToString();
                             }
                         }
                     }  
