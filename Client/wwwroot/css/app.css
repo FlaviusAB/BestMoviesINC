@@ -115,7 +115,6 @@ a, .btn-link {
     right: -50px;
 }
 
-
 .container2 {
     
     display: grid;
@@ -125,20 +124,6 @@ a, .btn-link {
     grid-auto-flow: column;
     grid-auto-columns: minmax(180px, 1fr);
     overflow-x: auto;
-    scrollbar-width: thin;
-}
-
-.container2::-webkit-scrollbar {
-    width: 10px;
-    scrollbar-color: #fff;
-}
-
-.container2::-webkit-scrollbar-track {
-    /*background-color: darkgrey;*/
-}
-
-.container2::-webkit-scrollbar-thumb {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 .abc:hover {
@@ -393,8 +378,7 @@ a, .btn-link {
 .dropdown:hover .dropdown-content {display: block;}
 
 .profileContent{
-    padding: 50px
-    
+    padding: 50px;
 }
 
 .LogInForm {
@@ -402,53 +386,4 @@ a, .btn-link {
 
 .LogInLayout {
 
-}
-
-.favorite-item {
-    height: 110px;
-    background-color: #3dd5f3;
-    
-}
-
-.favorite-list {
-    width: 50px;
-    height: 75px;
-    float: left;
-}
-
-.favorite-list2 {
-    width: 20px;
-    height: 70px;
-    float: left;
-    text-align: center;
-    padding-top: 30px;
-}
-
-.favorite-text {
-    height: 87px;
-    width: 60%;
-}
-
-.favorite-text-style {
-    text-align: center;
-
-}
-
-.filler {
-    height: 70px;
-    width: 100%;
-    float: left;
-}
-
-.list-start {
-    height: 70px;
-    width: 100%;
-    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
-}
-
-
-.rainbow {
-    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);  
-    -webkit-background-clip: text;
-    color: transparent;
 }
