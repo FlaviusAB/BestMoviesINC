@@ -6,14 +6,14 @@
 <MudSnackbarProvider/>
 
 
-<MudLayout>
+<MudLayout size="large">
     <MudAppBar Fixed="true">
 
 
         <MudButton OnClick="@(GoHome)">HOME</MudButton>
         <MudSpacer/>
 
-        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
+        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search for movies" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
 
         </MudTextField>
         @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
@@ -22,7 +22,7 @@
         @if (AccountService.GetIsLoggedIn()|| AccountService.User?.Username!= null)
         {
             <div class="dropdown">
-                <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">@_profileLetter</MudAvatar>
+                <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">@AccountService.User?.Username!.Substring(0,1)</MudAvatar>
                 <div class="dropdown-content">
                     <a href="/Profile">Profile</a>
                     <a href="#">Favorites</a>
@@ -79,7 +79,6 @@
 
     private string _userInfo = "";
     private bool _userFound;
-    private string? _profileLetter;
 
     private string TextValue { get; set; } = "";
 
@@ -94,18 +93,8 @@
 
     protected override async void OnInitialized()
     {
-        
-                   await AccountService.Initialize();
-                
-                    if (AccountService.User?.Username!= null)
-                    {
-                       
-                        _profileLetter = AccountService.User.Username.Substring(0, 1);
-                        
-                    }
+        await AccountService.Initialize();
         StateHasChanged();
-              
-        
     }
 
     private void Search(string textValue)

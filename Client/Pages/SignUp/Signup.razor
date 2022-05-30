@@ -12,7 +12,6 @@
 <MudLayout>
     <MudContainer MaxWidth="MaxWidth.Medium">
         <h3>Signup</h3>
-
         <MudPaper Class="pa-4">
             <MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors">
                 <MudTextField T="string" Label="Username" @bind-Value="_username" Immediate="true" Required="true" RequiredError="User name is required!"/>
