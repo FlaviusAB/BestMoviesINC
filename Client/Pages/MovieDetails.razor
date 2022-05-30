@@ -230,28 +230,36 @@
     }
 </div>
 <div class="empty-space"></div>
-<MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Comment.." Variant="Variant.Outlined"
+<p class="bold"> Comments: </p>
+@if (_userFound)
+{
+    <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Comment.." Variant="Variant.Outlined"
               @onkeydown="@Enter"/>
+}
 
 </MudGrid>
 <div class="empty-space"></div>
 
 <table>
+
     @foreach (var item in _allReviews)
     {
+        var profileLetter = item.username.Substring(0, 1);
         <tr>
-            <td class="smallBox">
-
-                <MudText>@item.username</MudText>
+            <td>
+                <div class="profileAvatarComments">
+                    <MudAvatar Size="Size.Medium" Color="Color.Info" Variant="Variant.Outlined">@profileLetter</MudAvatar>
+                </div>
             </td>
             <td>
+                <MudText class="bold">@item.username</MudText>
 
-                <MudText>@item.review</MudText>
-
+                <MudText >@item.review</MudText>
             </td>
         </tr>
     }
 </table>
+
 
 <div class="empty-space"></div>
 </MudContainer>
@@ -271,8 +279,8 @@
 
     [Parameter]
     public string? Value { get; set; }
-
-
+    
+    // public string? _profileLetter = "";
     private string? Budget { get; set; }
     private string? Revenue { get; set; }
     private string? PosterPath { get; set; }
