@@ -231,6 +231,8 @@
 </div>
 <div class="empty-space"></div>
 <p class="bold"> Comments: </p>
+<div class="empty-space"></div>
+
 @if (_userFound)
 {
     <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Comment.." Variant="Variant.Outlined"
@@ -374,6 +376,7 @@
         MovieReviewEntity _movieReviewEntity = new MovieReviewEntity(AccountService!.User?.Username!, Value!, @TextValue);
         DbAccess?.SaveReview(_movieReviewEntity);
         TextValue = "";
+        _allReviews.Add(_movieReviewEntity);
     }
 
     private void Enter(KeyboardEventArgs e)
