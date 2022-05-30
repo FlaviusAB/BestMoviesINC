@@ -124,7 +124,10 @@ namespace Client.Services
                 _navigationManager.NavigateTo("/Login");
 
             }
-            
+            else
+            {
+                _navigationManager.NavigateTo("/");
+            }
             
             await handleErrors(response);
 
@@ -140,7 +143,7 @@ namespace Client.Services
             var user = await _localStorageService.GetItem<User>("user");
             var isApiUrl = !request.RequestUri.IsAbsoluteUri;
             if (user != null && isApiUrl)
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", user.SessionToken);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", user.Token);
         }
 
         private async Task handleErrors(HttpResponseMessage response)

@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using BlazorApp.Models.Account;
 using Client.Models;
 using Client.Models.Account;
@@ -9,7 +8,7 @@ namespace Client.Services
     public interface IAccountService
     {
         User User { get; }
-        Task<User> Initialize();
+        Task Initialize();
         Task Login(Login model);
         Task Logout();
         Task Register(AddUser model);
@@ -17,8 +16,6 @@ namespace Client.Services
         Task<User> GetById(string id);
         Task Update(string id, EditUser model);
         Task Delete(string id);
-
-        bool GetIsLoggedIn();
     }
 
     public class AccountService : IAccountService
@@ -27,7 +24,7 @@ namespace Client.Services
         private readonly NavigationManager _navigationManager;
         private readonly ILocalStorageService _localStorageService;
         private string _userKey = "user";
-        public static bool isLoggedIn { get; set; }
+
         public User User { get; private set; }
 
         public AccountService(
@@ -40,30 +37,21 @@ namespace Client.Services
             _localStorageService = localStorageService;
         }
 
-        public async Task<User> Initialize()
+        public async Task Initialize()
         {
             User = await _localStorageService.GetItem<User>(_userKey);
-            return User;
         }
 
-        public bool GetIsLoggedIn()
-        {
-            return isLoggedIn;
-        }
         public async Task Login(Login model)
         {
             User = await _httpService.Post<User>("/api/auth", model);
             await _localStorageService.SetItem(_userKey, User);
-            isLoggedIn = true;
-            _navigationManager.NavigateTo("/");
-
         }
 
         public async Task Logout()
         {
             User = null;
             await _localStorageService.RemoveItem(_userKey);
-            isLoggedIn = false;
             _navigationManager.NavigateTo("/");
         }
 
@@ -87,14 +75,14 @@ namespace Client.Services
             await _httpService.Put($"/users/{id}", model);
 
             // update stored user if the logged in user updated their own record
-            // if (id == User.Id) 
-            // {
-            //     // update local storage
-            //     
-            //     User.Email = model.Email;
-            //     User.Username = model.Username;
-            //     await _localStorageService.SetItem(_userKey, User);
-            // }
+            if (id == User.Id) 
+            {
+                // update local storage
+                
+                User.Email = model.Email;
+                User.Username = model.Username;
+                await _localStorageService.SetItem(_userKey, User);
+            }
         }
 
         public async Task Delete(string id)
@@ -102,8 +90,8 @@ namespace Client.Services
             await _httpService.Delete($"/users/{id}");
 
             // auto logout if the logged in user deleted their own record
-            // if (id == User.Id)
-            //     await Logout();
+            if (id == User.Id)
+                await Logout();
         }
     }
 }

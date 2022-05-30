@@ -14,7 +14,7 @@
                 {
                     poster = "/no-image-icon-6.png";
                     <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 258px; width: 180px">
                             <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
                             <p class="no-image-text">@item.Title</p>
                         </MudPaper>
@@ -22,7 +22,7 @@
                 }
                 else
                 {
-                    poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                    poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
                     <MudButton OnClick="@(() => MovieDetails(@item.Id))">
                         <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
