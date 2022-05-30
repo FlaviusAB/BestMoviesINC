@@ -8,7 +8,7 @@
             <MudItem xs="12">
                 <MudCard>
                     <div class="profileAvatar">
-                        <MudAvatar Style="width: 100px; height: 100px; font-size:2rem" Color="Color.Info" Variant="Variant.Outlined">@_profileLetter</MudAvatar>
+                        <MudAvatar Style="width: 100px; height: 100px; font-size:2rem" Color="Color.Info" Variant="Variant.Filled">@_profileLetter</MudAvatar>
                     </div>
                     <MudCardHeader>
                         <CardHeaderContent>
@@ -122,6 +122,14 @@
     private void RemoveFavoriteMovie(int id)
     {
         DbAccess?.DeleteFavorite(AccountService!.User?.Username!, id);
+        // foreach (var movie in _profileFavorites)
+        // {
+        //     if (movie.Id == id)
+        //     {
+        //         _profileFavorites.Remove(movie);
+        //     }
+        // }
+        // StateHasChanged();
     }
 
 }

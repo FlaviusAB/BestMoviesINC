@@ -91,11 +91,21 @@ public class DbAccess : IDbAccess
 
     public async Task<List<string>?> GetAllUsersFavorite()
     {
-        var response = await _httpClient.GetAsync($"api/allFavorite/All");
-        response.EnsureSuccessStatusCode();
+        List<string> favList = new(); 
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/allFavorite/All");
+            response.EnsureSuccessStatusCode();
         
-        string responseBody = await response.Content.ReadAsStringAsync();
-        var favList = JsonConvert.DeserializeObject<List<string>>(responseBody).ToList();
+            string responseBody = await response.Content.ReadAsStringAsync();
+            favList = JsonConvert.DeserializeObject<List<string>>(responseBody).ToList();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return favList;
+        }
+        
         return favList;
     }
 }

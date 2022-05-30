@@ -200,7 +200,6 @@
 </MudItem>
 
 
-
 <p class="knownFor">
     <b>Similar movies:</b>
 </p>
@@ -336,7 +335,6 @@
 
     private async Task<string> CheckFavorites()
     {
-        
         var result = await DbAccess?.GetFavorite(AccountService!.User?.Username!, Int32.Parse(Value!))!;
         return result;
     }
