@@ -51,6 +51,7 @@ namespace Api
                                 authenticated = true;
                                 authUser.Username = foundUsername;
                                 authUser.Email = reader["email"].ToString();
+                                authUser.RegistrationDate = reader["registration_date"].ToString();
                             }
                         }
                     }  
@@ -190,7 +191,7 @@ namespace Api
             using (SqlConnection conn = new SqlConnection(appsettingvalue))
             {
                 conn.Open();
-                var query = @"select count(*) from favorites where movie_id = @movie_id";
+                var query = @"select count(username) from favorites where movie_id = @movie_id";
                 SqlCommand command = new SqlCommand(query, conn);
                 command.Parameters.AddWithValue("@movie_id", movie_id);
                 var reader = await command.ExecuteReaderAsync();
@@ -276,10 +277,12 @@ namespace Api
                 {
                     conn.Open();  
                     if(!String.IsNullOrEmpty(input.Username))  
-                    {
-                        var query = $"INSERT INTO [login] (username,password,email,registration_date) VALUES('{input.Username}', '{input.Password}' , '{input.Email}', '{input.RegistrationDate}')";  
+                    {  
+                        Console.WriteLine(input.Email +" EMAIL");
+                        Console.WriteLine(input.Username +" USERNAME");
+                        var query = $"INSERT INTO [login] (username,password,email) VALUES('{input.Username}', '{input.Password}' , '{input.Email}')";  
                         SqlCommand command = new SqlCommand(query, conn);  
-                        command.ExecuteNonQuery();   
+                        command.ExecuteNonQuery();  
                     }  
                 }  
             }  

@@ -13,10 +13,13 @@
     <MudContainer MaxWidth="MaxWidth.Medium">
         <h3>Signup</h3>
         <MudPaper Class="pa-4">
-            <MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors">
-                <MudTextField T="string" Label="Username" @bind-Value="_username" Immediate="true" Required="true" RequiredError="User name is required!"/>
+            <MudForm  @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors">
+                <MudTextField  T="string" Label="Username" @bind-Value="_username" Immediate="true" Required="true" RequiredError="User name is required!"/>
+                <form autocomplete="off">
+                    
                 <MudTextField T="string" Label="Email" @bind-Value="_email" Required="true" RequiredError="Email is required!"
                               Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })"/>
+                </form>
                 <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @bind-Value="_password"
                               InputType="InputType.Password"
                               Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"

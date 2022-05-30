@@ -4,9 +4,12 @@
 <MudLayout>
     <MudContainer>
         <MudGrid>
-            <MudItem xs="12" sm="9">
-                <MudImage Width="199" Height="299" Fluid="true" Alt="@_username" Elevation="25" Class="rounded-lg" Src="/wp-person-placeholder.png"></MudImage>
+            <div class="empty-space"></div>
+            <MudItem xs="12">
                 <MudCard>
+                    <div class="profileAvatar">
+                        <MudAvatar Style="width: 100px; height: 100px; font-size:2rem" Color="Color.Info" Variant="Variant.Outlined">@_profileLetter</MudAvatar>
+                    </div>
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h5">
@@ -14,71 +17,66 @@
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
-                    <MudCardContent>
+                    <MudCardHeader>
                         <MudText Typo="Typo.body2">
-                            <a class="bold">Email: </a> @_email
+                            <span class="bold">Date joined: </span> @_date
                         </MudText>
-                    </MudCardContent>
+                    </MudCardHeader>
                 </MudCard>
             </MudItem>
         </MudGrid>
         <table>
-        
-                        <tr>
-                            <th>Nr</th>
-                            <th>Poster</th>
-                            <th>Name</th>
-                            <th>Remove</th>
-                        </tr>
-                        @foreach (var item in _profileFavorites)
-                        {
-                            var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
-        
-        
-                            <tr>
-                                <td class="text_count">
-                                    @count
-                                </td>
-                                <td >
-                                    <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                                        <div class="favorite-list">
-                                            <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                                        </div>
-                                    </MudButton>
-                                </td>
-                                <td>
-                                    <button>
-                                        <a class="abc" onclick="@(() => MovieDetails(@item.Id))">
-                                            @item.Title
-                                        </a>
-                                    </button>
-                                </td>
-                                <td>
-                                    <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
-                                               Color="Color.Primary" OnClick="@(() => RemoveFavoriteMovie(@item.Id))">
-                                        Remove
-                                    </MudButton>
-                                </td>
-                            </tr>
-                        }
-                    </table>
-                    
-                    <div class="empty-space"></div>
+            <tr>
+                <th>Nr</th>
+                <th>Poster</th>
+                <th>Name</th>
+                <th>Remove</th>
+            </tr>
+            @foreach (var item in _profileFavorites)
+            {
+                _count++;
+                
+                var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+                <tr>
+                    <td class="text_count">
+                        @_count
+                    </td>
+                    <td >
+                        <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                            <div class="favorite-list">
+                                <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                            </div>
+                        </MudButton>
+                    </td>
+                    <td>
+                        <button>
+                            <a class="abc" onclick="@(() => MovieDetails(@item.Id))">
+                                @item.Title
+                            </a>
+                        </button>
+                    </td>
+                    <td>
+                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                                   Color="Color.Primary" OnClick="@(() => RemoveFavoriteMovie(@item.Id))">
+                            Remove
+                        </MudButton>
+                    </td>
+                </tr>
+            }
+        </table>
+        <div class="empty-space"></div>
     </MudContainer>
 </MudLayout>
 
 @code {
-    
-
     [Inject]
     private IDbAccess? DbAccess { get; set; }
 
     [Inject]
     private IMoviesData? MoviesData { get; set; }
 
+    int _count;
 
-    int count = 1;
-    
     List<string>? _allFavorites;
     private readonly List<Movie> _profileFavorites = new();
     Movie _favoriteEntity = new Movie();
@@ -86,6 +84,8 @@
 
     string _username = "";
     string _email = "";
+    string _date = "";
+    string? _profileLetter = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,13 +95,16 @@
             _username = AccountService.User?.Username!;
             _email = AccountService.User?.Email!;
             _allFavorites = await GetAllFavorites()!;
-        
-        
-        foreach (var str in _allFavorites!)
-        {
-            _favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
-            _profileFavorites.Add(_favoriteEntity);
-        }
+            _date = AccountService.User?.RegistrationDate!;
+            _profileLetter = AccountService.User?.Username.Substring(0, 1);
+
+            foreach (var str in _allFavorites!)
+            {
+                _favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
+                _profileFavorites.Add(_favoriteEntity);
+            }
+
+            Console.WriteLine(AccountService.User?.RegistrationDate);
         }
     }
 
@@ -110,7 +113,7 @@
         List<string>? allFav = await DbAccess?.GetAllFavorite(AccountService.User?.Username!);
         return allFav;
     }
-    
+
     void MovieDetails(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");

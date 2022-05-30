@@ -6,7 +6,7 @@
 <MudSnackbarProvider/>
 
 
-<MudLayout size="large">
+<MudLayout>
     <MudAppBar Fixed="true">
 
 
@@ -25,14 +25,12 @@
                 <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">@AccountService.User?.Username!.Substring(0,1)</MudAvatar>
                 <div class="dropdown-content">
                     <a href="/Profile">Profile</a>
-                    <a href="#">Favorites</a>
                     <a href="/Logout">Log out</a>
                 </div>
             </div>
         }
         else
         {
-            
             <MudButton href="/Login"> Login</MudButton>
             <MudButton href="/Signup"> Register</MudButton>
         }

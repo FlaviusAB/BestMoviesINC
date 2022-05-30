@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using BlazorApp.Models.Account;
 using Client.Models;
 using Client.Models.Account;
+using Client.Shared;
 using Microsoft.AspNetCore.Components;
 
 namespace Client.Services
@@ -56,7 +57,6 @@ namespace Client.Services
             await _localStorageService.SetItem(_userKey, User);
             isLoggedIn = true;
             _navigationManager.NavigateTo("/");
-
         }
 
         public async Task Logout()
