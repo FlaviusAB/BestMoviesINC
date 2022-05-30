@@ -1,6 +1,7 @@
 @inject NavigationManager NavigationManager
 @inject IAccountService AccountService
 @page "/Profile"
+@using System.Collections
 <MudLayout>
     <MudContainer>
         <MudGrid>
@@ -32,7 +33,7 @@
                 <th>Name</th>
                 <th>Remove</th>
             </tr>
-            @foreach (var item in _profileFavorites)
+            @foreach (var item in _profileFavoritesUpdated)
             {
                 _count++;
                 
@@ -78,8 +79,9 @@
     int _count;
 
     List<string>? _allFavorites;
-    private readonly List<Movie> _profileFavorites = new();
+    private List<Movie> _profileFavorites = new();
     Movie _favoriteEntity = new Movie();
+    private readonly List<Movie> _profileFavoritesUpdated= new();
 
 
     string _username = "";
@@ -102,6 +104,7 @@
             {
                 _favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
                 _profileFavorites.Add(_favoriteEntity);
+                _profileFavoritesUpdated.Add(_favoriteEntity);
             }
 
             Console.WriteLine(AccountService.User?.RegistrationDate);
@@ -121,15 +124,21 @@
 
     private void RemoveFavoriteMovie(int id)
     {
+        foreach (var movie in _profileFavorites)
+        {
+             if (movie.Id == id)
+            {
+                _profileFavoritesUpdated.Remove(movie);
+                _count = 0;
+            }
+            Console.WriteLine(movie.Title);
+            
+        }
+        
         DbAccess?.DeleteFavorite(AccountService!.User?.Username!, id);
-        // foreach (var movie in _profileFavorites)
-        // {
-        //     if (movie.Id == id)
-        //     {
-        //         _profileFavorites.Remove(movie);
-        //     }
-        // }
-        // StateHasChanged();
+        
+        StateHasChanged();
     }
 
+    
 }
