@@ -45,6 +45,7 @@
                                    Color="Color.Primary" OnClick="FavoriteMovie">
                             Add
                         </MudButton>
+
                         <MudText Color="Color.Primary">
                             Favorited by
                             <span id="lime">@_favoriteCount</span> Users
@@ -117,10 +118,10 @@
                 <span class="paddingRight5 bold">Production:</span><span>@ProductionCompanies</span>
             </MudText>
             <MudText Class="paddingTop2">
-                <span class="paddingRight5 bold">Budget:</span><span>@Budget</span>
+                <span class="paddingRight5 bold">Budget:</span><span>$@Budget</span>
             </MudText>
             <MudText Class="paddingTop2">
-                <span class="paddingRight5 bold">Revenue:</span><span>@Revenue</span>
+                <span class="paddingRight5 bold">Revenue:</span><span>$@Revenue</span>
             </MudText>
 
             <MudText Class="paddingTop2">
@@ -320,6 +321,7 @@
         _favoriteButton = "true";
         FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, Value!);
         DbAccess?.SaveFavorite(favorite);
+        _favoriteCount = (int.Parse(_favoriteCount)+ 1).ToString();
     }
 
     private async Task<string> FavoriteCount()
@@ -330,6 +332,7 @@
 
     private void RemoveFavoriteMovie()
     {
+        _favoriteCount = (int.Parse(_favoriteCount) - 1).ToString();
         _favoriteButton = "false";
         DbAccess?.DeleteFavorite(AccountService!.User?.Username!, Int32.Parse(Value!));
     }

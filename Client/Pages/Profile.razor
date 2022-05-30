@@ -10,7 +10,7 @@
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h5">
-                                <b>@_username @AccountService.User.RegistrationDate</b>
+                                <b>@_username @_date</b>
                             </MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
@@ -23,7 +23,6 @@
             </MudItem>
         </MudGrid>
         <table>
-
             <tr>
                 <th>Nr</th>
                 <th>Poster</th>
@@ -32,12 +31,12 @@
             </tr>
             @foreach (var item in _profileFavorites)
             {
-                count++;
+                _count++;
                 
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
                 <tr>
                     <td class="text_count">
-                        @count
+                        @_count
                     </td>
                     <td >
                         <MudButton OnClick="@(() => MovieDetails(@item.Id))">
@@ -62,21 +61,18 @@
                 </tr>
             }
         </table>
-
         <div class="empty-space"></div>
     </MudContainer>
 </MudLayout>
 
 @code {
-
-
     [Inject]
     private IDbAccess? DbAccess { get; set; }
 
     [Inject]
     private IMoviesData? MoviesData { get; set; }
 
-    int count = 0;
+    int _count = 0;
 
     List<string>? _allFavorites;
     private readonly List<Movie> _profileFavorites = new();
@@ -85,6 +81,7 @@
 
     string _username = "";
     string _email = "";
+    string _date = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -94,6 +91,7 @@
             _username = AccountService.User?.Username!;
             _email = AccountService.User?.Email!;
             _allFavorites = await GetAllFavorites()!;
+            _date = AccountService.User.RegistrationDate;
 
 
             foreach (var str in _allFavorites!)
