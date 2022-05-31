@@ -122,7 +122,6 @@ public class DbAccess : IDbAccess
         byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(message);
         var msg = new ByteArrayContent(messageBytes);
         var response = await _httpClient.PostAsync("api/review", msg);
-            
         
         if (response.IsSuccessStatusCode)
         {
