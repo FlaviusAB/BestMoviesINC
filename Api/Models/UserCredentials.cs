@@ -1,18 +1,14 @@
 ﻿namespace Api.Models;
 
-public class UserCredentials {
-    public string username {
-        get;
-        set;
-    }
-    public string password {
-        get;
-        set;
-    }
-    
+public class UserCredentials
+{
     public UserCredentials(string username, string password)
     {
-        this.username = username;
-        this.password = password;
+        Username = username;
+        Password = password;
     }
+
+    public string Username { get; set; }
+
+    public string Password { get; set; }
 }
