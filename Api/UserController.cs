@@ -317,7 +317,7 @@ public static class UserFunction
                 if (!string.IsNullOrEmpty(input.Username))
                 {
                     var query =
-                        $"INSERT INTO [login] (username,password,email) VALUES('{input.Username}', '{input.Password}' , '{input.Email}')";
+                        $"INSERT INTO [login] (username,password,email,registration_date) VALUES('{input.Username}', '{input.Password}' , '{input.Email}','{input.RegistrationDate}')";
                     var command = new SqlCommand(query, conn);
                     command.ExecuteNonQuery();
                 }
