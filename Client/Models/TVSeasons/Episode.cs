@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Client.Models.Movies;
+using Newtonsoft.Json;
 
 namespace Client.Models.TVSeasons;
 

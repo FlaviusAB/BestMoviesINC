@@ -1,5 +1,6 @@
-using Api.Models;
 using Client.Models;
+using Client.Models.Favorites;
+using Client.Models.Movies;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 

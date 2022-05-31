@@ -2,7 +2,7 @@
 @inject IAlertService AlertService
 @inject NavigationManager NavigationManager
 
-@foreach (var alert in alerts)
+@foreach (var alert in _alerts)
 {
     <div class="@CssClass(alert)">
         <a class="close" @onclick="@(() => RemoveAlert(alert))">&times;</a>
@@ -17,7 +17,7 @@
     [Parameter]
     public bool Fade { get; set; } = true;
 
-    private List<Models.Alert> alerts = new List<Models.Alert>();
+    private List<Models.Alert> _alerts = new();
 
     protected override void OnInitialized()
     {
@@ -38,13 +38,13 @@
 
         if (alert.Message == null) 
         {
-            alerts.RemoveAll(x => !x.KeepAfterRouteChange);
+            _alerts.RemoveAll(x => !x.KeepAfterRouteChange);
 
-            alerts.ForEach(x => x.KeepAfterRouteChange = false);
+            _alerts.ForEach(x => x.KeepAfterRouteChange = false);
         }
         else
         {
-            alerts.Add(alert);
+            _alerts.Add(alert);
             StateHasChanged();
 
             if (alert.AutoClose)
@@ -64,18 +64,18 @@
 
     private async void RemoveAlert(Models.Alert alert)
     {
-        if (!alerts.Contains(alert)) return;
+        if (!_alerts.Contains(alert)) return;
 
         if (Fade) 
         {
             alert.Fade = true;
 
             await Task.Delay(250);
-            alerts.Remove(alert);
+            _alerts.Remove(alert);
         } 
         else 
         {
-            alerts.Remove(alert);
+            _alerts.Remove(alert);
         }
 
         StateHasChanged();
@@ -85,7 +85,7 @@
     {
         if (alert == null) return null;
 
-        var classes = new List<string> { "alert", "alert-dismissable", "mt-4", "container" };
+        var classes = new List<string> { "alert", "alert-dismissible", "mt-4", "container" };
 
         var alertTypeClass = new Dictionary<AlertType, string>();
         alertTypeClass[AlertType.Success] = "alert-success";

@@ -1,15 +1,15 @@
-namespace Api.Models;
+namespace Client.Models.Movies;
 
 public class MovieReviewEntity
 {
     public MovieReviewEntity(string username, string movieId, string review)
     {
-        this.Username = username;
+        Username = username;
         MovieId = movieId;
-        this.Review = review;
+        Review = review;
     }
 
     public string Username { get; set; }
-    public string MovieId { get; set; }
+    private string MovieId { get; set; }
     public string Review { get; set; }
 }

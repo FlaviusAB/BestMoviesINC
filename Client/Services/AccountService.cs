@@ -1,4 +1,3 @@
-using BlazorApp.Models.Account;
 using Client.Models;
 using Client.Models.Account;
 using Microsoft.AspNetCore.Components;
@@ -14,7 +13,6 @@ namespace Client.Services
         Task Register(AddUser model);
         Task<IList<User>> GetAll();
         Task<User> GetById(string id);
-        Task Update(string id, EditUser model);
         Task Delete(string id);
 
         bool GetIsLoggedIn();
@@ -80,11 +78,6 @@ namespace Client.Services
         public async Task<User> GetById(string username)
         {
             return await _httpService.Get<User>($"/users/{username}");
-        }
-
-        public async Task Update(string id, EditUser model)
-        {
-            await _httpService.Put($"/users/{id}", model);
         }
 
         public async Task Delete(string id)

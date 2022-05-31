@@ -1,4 +1,4 @@
-namespace Client.Models;
+namespace Client.Models.Favorites;
 
 public class FavoriteEntity
 {

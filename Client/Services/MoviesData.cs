@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Client.Models.Movies;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

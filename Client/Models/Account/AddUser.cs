@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BlazorApp.Models.Account
+namespace Client.Models.Account
 {
     public class AddUser
     {
