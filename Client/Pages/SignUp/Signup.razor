@@ -13,12 +13,12 @@
     <MudContainer MaxWidth="MaxWidth.Medium">
         <h3>Signup</h3>
         <MudPaper Class="pa-4">
-            <MudForm  @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors">
-                <MudTextField  T="string" Label="Username" @bind-Value="_username" Immediate="true" Required="true" RequiredError="User name is required!"/>
+            <MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors">
+                <MudTextField T="string" Label="Username" @bind-Value="_username" Immediate="true" Required="true" RequiredError="User name is required!"/>
                 <form autocomplete="off">
-                    
-                <MudTextField T="string" Label="Email" @bind-Value="_email" Required="true" RequiredError="Email is required!"
-                              Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })"/>
+
+                    <MudTextField T="string" Label="Email" @bind-Value="_email" Required="true" RequiredError="Email is required!"
+                                  Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })"/>
                 </form>
                 <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @bind-Value="_password"
                               InputType="InputType.Password"
@@ -30,10 +30,11 @@
 
                 <div class="d-flex align-center justify-space-between mt-6">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_success)" Class="ml-auto"
-                               OnClick="@(() => SignUp())">@if (_loading) 
-                                                                           {
-                                                                               <span class="spinner-border spinner-border-sm mr-1"></span>
-                                                                           }
+                               OnClick="@(() => SignUp())">
+                        @if (_loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
                         Register
                     </MudButton>
                 </div>
@@ -65,7 +66,7 @@
     string? _email;
     MudForm? _form;
     private readonly AddUser _model = new();
-    
+
     private async void SignUp()
     {
         AlertService.Clear();
@@ -80,9 +81,8 @@
             await AccountService.Register(_model);
             AlertService.Success("Registration successful", keepAfterRouteChange: true);
             NavigationManager.NavigateTo($"/Login");
-            
         }
-        
+
         catch (Exception ex)
         {
             _loading = false;
@@ -90,7 +90,6 @@
             Message = "User already existing";
             StateHasChanged();
         }
-        
     }
 
 
@@ -133,7 +132,7 @@
             return "Passwords don't match";
         return null;
     }
-    
+
     private void Enter(KeyboardEventArgs e)
     {
         if (e.Code is not ("Enter" or "NumpadEnter")) return;

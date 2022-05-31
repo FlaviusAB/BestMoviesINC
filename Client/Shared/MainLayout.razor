@@ -13,10 +13,11 @@
         <MudButton OnClick="@(GoHome)">HOME</MudButton>
         <MudSpacer/>
 
-        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search for movies" Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
-
+        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search for movies" 
+                      Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" 
+                      AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
         </MudTextField>
-        @* <MudButton OnClick="@(() => { if (@TextValue != null) {Search(@TextValue); } })">click me</MudButton> *@
+        
         <MudSpacer/>
 
         @if (AccountService.GetIsLoggedIn()|| AccountService.User?.Username!= null)
@@ -73,7 +74,6 @@
 
 
 @code {
-    
 
     private string _userInfo = "";
     private bool _userFound;

@@ -23,23 +23,18 @@
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
-                     
-
+                        
                         <MudText Class="paddingTop5 paddingBottom5">
                             @SeasonDescription
                         </MudText>
-                       
-                       
+
                         <MudText Class="paddingTop2">
                             <span class="paddingRight5 bold">First Episode</span><span>@AirDate</span>
                         </MudText>
-                        
-
 
                     </MudCardContent>
                 </MudCard>
             </MudItem>
-
 
             <div class="empty-space"></div>
 
@@ -49,20 +44,20 @@
 
 
 @code {
+
     [Inject]
     private IMoviesData? MoviesData { get; set; }
-    
+
     [Parameter]
     public string? Value { get; set; }
-    
+
     [Parameter]
     public int Num { get; set; }
-    
+
     private string? PosterPath { get; set; }
     private string? Name { get; set; }
     private string? SeasonDescription { get; set; }
     private string? AirDate { get; set; }
-
 
 
     protected override async Task OnInitializedAsync()
@@ -75,7 +70,7 @@
         }
     }
 
-    private async Task SeasonInfo(string id ,int num)
+    private async Task SeasonInfo(string id, int num)
     {
         if (MoviesData != null)
         {

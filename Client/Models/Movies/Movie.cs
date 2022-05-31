@@ -1,85 +1,58 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Client.Models
 {
-	public class Movie
-	{
-            [JsonProperty("adult")]
-            public bool Adult;
+    public class Movie
+    {
+        [JsonProperty("adult")] public bool Adult;
 
-            [JsonProperty("backdrop_Path")]
-            public string? BackdropPath;
+        [JsonProperty("backdrop_Path")] public string? BackdropPath;
 
-            [JsonProperty("belongs_to_collection")]
-            public BelongsToCollection? MovieCollection;
+        [JsonProperty("belongs_to_collection")]
+        public BelongsToCollection? MovieCollection;
 
-            [JsonProperty("budget")]
-            public Int64? Budget;
+        [JsonProperty("budget")] public Int64? Budget;
 
-            [JsonProperty("genres")]
-            public List<Genre>? Genres;
+        [JsonProperty("genres")] public List<Genre>? Genres;
 
-            [JsonProperty("homepage")]
-            public string? Homepage;
+        [JsonProperty("homepage")] public string? Homepage;
 
-            [JsonProperty("id")]
-            public int Id;
+        [JsonProperty("id")] public int Id;
 
-            [JsonProperty("imdb_id")]
-            public string? ImdbId;
+        [JsonProperty("imdb_id")] public string? ImdbId;
 
-            [JsonProperty("original_language")]
-            public string? OriginalLanguage;
+        [JsonProperty("original_language")] public string? OriginalLanguage;
 
-            [JsonProperty("original_title")]
-            public string? OriginalTitle;
+        [JsonProperty("original_title")] public string? OriginalTitle;
 
-            [JsonProperty("overview")]
-            public string? Overview;
-            
-            [JsonProperty("poster_path")]
-            public string? PosterPath;
-            
-            [JsonProperty("popularity")]
-            public double Popularity;
+        [JsonProperty("overview")] public string? Overview;
 
-            [JsonProperty("production_companies")]
-            public List<ProductionCompany>? ProductionCompanies;
+        [JsonProperty("poster_path")] public string? PosterPath;
 
-            [JsonProperty("production_countries")]
-            public List<ProductionCountry>? ProductionCountries;
+        [JsonProperty("popularity")] public double Popularity;
 
-            [JsonProperty("release_date")]
-            public string? ReleaseDate;
+        [JsonProperty("production_companies")] public List<ProductionCompany>? ProductionCompanies;
 
-            [JsonProperty("revenue")]
-            public Int64? Revenue;
+        [JsonProperty("production_countries")] public List<ProductionCountry>? ProductionCountries;
 
-            [JsonProperty("runtime")]
-            public int? Runtime;
+        [JsonProperty("release_date")] public string? ReleaseDate;
 
-            [JsonProperty("spoken_languages")]
-            public List<SpokenLanguage>? SpokenLanguages;
+        [JsonProperty("revenue")] public Int64? Revenue;
 
-            [JsonProperty("status")]
-            public string? Status;
+        [JsonProperty("runtime")] public int? Runtime;
 
-            [JsonProperty("tagline")]
-            public string? Tagline;
+        [JsonProperty("spoken_languages")] public List<SpokenLanguage>? SpokenLanguages;
 
-            [JsonProperty("title")]
-            public string? Title;
+        [JsonProperty("status")] public string? Status;
 
-            [JsonProperty("video")]
-            public bool Video;
+        [JsonProperty("tagline")] public string? Tagline;
 
-            [JsonProperty("vote_average")]
-            public double VoteAverage;
+        [JsonProperty("title")] public string? Title;
 
-            [JsonProperty("vote_count")]
-            public int? VoteCount;
-        }
+        [JsonProperty("video")] public bool Video;
+
+        [JsonProperty("vote_average")] public double VoteAverage;
+
+        [JsonProperty("vote_count")] public int? VoteCount;
+    }
 }
-
-

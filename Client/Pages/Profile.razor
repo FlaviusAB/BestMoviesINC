@@ -1,7 +1,8 @@
 @inject NavigationManager NavigationManager
 @inject IAccountService AccountService
+
 @page "/Profile"
-@using System.Collections
+
 <MudLayout>
     <MudContainer>
         <MudGrid>
@@ -36,7 +37,7 @@
             @foreach (var item in _profileFavoritesUpdated)
             {
                 _count++;
-                
+
                 var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
                 <tr>
                     <td class="text_count">
@@ -70,6 +71,7 @@
 </MudLayout>
 
 @code {
+
     [Inject]
     private IDbAccess? DbAccess { get; set; }
 
@@ -80,8 +82,8 @@
 
     List<string>? _allFavorites;
     private List<Movie> _profileFavorites = new();
-    Movie _favoriteEntity = new Movie();
-    private readonly List<Movie> _profileFavoritesUpdated= new();
+    Movie _favoriteEntity = new();
+    private readonly List<Movie> _profileFavoritesUpdated = new();
 
 
     string _username = "";
@@ -126,19 +128,18 @@
     {
         foreach (var movie in _profileFavorites)
         {
-             if (movie.Id == id)
+            if (movie.Id == id)
             {
                 _profileFavoritesUpdated.Remove(movie);
                 _count = 0;
             }
             Console.WriteLine(movie.Title);
-            
         }
-        
+
         DbAccess?.DeleteFavorite(AccountService!.User?.Username!, id);
-        
+
         StateHasChanged();
     }
 
-    
+
 }

@@ -1,8 +1,6 @@
-using System.Runtime.CompilerServices;
 using BlazorApp.Models.Account;
 using Client.Models;
 using Client.Models.Account;
-using Client.Shared;
 using Microsoft.AspNetCore.Components;
 
 namespace Client.Services
@@ -35,7 +33,8 @@ namespace Client.Services
             IHttpService httpService,
             NavigationManager navigationManager,
             ILocalStorageService localStorageService
-        ) {
+        )
+        {
             _httpService = httpService;
             _navigationManager = navigationManager;
             _localStorageService = localStorageService;
@@ -51,6 +50,7 @@ namespace Client.Services
         {
             return isLoggedIn;
         }
+
         public async Task Login(Login model)
         {
             User = await _httpService.Post<User>("/api/auth", model);
@@ -85,25 +85,11 @@ namespace Client.Services
         public async Task Update(string id, EditUser model)
         {
             await _httpService.Put($"/users/{id}", model);
-
-            // update stored user if the logged in user updated their own record
-            // if (id == User.Id) 
-            // {
-            //     // update local storage
-            //     
-            //     User.Email = model.Email;
-            //     User.Username = model.Username;
-            //     await _localStorageService.SetItem(_userKey, User);
-            // }
         }
 
         public async Task Delete(string id)
         {
             await _httpService.Delete($"/users/{id}");
-
-            // auto logout if the logged in user deleted their own record
-            // if (id == User.Id)
-            //     await Logout();
         }
     }
 }

@@ -1,5 +1,3 @@
-
-@using Client.Services
 @implements IDisposable
 @inject IAlertService AlertService
 @inject NavigationManager NavigationManager
@@ -23,41 +21,32 @@
 
     protected override void OnInitialized()
     {
-        // subscribe to new alerts and location change events
         AlertService.OnAlert += OnAlert;
         NavigationManager.LocationChanged += OnLocationChange;
     }
 
     public void Dispose()
     {
-        // unsubscribe from alerts and location change events
         AlertService.OnAlert -= OnAlert;
         NavigationManager.LocationChanged -= OnLocationChange;
     }
 
     private async void OnAlert(Models.Alert alert)
     {
-        // ignore alerts sent to other alert components
         if (alert.Id != Id) 
             return;
 
-        // clear alerts when an empty alert is received
         if (alert.Message == null) 
         {
-            // remove alerts without the 'KeepAfterRouteChange' flag set to true
             alerts.RemoveAll(x => !x.KeepAfterRouteChange);
 
-            // set the 'KeepAfterRouteChange' flag to false for the 
-            // remaining alerts so they are removed on the next clear
             alerts.ForEach(x => x.KeepAfterRouteChange = false);
         }
         else
         {
-            // add alert to array
             alerts.Add(alert);
             StateHasChanged();
 
-            // auto close alert if required
             if (alert.AutoClose)
             {
                 await Task.Delay(3000);
@@ -75,21 +64,17 @@
 
     private async void RemoveAlert(Models.Alert alert)
     {
-        // check if already removed to prevent error on auto close
         if (!alerts.Contains(alert)) return;
 
         if (Fade) 
         {
-            // fade out alert
             alert.Fade = true;
 
-            // remove alert after faded out
             await Task.Delay(250);
             alerts.Remove(alert);
         } 
         else 
         {
-            // remove alert
             alerts.Remove(alert);
         }
 
