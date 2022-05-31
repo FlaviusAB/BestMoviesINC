@@ -39,4 +39,4 @@ jobs:
           app-name: 'bestMoviesFunction'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_493845CF2F364D88AB8210892207BE21 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0F764C05B64D41CEB96D7162EBC2DF1D }}
