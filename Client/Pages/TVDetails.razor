@@ -1,4 +1,5 @@
 ﻿@page "/TVDetails/{Value}"
+@using Client.Models.Movies
 @inject NavigationManager NavigationManager
 
 <MudLayout>
@@ -174,11 +175,9 @@
                 {
                     var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
 
-                    // <MudButton OnClick="@(() => SeasonDetails(Value, @item.SeasonNumber))"> 
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                            <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
-                        </MudPaper>
-                    // </MudButton>
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+                    </MudPaper>
                 }
             </div>
 
@@ -204,11 +203,9 @@
     private int? VoteCount { get; set; }
     private string? ReleaseDate { set; get; }
     private string? LastAirDate { get; set; }
-    // private bool? InProduction { get; set; }
     private string? Status { get; set; }
     private int? NumberOfSeasons { get; set; }
     private int? NumberOfEpisodes { get; set; }
-    // private string? Networks { get; set; }
     private List<ProductionCountry>? _productionCountry;
     private string? CountryName { get; set; }
     private List<Genre>? _genres;
@@ -234,21 +231,17 @@
         ProductionCompanies = "";
         Cast = "";
         _crew = new List<PeopleEntity>();
-
-        // var num = 1;
-
+        
         var id = Value;
         if (id != null)
         {
             await TvDetailsApi(id);
             await TvCastApi(id);
-        // await Similar(id);
             await TvCrewApi(id);
             await SeasonDetailsApi(id);
         }
     }
-    
-    
+
 
     private async Task TvDetailsApi(string id)
     {
@@ -315,7 +308,7 @@
             }
         }
     }
-    
+
 
     private async Task SeasonDetailsApi(string id)
     {
@@ -329,13 +322,6 @@
             {
                 var obj2 = await MoviesData.GetSeasonDetails(id, i);
                 _seasons.Add(obj2);
-            }
-            
-            if (obj.PosterPath == null)
-            {
-            }
-            else
-            {
             }
         }
     }
@@ -366,6 +352,5 @@
     {
         _showMore = false;
     }
-
-
+    
 }

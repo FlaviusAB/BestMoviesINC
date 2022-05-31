@@ -1,7 +1,6 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Client.Models;
+namespace Client.Models.Movies;
 
 public class Seasons
 {

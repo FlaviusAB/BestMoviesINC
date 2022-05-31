@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -10,11 +9,9 @@ namespace Client.Helpers
 {
     public class AppRouteView : RouteView
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
 
-        [Inject]
-        public IAccountService AccountService { get; set; }
+        [Inject] public IAccountService AccountService { get; set; }
 
         protected override void Render(RenderTreeBuilder builder)
         {

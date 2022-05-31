@@ -1,5 +1,6 @@
 ﻿@page "/MovieDetails/{Value}"
-@using Api.Models
+@using Client.Models.Favorites
+@using Client.Models.Movies
 @implements IDisposable
 @inject NavigationManager NavigationManager
 
@@ -46,7 +47,7 @@
 
                 <MudText Color="Color.Primary">
                     Favorited by
-                    <span id="lime">@_favoriteCount</span> Users
+                    <span id="lime2">@_favoriteCount</span> Users
                 </MudText>
 
             </CardHeaderActions>
@@ -235,7 +236,7 @@
 @if (_userFound)
 {
     <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Comment.." Variant="Variant.Outlined"
-              @onkeydown="@Enter"/>
+                  @onkeydown="@Enter"/>
 }
 
 </MudGrid>
@@ -245,7 +246,7 @@
 
     @foreach (var item in _allReviews)
     {
-        var profileLetter = item.username.Substring(0, 1);
+        var profileLetter = item.Username.Substring(0, 1);
         <tr>
             <td>
                 <div class="profileAvatarComments">
@@ -253,9 +254,9 @@
                 </div>
             </td>
             <td>
-                <MudText class="bold">@item.username</MudText>
+                <MudText class="bold">@item.Username</MudText>
 
-                <MudText >@item.review</MudText>
+                <MudText >@item.Review</MudText>
             </td>
         </tr>
     }
@@ -280,8 +281,7 @@
 
     [Parameter]
     public string? Value { get; set; }
-    
-    // public string? _profileLetter = "";
+
     private string? Budget { get; set; }
     private string? Revenue { get; set; }
     private string? PosterPath { get; set; }
@@ -325,13 +325,12 @@
         {
             InvokeAsync(async () =>
             {
-                Console.WriteLine("Timmer running every "+_timer.Interval+" sec");
+                Console.WriteLine("Timer running every " + _timer.Interval + " sec");
                 _allReviews = await GetAllReviews();
                 StateHasChanged();
             });
         };
         _timer.Start();
-        
     }
 
     protected override async Task OnParametersSetAsync()
@@ -365,10 +364,12 @@
             _userFound = false;
         }
     }
+
     public void Dispose()
     {
-        _timer?.Dispose();        // because you need it here
+        _timer?.Dispose(); 
     }
+
     private void FavoriteMovie()
     {
         _favoriteButton = "true";
@@ -388,7 +389,6 @@
         MovieReviewEntity _movieReviewEntity = new MovieReviewEntity(AccountService!.User?.Username!, Value!, @TextValue);
         DbAccess?.SaveReview(_movieReviewEntity);
         TextValue = "";
-        
     }
 
     private void Enter(KeyboardEventArgs e)
@@ -407,7 +407,7 @@
     {
         _favoriteButton = "false";
         DbAccess?.DeleteFavorite(AccountService!.User?.Username!, Int32.Parse(Value!));
-        _favoriteCount = (int.Parse(_favoriteCount)- 1).ToString();
+        _favoriteCount = (int.Parse(_favoriteCount) - 1).ToString();
     }
 
     private async Task<string> CheckFavorites()
@@ -431,7 +431,6 @@
             {
                 PosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
             }
-
 
             MovieTitle = obj.Title;
             MovieDescription = obj.Overview;

@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Components;
 using System.Net;
 using System.Net.Http.Headers;
@@ -7,8 +6,6 @@ using System.Text;
 using System.Text.Json;
 using Client.Helpers;
 using Client.Models;
-
-
 
 namespace Client.Services
 {
@@ -35,7 +32,8 @@ namespace Client.Services
             NavigationManager navigationManager,
             ILocalStorageService localStorageService,
             IConfiguration configuration
-        ) {
+        )
+        {
             _httpClient = httpClient;
             _navigationManager = navigationManager;
             _localStorageService = localStorageService;
@@ -84,8 +82,6 @@ namespace Client.Services
             return await sendRequest<T>(request);
         }
 
-        // helper methods
-
         private HttpRequestMessage createRequest(HttpMethod method, string uri, object value = null)
         {
             var request = new HttpRequestMessage(method, uri);
@@ -114,18 +110,14 @@ namespace Client.Services
         private async Task<T> sendRequest<T>(HttpRequestMessage request)
         {
             await addJwtHeader(request);
-            
-            // send request
+
             using var response = await _httpClient.SendAsync(request);
 
-            // auto logout on 401 response
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 _navigationManager.NavigateTo("/Login");
-
             }
-            
-            
+
             await handleErrors(response);
 
             var options = new JsonSerializerOptions();
@@ -136,7 +128,6 @@ namespace Client.Services
 
         private async Task addJwtHeader(HttpRequestMessage request)
         {
-            // add jwt auth header if user is logged in and request is to the api url
             var user = await _localStorageService.GetItem<User>("user");
             var isApiUrl = !request.RequestUri.IsAbsoluteUri;
             if (user != null && isApiUrl)
@@ -145,7 +136,6 @@ namespace Client.Services
 
         private async Task handleErrors(HttpResponseMessage response)
         {
-            // throw exception on error response
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();

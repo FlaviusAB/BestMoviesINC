@@ -1,14 +1,13 @@
-namespace Client.Models;
+namespace Client.Models.Favorites;
 
 public class FavoriteEntity
 {
     public FavoriteEntity(string username, string movieId)
     {
-        this.username = username;
-        movie_id = movieId;
+        this.Username = username;
+        MovieId = movieId;
     }
 
-    public string username { get; set; }
-    public string movie_id { get; set; }
-
+    private string Username { get; set; }
+    private string MovieId { get; set; }
 }

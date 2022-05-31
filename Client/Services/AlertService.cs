@@ -1,5 +1,3 @@
-using BlazorApp.Models;
-using System;
 using Client.Models;
 
 namespace Client.Services
@@ -29,7 +27,7 @@ namespace Client.Services
                 KeepAfterRouteChange = keepAfterRouteChange,
                 AutoClose = autoClose
             });
-        }        
+        }
 
         public void Error(string message, bool keepAfterRouteChange = false, bool autoClose = true)
         {
@@ -40,7 +38,7 @@ namespace Client.Services
                 KeepAfterRouteChange = keepAfterRouteChange,
                 AutoClose = autoClose
             });
-        }        
+        }
 
         public void Info(string message, bool keepAfterRouteChange = false, bool autoClose = true)
         {
@@ -51,7 +49,7 @@ namespace Client.Services
                 KeepAfterRouteChange = keepAfterRouteChange,
                 AutoClose = autoClose
             });
-        }        
+        }
 
         public void Warn(string message, bool keepAfterRouteChange = false, bool autoClose = true)
         {
@@ -62,7 +60,7 @@ namespace Client.Services
                 KeepAfterRouteChange = keepAfterRouteChange,
                 AutoClose = autoClose
             });
-        }        
+        }
 
         public void Alert(Alert alert)
         {
