@@ -10,6 +10,6 @@ public class MovieReviewEntity
     }
 
     public string Username { get; set; }
-    private string MovieId { get; set; }
+    public string MovieId { get; set; }
     public string Review { get; set; }
 }
