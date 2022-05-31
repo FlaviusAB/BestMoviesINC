@@ -47,7 +47,7 @@
 
                 <MudText Color="Color.Primary">
                     Favorited by
-                    <span id="lime">@_favoriteCount</span> Users
+                    <span id="lime2">@_favoriteCount</span> Users
                 </MudText>
 
             </CardHeaderActions>
@@ -326,7 +326,7 @@
         {
             InvokeAsync(async () =>
             {
-                Console.WriteLine("Timmer running every " + _timer.Interval + " sec");
+                Console.WriteLine("Timer running every " + _timer.Interval + " sec");
                 _allReviews = await GetAllReviews();
                 StateHasChanged();
             });

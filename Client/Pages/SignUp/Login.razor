@@ -1,6 +1,4 @@
-@inject NavigationManager NavigationManager
 @inject IAccountService AccountService
-
 
 @page "/Login"
 
@@ -15,7 +13,7 @@
                 <MudTextField T="string" Label="Username" Varian="Variant.Outlined" @bind-Value="_username" Required="true" RequiredError="Type your username"/>
                 <MudTextField T="string" Immediate="true" @onkeydown="@Enter" Label="Password" @bind-Value="_password" Required="true" InputType="InputType.Password"/>
                 <div class="d-flex align-center justify-space-between mt-6">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_success)" Class="ml-auto" OnClick="@(() => LoginFunc())">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_success)" Class="ml-auto" OnClick="@(LoginFunc)">
                         @if (_loading)
                         {
                             <span class="spinner-border spinner-border-sm mr-1"></span>
@@ -74,7 +72,7 @@
     {
         base.OnInitialized();
         var timer = new System.Timers.Timer(1000);
-        timer.Elapsed += (s, e) =>
+        timer.Elapsed += (_, _) =>
         {
             InvokeAsync(() =>
             {
