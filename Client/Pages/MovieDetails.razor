@@ -1,255 +1,528 @@
 ﻿@page "/MovieDetails/{Value}"
-@using Client.Models
-@using Client.Services
-@using System.Threading
+@using Client.Models.Favorites
+@using Client.Models.Movies
+@implements IDisposable
 @inject NavigationManager NavigationManager
 
 
 <MudLayout>
-    <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-        <MudGrid>
-            <MudItem xs="12" sm="3">
-                <MudImage Width="300" Height="218" Src="@posterPath" Fluid="true" Alt="@movieTitle" Elevation="25" Class="rounded-lg"/>
-            </MudItem>
-            <MudItem xs="12" sm="9">
-                <MudCard>
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h5">
-                                @movieTitle
-                            </MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <div>
-                            <span>
-                                <span class="pr-2">
-                                    @voteAverage
-                                </span>
-                                <span >
-                                    @voteCount
-                                </span>
-                                <span>ratings</span>
-                            </span>
-                        </div>
-                        <div>
-                            <span>Runtime:</span>
-                            <span >
-                                @runTime
-                            </span>
-                        </div>
-                        <MudText Class="pt-2">
-                            @movieDescription
-                        </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Country:</span><span>@countryName</span>
-                        </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Genre:</span><span>@genre</span>
-                        </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Directors:</span>
-                            @for (int i = 0; i < crewList.Count; i++)
-                            {
-                                if (crewList[i].department == "Directing")
-                                {
-                                    crew = crewList[i].name;
-                                }
-                                var num = 1;
-                                <button>
-                                    <a class="abc" onclick="@(() => NamePage(crewList[num].id))"> 
-                                        <span class="pr-2"> 
-                                            @crew
-                                        </span> 
-                                    </a>
-                                </button>
-                            }
-                        </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Released:</span><span>@releaseDate</span>
-                        </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Production:</span><span>@productionCompanies</span>
-                        </MudText>
-                        <MudText Class="pt-2">
-                            <span class="pr-5">Casts:</span>
-                            @for (int i = 0; i < people.Count; i++)
-                            {
-                                if (i < people.Count - 1)
-                                {
-                                    cast = people[i].name + ", ";
-                                }
-                                else
-                                {
-                                    cast = people[i].name;
-                                }
-                                var num = i;
-                                <button>
-                                    <a class="abc" onclick="@(() => NamePage(people[num].id))"> 
-                                        <span class="pr-2"> 
-                                            @cast
-                                        </span> 
-                                    </a>
-                                </button>
-                            }
-                        </MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-            <p>
-                <b>Known for:</b>
-            </p>
-            <div class="container" style="height: 310px">
-                @foreach (var item in movies)
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+<MudGrid>
+<MudItem xs="12" sm="3">
+    @if (@PosterPath == null)
+    {
+        <MudImage Width="299" Height="399" Src="/no-image-icon-6.png" Fluid="true" Alt="@MovieTitle" Elevation="25" Class="rounded-lg"/>
+    }
+    else
+    {
+        <MudImage Width="299" Height="399" Src="@PosterPath" Fluid="true" Alt="@MovieTitle" Elevation="25" Class="rounded-lg"/>
+    }
+</MudItem>
+<MudItem xs="12" sm="9">
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5">
+                    @MovieTitle
+                </MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                @if (_userFound)
                 {
-                    var poster = "";
-                    if (@item.PosterPath == null)
+                    @if (bool.Parse(_favoriteButton))
                     {
-                        poster = "/no-image-icon-6.png";
-                        <MudButton OnClick="@(() => SimilarMovies(@item.Id))">
-                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                                <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                                <p class="no-image-text">@item.Title</p>
-                            </MudPaper>
+                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                                   Color="Color.Primary" OnClick="RemoveFavoriteMovie">
+                            Remove
                         </MudButton>
                     }
                     else
                     {
-                        poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
-                        <MudButton OnClick="@(() => SimilarMovies(@item.Id))">
-                            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                                <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                            </MudPaper>
+                        <MudButton Variant="Variant.Outlined" Size="Size.Large" StartIcon="@Icons.Material.Filled.Favorite"
+                                   Color="Color.Primary" OnClick="FavoriteMovie">
+                            Add
                         </MudButton>
                     }
                 }
+
+                <MudText Color="Color.Primary">
+                    Favorited by
+                    <span id="lime2">@_favoriteCount</span> Users
+                </MudText>
+
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            <div>
+                <span>
+                    <div class="box">
+                        <span>
+                            @VoteAverage
+                        </span>
+                    </div>
+                    <div class="box">
+                        @VoteCount <span class="something">ratings</span>
+                    </div>
+                </span>
+                <br/>
+                <br/>
             </div>
-        </MudGrid>
-    </MudContainer>
+            <div>
+                <span>
+                    <div class="smallBox">
+                        <span>Runtime:</span>
+                    </div>
+                    <div id="lime">
+                        @RunTime
+                    </div>
+                </span>
+
+            </div>
+            <MudText Class="paddingTop5 paddingBottom5">
+                @MovieDescription
+            </MudText>
+            <MudText>
+                <span class="paddingRight5 bold">Country:</span><span>@CountryName</span>
+            </MudText>
+            <MudText Class="paddingTop2">
+                <span class="paddingRight5 bold">Genre:</span><span>@Genre</span>
+            </MudText>
+            <MudText Class="paddingTop2">
+                <span class="paddingRight5 bold">Director(s):</span>
+                @for (int i = 0; i < _crew.Count; i++)
+                {
+                    if (i < _crew.Count - 1)
+                    {
+                        _crewName = _crew[i].Name + ", ";
+                    }
+                    else
+                    {
+                        _crewName = _crew[i].Name;
+                    }
+                    var num = i;
+                    <button>
+                        <a class="abc" onclick="@(() => NamePage(_crew[num].Id))">
+                            <span class="paddingRight2">
+                                @_crewName
+                            </span>
+                        </a>
+                    </button>
+                }
+            </MudText>
+            <MudText Class="paddingTop2">
+                <span class="paddingRight5 bold">Released:</span><span>@ReleaseDate</span>
+            </MudText>
+            <MudText Class="paddingTop2">
+                <span class="paddingRight5 bold">Production:</span><span>@ProductionCompanies</span>
+            </MudText>
+            <MudText Class="paddingTop2">
+                <span class="paddingRight5 bold">Budget:</span><span>@Budget</span>
+            </MudText>
+            <MudText Class="paddingTop2">
+                <span class="paddingRight5 bold">Revenue:</span><span>@Revenue</span>
+            </MudText>
+
+            <MudText Class="paddingTop2">
+                <span class="paddingRight5 bold">Casts:</span>
+                @if (_showMore)
+                {
+                    @if (_people.Count > 10)
+                    {
+                        @for (int i = 0; i < 10; i++)
+                        {
+                            if (i < 9)
+                            {
+                                Cast = _people[i].Name + ", ";
+                            }
+                            else
+                            {
+                                Cast = _people[i].Name;
+                            }
+                            var num = i;
+                            <button>
+                                <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                    <span class="paddingRight2">
+                                        @Cast
+                                    </span>
+                                </a>
+                            </button>
+                        }
+                        <button style="color: white" onclick="@ShowMore">Show more...</button>
+                    }
+                    else
+                    {
+                        @for (int i = 0; i < _people.Count; i++)
+                        {
+                            if (i < _people.Count - 1)
+                            {
+                                Cast = _people[i].Name + ", ";
+                            }
+                            else
+                            {
+                                Cast = _people[i].Name;
+                            }
+                            var num = i;
+                            <button>
+                                <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                    <span class="paddingRight2">
+                                        @Cast
+                                    </span>
+                                </a>
+                            </button>
+                        }
+                    }
+                }
+                else
+                {
+                    @for (int i = 0; i < _people.Count; i++)
+                    {
+                        if (i < _people.Count - 1)
+                        {
+                            Cast = _people[i].Name + ", ";
+                        }
+                        else
+                        {
+                            Cast = _people[i].Name;
+                        }
+                        var num = i;
+                        <button>
+                            <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                <span class="paddingRight2">
+                                    @Cast
+                                </span>
+                            </a>
+                        </button>
+                    }
+                }
+
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+</MudItem>
+
+
+<p class="knownFor">
+    <b>Similar movies:</b>
+</p>
+<div class="container2">
+    @foreach (var item in _movies)
+    {
+        string poster;
+        if (@item.PosterPath == null)
+        {
+            poster = "/no-image-icon-6.png";
+            <MudButton OnClick="@(() => SimilarMovies(@item.Id))">
+                <MudPaper Elevation="2" Class="pa-4" Style="height: 399px; width: 299px">
+                    <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                    <p class="no-image-text">@item.Title</p>
+                </MudPaper>
+            </MudButton>
+        }
+        else
+        {
+            poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+            <MudButton OnClick="@(() => SimilarMovies(@item.Id))">
+                <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                    <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                </MudPaper>
+            </MudButton>
+        }
+    }
+</div>
+<div class="empty-space"></div>
+<p class="bold"> Comments: </p>
+<div class="empty-space"></div>
+
+@if (_userFound)
+{
+    <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Comment.." Variant="Variant.Outlined"
+                  @onkeydown="@Enter"/>
+}
+
+</MudGrid>
+<div class="empty-space"></div>
+
+<table>
+
+    @foreach (var item in _allReviews)
+    {
+        var profileLetter = item.Username.Substring(0, 1);
+        <tr>
+            <td>
+                <div class="profileAvatarComments">
+                    <MudAvatar Size="Size.Medium" Color="Color.Info" Variant="Variant.Outlined">@profileLetter</MudAvatar>
+                </div>
+            </td>
+            <td>
+                <MudText class="bold">@item.Username</MudText>
+
+                <MudText >@item.Review</MudText>
+            </td>
+        </tr>
+    }
+</table>
+
+
+<div class="empty-space"></div>
+</MudContainer>
 </MudLayout>
 
 @code {
-    
-    [Inject] private IMoviesData MoviesData { get; set; }
-    
+
+    [Inject]
+    private IAccountService? AccountService { get; set; }
+
+    [Inject]
+    private IMoviesData? MoviesData { get; set; }
+
+    [Inject]
+    private IDbAccess? DbAccess { get; set; }
+
+
     [Parameter]
-    public string Value { get; set; }
+    public string? Value { get; set; }
 
-    private string posterPath { get; set; }
-    private string movieTitle { get; set; }
-    private string movieDescription { get; set; }
-    private string runTime { get; set; }
-    private string voteAverage { get; set; }
-    private int voteCount { get; set; }
-    private string releaseDate { set; get; }
-    private List<ProductionCountry> productionCountry;
-    private string countryName { get; set; }
-    private List<Genre> genres;
-    private string genre { get; set; }
-    private List<ProductionCompany> productionCompanyList;
-    private string productionCompanies { get; set; }
-    private List<PeopleEntity> people = new();
-    private List<PeopleEntity> crewList = new();
-    
+    private string? Budget { get; set; }
+    private string? Revenue { get; set; }
+    private string? PosterPath { get; set; }
+    private string? MovieTitle { get; set; }
+    private string? MovieDescription { get; set; }
+    private string? RunTime { get; set; }
+    private string? VoteAverage { get; set; }
+    private int? VoteCount { get; set; }
+    private string? ReleaseDate { set; get; }
+    private List<ProductionCountry>? _productionCountry;
+    private string? CountryName { get; set; }
+    private List<Genre>? _genres;
+    private string? Genre { get; set; }
+    private List<ProductionCompany>? _productionCompanyList;
+    private string? ProductionCompanies { get; set; }
+    private List<PeopleEntity> _people = new();
+    private List<PeopleEntity> _crewList = new();
 
-    [Parameter]public string cast { get; set; }
-    [Parameter]public string crew { get; set; }
-    
-    protected override async Task OnParametersSetAsync()
+    bool _showMore=true;
+
+    private string TextValue { get; set; } = "";
+
+    [Parameter]
+    public string? Cast { get; set; }
+
+    private List<PeopleEntity> _crew = new();
+    private string _crewName = "";
+    private List<Movie> _movies = new();
+
+    private bool _userFound;
+    private string? _favoriteButton;
+    private string? _favoriteCount;
+    private System.Timers.Timer _timer = new();
+
+    List<MovieReviewEntity>? _allReviews = new();
+
+    protected override async Task OnInitializedAsync()
     {
-        genre = "";
-        productionCompanies = "";
-        cast = "";
-        crew = "";
-        var id = Value;
-        await MovieDetailsApi(id);
-        await MovieCastApi(id);
-        await Similar(id);
-        await MovieCrewApi(id);
+        _timer = new System.Timers.Timer(4000);
+        _timer.Elapsed += (s, e) =>
+        {
+            InvokeAsync(async () =>
+            {
+                Console.WriteLine("Timer running every " + _timer.Interval + " sec");
+                _allReviews = await GetAllReviews();
+                StateHasChanged();
+            });
+        };
+        _timer.Start();
     }
 
-    private async Task  MovieDetailsApi(string id)
+    protected override async Task OnParametersSetAsync()
     {
+        Genre = "";
+        ProductionCompanies = "";
+        _crew = new List<PeopleEntity>();
+        _allReviews = new List<MovieReviewEntity>();
+        Cast = "";
 
-        var obj = await MoviesData.GetMovieDetails(id); 
-        
-        posterPath = "https://image.tmdb.org/t/p/w200" + obj.PosterPath;
-        movieTitle = obj.Title;
-        movieDescription = obj.Overview;
-        runTime = obj.Runtime + " min";
-        voteAverage = obj.VoteAverage + "/10";
-        voteCount = obj.VoteCount;
-        releaseDate = obj.ReleaseDate;
-        productionCountry = obj.ProductionCountries;
-        genres = obj.Genres;
-        productionCompanyList = obj.ProductionCompanies;
-
-        for (var i = 0; i < productionCountry.Count; i++)
+        var id = Value;
+        if (id != null)
         {
-            if (i < productionCountry.Count - 1)
+            await MovieDetailsApi(id);
+            await MovieCastApi(id);
+            await Similar(id);
+            await MovieCrewApi(id);
+            _allReviews = await GetAllReviews();
+        }
+
+        _favoriteCount = await FavoriteCount();
+        if (AccountService!.User?.Username != null)
+        {
+            _userFound = true;
+            _favoriteButton = await CheckFavorites();
+        }
+
+        else
+        {
+            _favoriteButton = "false";
+            _userFound = false;
+        }
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose(); 
+    }
+
+    private void FavoriteMovie()
+    {
+        _favoriteButton = "true";
+        FavoriteEntity favorite = new FavoriteEntity(AccountService!.User?.Username!, Value!);
+        DbAccess?.SaveFavorite(favorite);
+        _favoriteCount = (int.Parse(_favoriteCount) + 1).ToString();
+    }
+
+    private async Task<List<MovieReviewEntity>?>? GetAllReviews()
+    {
+        List<MovieReviewEntity>? allRev = await DbAccess?.GetReviews(Int32.Parse(Value!));
+        return allRev;
+    }
+
+    private void MovieReview()
+    {
+        MovieReviewEntity _movieReviewEntity = new MovieReviewEntity(AccountService!.User?.Username!, Value!, @TextValue);
+        DbAccess?.SaveReview(_movieReviewEntity);
+        TextValue = "";
+    }
+
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code is not ("Enter" or "NumpadEnter") || TextValue.Equals("")) return;
+        MovieReview();
+    }
+
+    private async Task<string> FavoriteCount()
+    {
+        var result = await DbAccess?.GetFavoriteCount(Int32.Parse(Value!));
+        return result;
+    }
+
+    private void RemoveFavoriteMovie()
+    {
+        _favoriteButton = "false";
+        DbAccess?.DeleteFavorite(AccountService!.User?.Username!, Int32.Parse(Value!));
+        _favoriteCount = (int.Parse(_favoriteCount) - 1).ToString();
+    }
+
+    private async Task<string> CheckFavorites()
+    {
+        var result = await DbAccess?.GetFavorite(AccountService!.User?.Username!, Int32.Parse(Value!))!;
+        return result;
+    }
+
+
+    private async Task MovieDetailsApi(string id)
+    {
+        
+        if (MoviesData != null)
+        {
+            var obj = await MoviesData.GetMovieDetails(id);
+            if (obj.PosterPath == null)
             {
-                countryName = productionCountry[i].Name + ", ";
+                PosterPath = "/no-image-icon-6.png";
             }
             else
             {
-                countryName = productionCountry[i].Name;
+                PosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
+            }
+
+            MovieTitle = obj.Title;
+            MovieDescription = obj.Overview;
+            RunTime = obj.Runtime + " min";
+            VoteAverage = obj.VoteAverage + "/10";
+            VoteCount = obj.VoteCount;
+            ReleaseDate = obj.ReleaseDate;
+            _productionCountry = obj.ProductionCountries;
+            _genres = obj.Genres;
+            _productionCompanyList = obj.ProductionCompanies;
+
+            Budget = obj.Budget != 0 ? $"{obj.Budget:n0}" : "No data";
+            Revenue = obj.Revenue != 0 ? $"{obj.Revenue:n0}" : "No data";
+        }
+
+        if (_productionCountry != null)
+            for (var i = 0; i < _productionCountry.Count; i++)
+            {
+                if (i < _productionCountry.Count - 1)
+                {
+                    CountryName = _productionCountry[i].Name + ", ";
+                }
+                else
+                {
+                    CountryName = _productionCountry[i].Name;
+                }
+            }
+
+        for (var i = 0; i < _genres!.Count; i++)
+        {
+            if (i < _genres.Count - 1)
+            {
+                Genre += _genres[i].Name + ", ";
+            }
+            else
+            {
+                Genre += _genres[i].Name;
             }
         }
 
-        for (var i = 0; i < genres.Count; i++)
+        for (var i = 0; i < _productionCompanyList!.Count; i++)
         {
-            if (i < genres.Count - 1)
+            if (i < _productionCompanyList.Count - 1)
             {
-                genre += genres[i].Name + ", ";
+                ProductionCompanies += _productionCompanyList[i].Name + ", ";
             }
             else
             {
-                genre += genres[i].Name;
-            }
-        }
-        
-        for (var i = 0; i < productionCompanyList.Count; i++)
-        {
-            if (i < productionCompanyList.Count - 1)
-            {
-                productionCompanies += productionCompanyList[i].Name + ", ";
-            }
-            else
-            {
-                productionCompanies += productionCompanyList[i].Name;
+                ProductionCompanies += _productionCompanyList[i].Name;
             }
         }
     }
 
     private async Task MovieCastApi(string id)
     {
-        people = await MoviesData.GetMovieCast(id);
+        _people = await MoviesData!.GetMovieCast(id);
     }
-    
+
     private async Task MovieCrewApi(string id)
     {
-        crewList = await MoviesData.GetMovieCrew(id);
+        _crewList = await MoviesData!.GetMovieCrew(id);
+        foreach (var cr in _crewList)
+        {
+            if (cr.Department == "Directing")
+            {
+                _crew.Add(cr);
+            }
+        }
     }
-    
-    private  void NamePage(int id)
+
+    private void NamePage(int id)
     {
         NavigationManager.NavigateTo($"Name/{id}");
     }
-    
-    private int Count { get; set; } = 10;
+
 
     void SimilarMovies(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");
+        _showMore = true;
     }
-    
-    
-    
-    private List<Movie> movies = new();
-    
+
+
     private async Task Similar(string id)
     {
-        movies = new List<Movie>();
-        movies = await MoviesData.GetSimilar(id);
+        _movies = new List<Movie>();
+        _movies = await MoviesData!.GetSimilar(id);
     }
+
+    private void ShowMore()
+    {
+        _showMore = false;
+    }
+
 }

@@ -9,14 +9,14 @@ public class CreatedBy
     public int Id { get; set; }
 
     [JsonProperty("credit_id")]
-    public string CreditId { get; set; }
+    public string? CreditId { get; set; }
 
     [JsonProperty("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [JsonProperty("gender")]
     public int Gender { get; set; }
 
     [JsonProperty("profile_path")]
-    public string ProfilePath { get; set; }
+    public string? ProfilePath { get; set; }
 }

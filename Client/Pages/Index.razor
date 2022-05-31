@@ -1,87 +1,182 @@
 ﻿@page "/"
-@using Client.Models
-@using Client.Services
-@inject HttpClient Http
-@inject NavigationManager navigationManager
+@using Client.Models.Movies
 
+@inject NavigationManager NavigationManager
 
 <PageTitle>Index</PageTitle>
+
+<div class="d-flex justify-center">
+    <div class="containerForTitle">
+        <MudImage ObjectFit="ObjectFit.Cover" Height="150" Width="1600" Src="/boat.jpg" Alt="banner" Elevation="25" Class="rounded-lg titleImage"/>
+        <div class="top-left">
+            <h1 class="titleStyle">Best Movies</h1>
+        </div>
+    </div>
+</div>
+
+
 <MudLayout>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <p>
-            <b>Trending Movies</b>
+            <b>TOP 20 Users Favorites</b>
         </p>
-        <div class="container" style="height: 310px">
-            @foreach (var item in trendingMovies)
+        <div class="container2">
+            @if (_isLoading)
             {
-                var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                for (int i = 0; i <= 10; i++)
+                {
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="250px"/>
+                }
+            }
+
+            @foreach (var item in _profileFavorites)
+            {
+                var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
                 <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                    </MudPaper>
+
+                    <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+
+                </MudButton>
+            }
+
+        </div>
+        <div class="paddingTop5"></div>
+        <p>
+            <b>Trending Movies</b>
+        </p>
+        <div class="container2">
+            @if (_isLoading)
+            {
+                for (int i = 0; i <= 10; i++)
+                {
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="250px"/>
+                }
+            }
+            @foreach (var item in _trendingMovies)
+            {
+                var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+
+                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+
+                    <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="100" Class="rounded-lg"/>
+
                 </MudButton>
             }
         </div>
+        <div class="paddingTop5"></div>
+
         <p>
             <b>Popular Movies</b>
         </p>
-        <div class="container" style="height: 310px">
-            @foreach (var item in popularMovies)
+        <div class="container2">
+            @if (_isLoading)
             {
-                var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                for (int i = 0; i <= 10; i++)
+                {
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="250px"/>
+                }
+            }
+            @foreach (var item in _popularMovies)
+            {
+                var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
                 <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                    </MudPaper>
+
+                    <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+
                 </MudButton>
             }
         </div>
+        <div class="paddingTop5"></div>
         <p>
-            <b>Now Playing</b>
+            <b>Trending TV shows</b>
         </p>
-        <div class="container" style="height: 310px">
-            @foreach (var item in nowPlaying)
+        <div class="container2">
+            @if (_isLoading)
             {
-                var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+                for (int i = 0; i <= 10; i++)
+                {
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="250px"/>
+                }
+            }
+            @foreach (var item in _trendingTVs)
+            {
+                var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
-                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
-                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
-                    </MudPaper>
+                <MudButton OnClick="@(() => TvDetails(@item.Id))">
+
+                    <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+
                 </MudButton>
             }
         </div>
+        <div class="empty-space"></div>
     </MudContainer>
 </MudLayout>
-
 
 @code {
 
     [Inject]
-    private IMoviesData MoviesData { get; set; }
+    private IDbAccess? DbAccess { get; set; }
 
-    private List<Movie> trendingMovies = new();
-    private List<Movie> popularMovies = new();
-    private List<Movie> nowPlaying = new();
+    [Inject]
+    private IMoviesData? MoviesData { get; set; }
 
+    private List<Movie> _trendingMovies = new();
+    private List<Movie> _popularMovies = new();
 
-    void MovieDetails(int id)
-    {
-        navigationManager.NavigateTo($"MovieDetails/{id}");
-    }
+    private List<Tv> _trendingTVs = new();
+
+    List<string>? _allFavorites;
+    private readonly List<Movie> _profileFavorites = new();
+    Movie _favoriteEntity = new Movie();
+
+    bool _isLoading;
+
 
     protected override async Task OnInitializedAsync()
     {
-        trendingMovies = new List<Movie>();
-        trendingMovies = await MoviesData.GetTrending();
+        _isLoading = true;
+        _allFavorites = await GetAllUsersFavorites()!;
 
-        popularMovies = new List<Movie>();
-        popularMovies = await MoviesData.GetPopular();
-        
-        nowPlaying = new List<Movie>();
-        nowPlaying = await MoviesData.GetNowPlaying();
+        foreach (var str in _allFavorites!)
+        {
+            _favoriteEntity = await MoviesData?.GetMovieDetails(str)!;
+            _profileFavorites.Add(_favoriteEntity);
+        }
+
+        _trendingMovies = new List<Movie>();
+        if (MoviesData != null)
+        {
+            _trendingMovies = await MoviesData.GetTrending();
+
+            _popularMovies = new List<Movie>();
+            _popularMovies = await MoviesData.GetPopular();
+
+            _trendingTVs = new List<Tv>();
+            _trendingTVs = await MoviesData.GetTrendingTv();
+        }
+        _isLoading = false;
     }
+
+    private async Task<List<string>?>? GetAllUsersFavorites()
+    {
+        List<string>? allFav = await DbAccess?.GetAllUsersFavorite();
+        return allFav;
+    }
+
+    void MovieDetails(int id)
+    {
+        NavigationManager.NavigateTo($"MovieDetails/{id}");
+    }
+
+    void TvDetails(int id)
+    {
+        NavigationManager.NavigateTo($"TVDetails/{id}");
+    }
+
+
+
 
 }

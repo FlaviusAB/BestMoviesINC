@@ -1,0 +1,142 @@
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using Client.Models.Account
+@using IAlertService = Client.Services.IAlertService
+@inject NavigationManager NavigationManager
+@inject IAlertService AlertService
+@inject IAccountService AccountService
+
+@page "/Signup"
+<div class="empty-space"></div>
+
+<MudLayout>
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <h3>Signup</h3>
+        <MudPaper Class="pa-4">
+            <MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors">
+                <MudTextField T="string" Label="Username" @bind-Value="_username" Immediate="true" Required="true" RequiredError="User name is required!"/>
+                <form autocomplete="off">
+
+                    <MudTextField T="string" Label="Email" @bind-Value="_email" Required="true" RequiredError="Email is required!"
+                                  Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })"/>
+                </form>
+                <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @bind-Value="_password"
+                              InputType="InputType.Password"
+                              Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
+                              RequiredError="Password is required!"/>
+                <MudTextField T="string"
+                              Label="Password" HelperText="Repeat the password" InputType="InputType.Password" @onkeydown="@Enter"
+                              Validation="@(new Func<string, string>(PasswordMatch))"/>
+
+                <div class="d-flex align-center justify-space-between mt-6">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_success)" Class="ml-auto"
+                               OnClick="@(SignUp)">
+                        @if (_loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
+                        Register
+                    </MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+        <div class="paddingTop5"></div>
+        <MudText Color="@Color.Error">
+            @ErrorUsernameTextField
+        </MudText>
+        <MudPaper Class="pa-4 mt-4" Width="350px">
+            <MudText> Already have an account? Login now </MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="/Login">Login</MudButton>
+        </MudPaper>
+    </MudContainer>
+
+</MudLayout>
+<div class="empty-space-large"></div>
+
+@code {
+    bool _loading;
+    bool _success;
+    string[] _errors = { };
+
+    string? Message { get; set; }
+    string? ErrorUsernameTextField { get; set; }
+
+    string? _password;
+    string? _username;
+    string? _email;
+    MudForm? _form;
+    private readonly AddUser _model = new();
+
+    private async void SignUp()
+    {
+        AlertService.Clear();
+        _model.Username = _username;
+        _model.Email = _email;
+        _model.Password = _password;
+        _model.RegistrationDate = DateTime.UtcNow.ToString("dd-MM-yyyy");
+
+        _loading = true;
+        try
+        {
+            await AccountService.Register(_model);
+            AlertService.Success("Registration successful", keepAfterRouteChange: true);
+            NavigationManager.NavigateTo($"/Login");
+        }
+
+        catch (Exception ex)
+        {
+            _loading = false;
+            AlertService.Error(ex.Message);
+            Message = "User already existing";
+            StateHasChanged();
+        }
+    }
+
+
+    private IEnumerable<string> PasswordStrength(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "Password is required!";
+            yield break;
+        }
+        if (pw.Length < 8)
+            yield return "Password must be at least of length 8";
+        if (!Regex.IsMatch(pw, @"[A-Z]"))
+            yield return "Password must contain at least one capital letter";
+        if (!Regex.IsMatch(pw, @"[a-z]"))
+            yield return "Password must contain at least one lowercase letter";
+        if (!Regex.IsMatch(pw, @"[0-9]"))
+            yield return "Password must contain at least one digit";
+    }
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var timer = new System.Timers.Timer(1000);
+        timer.Elapsed += (_, _) =>
+        {
+            InvokeAsync(() =>
+            {
+                ErrorUsernameTextField = Message;
+                StateHasChanged();
+            });
+        };
+        timer.Start();
+    }
+
+    private string? PasswordMatch(string arg)
+    {
+        if (_password != arg)
+            return "Passwords don't match";
+        return null;
+    }
+
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code is not ("Enter" or "NumpadEnter")) return;
+        SignUp();
+    }
+
+}

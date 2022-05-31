@@ -1,6 +1,356 @@
-﻿@page "/TVDetails"
-<h3>TVDetails</h3>
+﻿@page "/TVDetails/{Value}"
+@using Client.Models.Movies
+@inject NavigationManager NavigationManager
+
+<MudLayout>
+    <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+        <MudGrid>
+            <MudItem xs="12" sm="3">
+                @if (@PosterPath == null)
+                {
+                    <MudImage Width="299" Height="399" Src="/no-image-icon-6.png" Fluid="true" Alt="@TvTitle" Elevation="25" Class="rounded-lg"/>
+                }
+                else
+                {
+                    <MudImage Width="299" Height="399" Src="@PosterPath" Fluid="true" Alt="@TvTitle" Elevation="25" Class="rounded-lg"/>
+                }
+            </MudItem>
+            <MudItem xs="12" sm="9">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5">
+                                @TvTitle
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <div>
+                            <span>
+                                <div class="box">
+                                    <span>
+                                        @VoteAverage
+                                    </span>
+                                </div>
+                                <div class="box">
+                                    @VoteCount <span class="something">ratings</span>
+                                </div>
+                            </span>
+                            <br/>
+                            <br/>
+                        </div>
+
+                        <MudText Class="paddingTop5 paddingBottom5">
+                            @TvDescription
+                        </MudText>
+                        <MudText>
+                            <span class="paddingRight5 bold">Country:</span><span>@CountryName</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Genre:</span><span>@Genre</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Director(s):</span>
+                            @for (int i = 0; i < _crew.Count; i++)
+                            {
+                                if (i < _crew.Count - 1)
+                                {
+                                    _crewName = _crew[i].Name + ", ";
+                                }
+                                else
+                                {
+                                    _crewName = _crew[i].Name;
+                                }
+                                var num = i;
+                                <button>
+                                    <a class="abc" onclick="@(() => NamePage(_crew[num].Id))">
+                                        <span class="paddingRight2">
+                                            @_crewName
+                                        </span>
+                                    </a>
+                                </button>
+                            }
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">First Episode</span><span>@ReleaseDate</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Last Episode</span><span>@LastAirDate</span>
+                        </MudText>
+
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Number of Seasons</span><span>@NumberOfSeasons</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Number of Episodes</span><span>@NumberOfEpisodes</span>
+                        </MudText>
+
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Status</span><span>@Status</span>
+                        </MudText>
+
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Production:</span><span>@ProductionCompanies</span>
+                        </MudText>
+                        <MudText Class="paddingTop2">
+                            <span class="paddingRight5 bold">Casts:</span>
+                            @if (_showMore)
+                            {
+                                @if (_people.Count > 10)
+                                {
+                                    @for (int i = 0; i < 10; i++)
+                                    {
+                                        if (i < 9)
+                                        {
+                                            Cast = _people[i].Name + ", ";
+                                        }
+                                        else
+                                        {
+                                            Cast = _people[i].Name;
+                                        }
+                                        var num = i;
+                                        <button>
+                                            <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                                <span class="paddingRight2">
+                                                    @Cast
+                                                </span>
+                                            </a>
+                                        </button>
+                                    }
+                                    <button style="color: white" onclick="@ShowMore">Show more...</button>
+                                }
+                                else
+                                {
+                                    @for (int i = 0; i < _people.Count; i++)
+                                    {
+                                        if (i < _people.Count - 1)
+                                        {
+                                            Cast = _people[i].Name + ", ";
+                                        }
+                                        else
+                                        {
+                                            Cast = _people[i].Name;
+                                        }
+                                        var num = i;
+                                        <button>
+                                            <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                                <span class="paddingRight2">
+                                                    @Cast
+                                                </span>
+                                            </a>
+                                        </button>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                @for (int i = 0; i < _people.Count; i++)
+                                {
+                                    if (i < _people.Count - 1)
+                                    {
+                                        Cast = _people[i].Name + ", ";
+                                    }
+                                    else
+                                    {
+                                        Cast = _people[i].Name;
+                                    }
+                                    var num = i;
+                                    <button>
+                                        <a class="abc" onclick="@(() => NamePage(_people[num].Id))">
+                                            <span class="paddingRight2">
+                                                @Cast
+                                            </span>
+                                        </a>
+                                    </button>
+                                }
+                                _showMore = true;
+                            }
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            <div class="container2">
+                @foreach (var item in _seasons)
+                {
+                    var poster = "https://image.tmdb.org/t/p/w200" + @item.PosterPath;
+
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 250px; width: 180px">
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Name Elevation="25" Class="rounded-lg"/>
+                    </MudPaper>
+                }
+            </div>
+
+            <div class="empty-space"></div>
+
+        </MudGrid>
+    </MudContainer>
+</MudLayout>
 
 @code {
+
+    [Inject]
+    private IMoviesData? MoviesData { get; set; }
+
+
+    [Parameter]
+    public string? Value { get; set; }
+
+    private string? PosterPath { get; set; }
+    private string? TvTitle { get; set; }
+    private string? TvDescription { get; set; }
+    private string? VoteAverage { get; set; }
+    private int? VoteCount { get; set; }
+    private string? ReleaseDate { set; get; }
+    private string? LastAirDate { get; set; }
+    private string? Status { get; set; }
+    private int? NumberOfSeasons { get; set; }
+    private int? NumberOfEpisodes { get; set; }
+    private List<ProductionCountry>? _productionCountry;
+    private string? CountryName { get; set; }
+    private List<Genre>? _genres;
+    private string? Genre { get; set; }
+    private List<ProductionCompany>? _productionCompanyList;
+    private string? ProductionCompanies { get; set; }
+    private List<PeopleEntity> _people = new();
+    private List<PeopleEntity> _crewList = new();
+
+    bool _showMore = true;
+
+
+    [Parameter]
+    public string? Cast { get; set; }
+
+    private List<PeopleEntity> _crew = new();
+    private string _crewName = "";
+    private List<Season> _seasons = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Genre = "";
+        ProductionCompanies = "";
+        Cast = "";
+        _crew = new List<PeopleEntity>();
+        
+        var id = Value;
+        if (id != null)
+        {
+            await TvDetailsApi(id);
+            await TvCastApi(id);
+            await TvCrewApi(id);
+            await SeasonDetailsApi(id);
+        }
+    }
+
+
+    private async Task TvDetailsApi(string id)
+    {
+        if (MoviesData != null)
+        {
+            var obj = await MoviesData.GetTvDetails(id);
+            if (obj.PosterPath == null)
+            {
+                PosterPath = "/no-image-icon-6.png";
+            }
+            else
+            {
+                PosterPath = "https://image.tmdb.org/t/p/original" + obj.PosterPath;
+            }
+
+            TvTitle = obj.Name;
+            TvDescription = obj.Overview;
+            VoteAverage = obj.VoteAverage + "/10";
+            VoteCount = obj.VoteCount;
+            ReleaseDate = obj.FirstAirDate;
+            _productionCountry = obj.ProductionCountries;
+            _genres = obj.Genres;
+            _productionCompanyList = obj.ProductionCompanies;
+            LastAirDate = obj.LastAirDate;
+            Status = obj.Status;
+            NumberOfEpisodes = obj.NumberOfEpisodes;
+            NumberOfSeasons = obj.NumberOfSeasons;
+        }
+
+        if (_productionCountry != null)
+            for (var i = 0; i < _productionCountry.Count; i++)
+            {
+                if (i < _productionCountry.Count - 1)
+                {
+                    CountryName = _productionCountry[i].Name + ", ";
+                }
+                else
+                {
+                    CountryName = _productionCountry[i].Name;
+                }
+            }
+
+        for (var i = 0; i < _genres!.Count; i++)
+        {
+            if (i < _genres.Count - 1)
+            {
+                Genre += _genres[i].Name + ", ";
+            }
+            else
+            {
+                Genre += _genres[i].Name;
+            }
+        }
+
+        for (var i = 0; i < _productionCompanyList!.Count; i++)
+        {
+            if (i < _productionCompanyList.Count - 1)
+            {
+                ProductionCompanies += _productionCompanyList[i].Name + ", ";
+            }
+            else
+            {
+                ProductionCompanies += _productionCompanyList[i].Name;
+            }
+        }
+    }
+
+
+    private async Task SeasonDetailsApi(string id)
+    {
+        if (MoviesData != null)
+        {
+            var obj = await MoviesData.GetTvDetails(id);
+
+            var num = NumberOfSeasons;
+
+            for (int i = 1; i <= num; i++)
+            {
+                var obj2 = await MoviesData.GetSeasonDetails(id, i);
+                _seasons.Add(obj2);
+            }
+        }
+    }
+
+    private async Task TvCastApi(string id)
+    {
+        _people = await MoviesData!.GetTvCast(id);
+    }
+
+    private async Task TvCrewApi(string id)
+    {
+        _crewList = await MoviesData!.GetTvCrew(id);
+        foreach (var cr in _crewList)
+        {
+            if (cr.Department == "Writing")
+            {
+                _crew.Add(cr);
+            }
+        }
+    }
+
+    private void NamePage(int id)
+    {
+        NavigationManager.NavigateTo($"Name/{id}");
+    }
+
+    private void ShowMore()
+    {
+        _showMore = false;
+    }
     
 }

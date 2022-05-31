@@ -1,67 +1,111 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager navigationManager
-
+@inject IAccountService AccountService
+@inject NavigationManager NavigationManager
 <MudThemeProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
+
 <MudLayout>
-    <MudAppBar>
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudTextField @bind-Value="TextValue" @oninput="ValueChanged" Label="Search" Variant="Variant.Filled" @onkeydown="@Enter"></MudTextField>
-        <MudButton OnClick="@(() => Search(@TextValue))">click me</MudButton>
+    <MudAppBar Fixed="true">
+
+
+        <MudButton OnClick="@(GoHome)">HOME</MudButton>
+        <MudSpacer/>
+
+        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search for movies" 
+                      Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" 
+                      AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
+        </MudTextField>
+        
+        <MudSpacer/>
+
+        @if (AccountService.GetIsLoggedIn()|| AccountService.User?.Username!= null)
+        {
+            <div class="dropdown">
+                <MudAvatar Size="Size.Large" Color="Color.Info" Variant="Variant.Outlined">@AccountService.User?.Username!.Substring(0,1)</MudAvatar>
+                <div class="dropdown-content">
+                    <a href="/Profile">Profile</a>
+                    <a href="/Logout">Log out</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <MudButton href="/Login"> Login</MudButton>
+            <MudButton href="/Signup"> Register</MudButton>
+        }
+
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen">
-        <NavMenu/>
-        <MudContainer MaxWidth="MaxWidth.False">
-            <LoginDisplay/>
-        </MudContainer>
-    </MudDrawer>
-    
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.False">
             @Body
         </MudContainer>
-        
     </MudMainContent>
 </MudLayout>
-<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode"/>
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
+
+
+<footer>
+    <div class="footer-basic">
+            <div class="social">
+                <a href="https://github.com/FlaviusAB" target="_blank">
+                    <MudAvatar title="Flavius" Image="/github_icon.png"/>
+                </a>
+                <a href="https://github.com/prOcenTas" target="_blank">
+                    <MudAvatar title="Faustas" Image="/github_icon.png"/>
+                </a>
+                <a href="https://github.com/Avender" target="_blank">
+                    <MudAvatar title="Mihai" Image="/github_icon.png"/>
+                </a>
+            </div>
+            <br/>
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="#">Home</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="/About">About</a>
+                </li>
+            </ul>
+            <p class="copyright">Best Movies © 2022</p>
+        </div>
+</footer>
+
 
 @code {
-    bool _drawerOpen = true;
-    
-    private string TextValue { get; set; }
-    private EventCallback<ChangeEventArgs> ValueChanged { get; set; }
-    
-    void DrawerToggle()
+
+    private string _userInfo = "";
+    private bool _userFound;
+
+    private string TextValue { get; set; } = "";
+
+    private readonly MudTheme _theme = new();
+    private bool _isDarkMode = true;
+
+
+    private void GoHome()
     {
-        _drawerOpen = !_drawerOpen;
+        NavigationManager.NavigateTo("/");
     }
 
-    private bool _isDarkMode;
-    private MudThemeProvider _mudThemeProvider;
-    
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async void OnInitialized()
     {
-        if (firstRender)
-        {
-            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
-            StateHasChanged();
-        }
+        await AccountService.Initialize();
+        StateHasChanged();
     }
 
-    
-    public void Enter(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-        {
-            navigationManager.NavigateTo($"Search/{TextValue}");
-        }
-    }
-    
     private void Search(string textValue)
     {
-        navigationManager.NavigateTo($"Search/{textValue}");
+        NavigationManager.NavigateTo($"Search/{textValue}");
+        TextValue = "";
+    }
+
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code is not ("Enter" or "NumpadEnter") || TextValue.Equals("")) return;
+        Search(TextValue);
+        TextValue = "";
     }
 
 }
