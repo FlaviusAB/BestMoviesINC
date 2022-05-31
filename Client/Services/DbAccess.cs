@@ -27,7 +27,7 @@ public class DbAccess : IDbAccess
 
     public DbAccess()
     {
-        _httpClient.BaseAddress = new Uri("https://bestmoviesfunction-apiv1.azurewebsites.net");
+        _httpClient.BaseAddress = new Uri("http://localhost:7071/");
     }
 
     public async Task<string> SaveFavorite(FavoriteEntity favorite)
