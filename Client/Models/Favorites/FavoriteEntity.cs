@@ -8,6 +8,6 @@ public class FavoriteEntity
         MovieId = movieId;
     }
 
-    private string Username { get; set; }
-    private string MovieId { get; set; }
+    public string Username { get; set; }
+    public string MovieId { get; set; }
 }
