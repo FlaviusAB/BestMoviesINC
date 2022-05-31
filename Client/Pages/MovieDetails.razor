@@ -192,7 +192,6 @@
                             </a>
                         </button>
                     }
-                    _showMore = true;
                 }
 
             </MudText>
@@ -301,7 +300,7 @@
     private List<PeopleEntity> _people = new();
     private List<PeopleEntity> _crewList = new();
 
-    bool _showMore = true;
+    bool _showMore=true;
 
     private string TextValue { get; set; } = "";
 
@@ -420,6 +419,7 @@
 
     private async Task MovieDetailsApi(string id)
     {
+        
         if (MoviesData != null)
         {
             var obj = await MoviesData.GetMovieDetails(id);
@@ -443,8 +443,8 @@
             _genres = obj.Genres;
             _productionCompanyList = obj.ProductionCompanies;
 
-            Budget = $"{obj.Budget:n0}";
-            Revenue = $"{obj.Revenue:n0}";
+            Budget = obj.Budget != 0 ? $"{obj.Budget:n0}" : "No data";
+            Revenue = obj.Revenue != 0 ? $"{obj.Revenue:n0}" : "No data";
         }
 
         if (_productionCountry != null)
@@ -511,6 +511,7 @@
     void SimilarMovies(int id)
     {
         NavigationManager.NavigateTo($"MovieDetails/{id}");
+        _showMore = true;
     }
 
 

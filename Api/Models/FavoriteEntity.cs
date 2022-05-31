@@ -1,15 +1,13 @@
-namespace Client.Models;
+namespace Api.Models;
 
 public class FavoriteEntity
 {
     public FavoriteEntity(string username, string movieId)
     {
-        this.username = username;
-        movie_id = movieId;
-
+        Username = username;
+        MovieId = movieId;
     }
 
-    public string username { get; set; }
-    public string movie_id { get; set; }
-
+    public string Username { get; set; }
+    public string MovieId { get; set; }
 }
