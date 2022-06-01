@@ -370,7 +370,7 @@ a, .btn-link {
 .dropdown {
     position: relative;
     display: inline-block;
-    padding-right: 100px;
+    padding-right: 2vw;
 }
 
 /* Dropdown Content (Hidden by Default) */
