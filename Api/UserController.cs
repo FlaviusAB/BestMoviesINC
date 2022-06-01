@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace Api;
 
-public static class UserFunction
+public static class UserController
 {
     [FunctionName(nameof(UserAuthenication))]
     public static async Task<IActionResult> UserAuthenication(

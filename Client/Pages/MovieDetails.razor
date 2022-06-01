@@ -237,6 +237,9 @@
 {
     <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Comment.." Variant="Variant.Outlined"
                   @onkeydown="@Enter"/>
+    <MudButton Color="Color.Primary" OnClick="@MovieReview">
+        SEND
+    </MudButton>
 }
 
 </MudGrid>
@@ -386,8 +389,16 @@
 
     private void MovieReview()
     {
-        MovieReviewEntity _movieReviewEntity = new MovieReviewEntity(AccountService!.User?.Username!, Value!, @TextValue);
-        DbAccess?.SaveReview(_movieReviewEntity);
+        if (string.IsNullOrEmpty(TextValue))
+        {
+            return;
+        }
+        else
+        {
+            MovieReviewEntity _movieReviewEntity = new MovieReviewEntity(AccountService!.User?.Username!, Value!, @TextValue);
+            DbAccess?.SaveReview(_movieReviewEntity); 
+        }
+        
         TextValue = "";
     }
 
