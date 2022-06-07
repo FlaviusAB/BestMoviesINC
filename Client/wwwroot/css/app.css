@@ -370,7 +370,7 @@ a, .btn-link {
 .dropdown {
     position: relative;
     display: inline-block;
-    padding-right: 100px;
+    padding-right: 2vw;
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -513,4 +513,8 @@ td {
             0 0 121px #03234d;
     
     
+}
+#season_poster{
+    font-size:12px;
+    text-align: center;
 }

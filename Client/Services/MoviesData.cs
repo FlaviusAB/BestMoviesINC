@@ -202,7 +202,7 @@ public class MoviesData : IMoviesData
     {
         HttpResponseMessage response = await _client.GetAsync("https://api.themoviedb.org/3/tv/" + id + "/season/" +
                                                               num + "?api_key=a5ab4805002668ee4999f8bac7a4691d&language=en-US");
-        response.EnsureSuccessStatusCode();
+        
         string responseBody = await response.Content.ReadAsStringAsync();
         var obj = JsonConvert.DeserializeObject<Season>(responseBody);
         return obj;

@@ -38,8 +38,16 @@
             @foreach (var item in _profileFavoritesUpdated)
             {
                 _count++;
-
-                var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+                string poster;
+                if (item.PosterPath==null)
+                {
+                     poster = "/no-image-icon-6.png";;
+                }
+                else
+                {
+                     poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+                }
+                
                 <tr>
                     <td class="text_count">
                         @_count

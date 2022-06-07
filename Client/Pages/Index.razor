@@ -31,13 +31,29 @@
 
             @foreach (var item in _profileFavorites)
             {
-                var poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
+                string poster;
+                if (@item.PosterPath == null)
+                {
+                    poster = "/no-image-icon-6-large.png";
+                    <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                       
+                            <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                            <p class="no-image-text">@item.Title</p>
+                            
+                   
+                    </MudButton>
+                }
+                else
+                {
+                    poster = "https://image.tmdb.org/t/p/original" + @item.PosterPath;
 
-                <MudButton OnClick="@(() => MovieDetails(@item.Id))">
+                    <MudButton OnClick="@(() => MovieDetails(@item.Id))">
 
-                    <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
+                        <MudImage Src="@poster" Fluid="true" Alt=@item.Title Elevation="25" Class="rounded-lg"/>
 
-                </MudButton>
+                    </MudButton>
+                }
+                
             }
 
         </div>
