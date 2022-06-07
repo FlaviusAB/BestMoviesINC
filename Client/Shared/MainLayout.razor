@@ -13,7 +13,7 @@
         <MudButton OnClick="@(GoHome)">HOME</MudButton>
         <MudSpacer/>
 
-        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Label="Search for movies" 
+        <MudTextField T="string" @bind-Value="@TextValue" Immediate="true" Placeholder="Search for movies" 
                       Variant="Variant.Outlined" @onkeydown="@Enter" Adornment="Adornment.End" 
                       AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary">
         </MudTextField>
